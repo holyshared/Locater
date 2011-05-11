@@ -12,10 +12,10 @@ authors:
 requires:
   - Core/Object
   - Locater/Locater
-  - Locater/Rules
+  - Locater/Locater.Rules
   - Locater/Locater.Dispacher
-  - Locater/Handler.Handler
-  - Locater/Handler.Context
+  - Locater/Locater.Handler.Handler
+  - Locater/Locater.Handler.Context
 
 provides: [Locater.Application]
 
@@ -34,8 +34,9 @@ Locater.Application = new Class({
 		maximumAge: 0
 	},
 
-	initialize: function(options){
+	initialize: function(adapter, options){
 		this.setOptions(options);
+		this.adapter = adapter;
 		this.dispacher = Locater.Dispacher();
 	},
 
@@ -62,18 +63,16 @@ Locater.Application = new Class({
 		});
 	},
 
-	onError: function(){
+	onError: function(error){
 	},
 
 	run: function(){
-		this.gps = navigator.geolocation;
-		if (this.gps) {
-			var watchOpts = Object.subset(this.options, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-			this.gps.getCurrentPosition(this.onCurrentSuccess.bind(this), this.onError.bind(this));
-			this.watchId = this.gps.watchPosition(this.onWatchSuccess.bind(this), this.onError.bind(this), watchOpts);
-		} else {
-			//error('not supported');
-		}
+		this.adapter.setOptions({
+			'currentHandler': this.onCurrentSuccess.bind(this),
+			'watchHandler': this.onWatchSuccess.bind(this),
+			'errorHandler': this.onError.bind(this)
+		});
+		this.adapter.run();
 	}
 
 });

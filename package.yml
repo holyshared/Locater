@@ -1,25 +1,35 @@
-name: Plugin Name
+name: Locater
 
 web: "[http://url_to_plugin](label)"
 
 description:
 
-authors: "${TM_FULLNAME}"
+authors:
+  - Noritaka Horio
 
 license: "MIT License"
 
 copyright: "&copy; ${TM_FULLNAME}"
 
 sources:
-  - "Source/Plugin.js"
+  - "Source/Core/Core.js"
+  - "Source/Core/Rules.js"
+  - "Source/Core/Container.js"
+  - "Source/Core/Dispacher.js"
+  - "Source/Core/Application.js"
+  - "Source/Adapter/Adapter.js"
+  - "Source/Handler/Handler.js"
+  - "Source/Handler/Context.js"
+  - "Source/Handler/DebugHandler.js"
+  - "Source/Handler/CurrentPositionHandler.js"
 
-author: ${TM_FULLNAME}
+author: Noritaka Horio
 
 category: Interface
 
-tags: [tag1, tag2]
+tags: [framework, geo]
 
-current: version
+current: 1.0
 
 docs: http://url_to_plugin_docs
 

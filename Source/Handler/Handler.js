@@ -33,7 +33,10 @@ Locater.Handler = {
 
 Locater.Handler.Handler = new Class({
 
-	initialize: function(){
+	Implements: [Options],
+
+	initialize: function(options){
+		this.setOptions(options);
 	}
 
 });
