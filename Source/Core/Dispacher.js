@@ -22,12 +22,10 @@ provides: [Locater.Dispacher]
 
 Locater.Dispacher = new Class({
 
-	initialize: function(){
-		this.handlers = [];
-	},
+	_handlers: [],
 
 	addHandler: function(handler){
-		this.handlers.push(handler);
+		this._handlers.push(handler);
 	},
 
 	addHandlers: function(handlers){
@@ -38,7 +36,7 @@ Locater.Dispacher = new Class({
 	},
 
 	dispach: function(eventName, context){
-		this.handlers.each(function(handler){
+		this._handlers.each(function(handler){
 			if (Type.isFunction(handler[eventName])) {
 				handler[eventName](context);
 			};

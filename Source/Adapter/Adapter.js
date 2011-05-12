@@ -33,12 +33,18 @@ Locater.Adapter = new Class({
 		errorHandler: null
 	},
 
+	//protected properties
+	_watchID: null,
+
 	initialize: function(options){
 		this.setOptions(options);
 	},
 
-	//abstract method
-	run: function(){}
+	//abstract methods
+	start: function(){},
+	stop: function(){},
+	getWatchID: function(){},
+	isWatching: function(){}
 
 });
 
@@ -47,18 +53,41 @@ Locater.DefaultAdapter = new Class({
 
 	Extends: Locater.Adapter,
 
-	run: function(){
-		this.gps = navigator.geolocation;
-		if (this.gps) {
-			var watchOpts = Object.subset(this.options, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-			this.gps.getCurrentPosition(this.options.currentHandler, this.options.errorHandler);
-			this.gps.watchPosition(this.options.watchHandler, this.options.errorHandler);
+	//protected properties
+	_gps: null,
+
+	initialize: function(options){
+		this.parent(options);
+		this._gps = navigator.geolocation;
+	},
+
+	start: function(){
+		if (this._gps) {
+			var opts = this.options;
+			var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
+			this._gps.getCurrentPosition(opts.currentHandler, opts.errorHandler);
+			this._setWatchID(this._gps.watchPosition(opts.watchHandler, opts.errorHandler));
 		} else {
 			//error('not supported');
 		}
+	},
+
+	stop: function(){
+		this._gps.clearWatch(this._getWatchID());
+	},
+
+	_getWatchID: function(){
+		return this._watchID;
+	}.protect(),
+
+	_setWatchID: function(){
+		return this._watchID;
+	}.protect(),
+
+	isWatching: function(){
+		return (this._getWatchID() == null);
 	}
 
 });
-
 
 }(document.id, Locater));

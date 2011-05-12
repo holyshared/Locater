@@ -34,30 +34,33 @@ Locater.Application = new Class({
 		maximumAge: 0
 	},
 
+	_adapter: null,
+	_dispacher: null,
+
 	initialize: function(adapter, options){
 		this.setOptions(options);
-		this.adapter = adapter;
-		this.dispacher = Locater.Dispacher();
+		this._adapter = adapter;
+		this._dispacher = Locater.Dispacher();
 	},
 
 	addHandler: function(handler){
-		this.dispacher.addHandler(handler);
+		this._dispacher.addHandler(handler);
 	},
 
 	addHandlers: function(handlers){
-		this.dispacher.addHandlers(handlers);
+		this._dispacher.addHandlers(handlers);
 	},
 
 	onCurrentSuccess: function(position){
 		var context = this.context = Locater.Handler.Context(position.coords);
-		this.dispacher.dispach('initialized', context);
+		this._dispacher.dispach('initialized', context);
 	},
 
 	onWatchSuccess: function(position){
 		var context = Locater.Handler.Context(position.coords);
 		var self = this;
 		Object.each(Locater.Rules, function(rule, key){
-			if (rule(context)) {
+			if (rule.apply({}, [this.context, context])) {
 				self.dispacher.dispach(key, context);
 			}
 		});
@@ -67,12 +70,20 @@ Locater.Application = new Class({
 	},
 
 	run: function(){
-		this.adapter.setOptions({
+		this.start();
+	},
+
+	start: function(){
+		this._adapter.setOptions({
 			'currentHandler': this.onCurrentSuccess.bind(this),
 			'watchHandler': this.onWatchSuccess.bind(this),
 			'errorHandler': this.onError.bind(this)
 		});
-		this.adapter.run();
+		this._adapter.start();
+	},
+
+	stop: function(){
+		this._adapter.stop();
 	}
 
 });

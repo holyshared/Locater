@@ -18,21 +18,36 @@ provides: [Locater.Handler.Context]
 ...
 */
 
-(function($, Locater){
+(function($, handler){
 
-Locater.Handler.Context = new Class({
+/**
+ * Coordinates interface
+ * @see: http://dev.w3.org/geo/api/spec-source.html
+ */
+var defaultContext = {
+	latitude: 0, //double
+	longitude: 0, //double
+	altitude: 0, //double
+	accuracy: 0, //double
+	altitudeAccuracy: 0, //double
+	heading: 0, //double
+	speed: 0 //double
+};
+
+handler.Context = new Class({
 
 	initialize: function(props){
-	    for (var key in values){
+		var params = Object.merge(defaultContext, props);
+	    for (var key in params){
 	        var first = key.charAt(0).toUpperCase();
 	        var other = key.substr(1, key.length);
 	        var getter = 'get' + first + other;
 	        this[getter] = function(){
-	            return values[key];
+	        	return props[key];
 	        };
 	    }
 	}
 
 });
 
-}(document.id, Locater));
+}(document.id, Locater.Handler));

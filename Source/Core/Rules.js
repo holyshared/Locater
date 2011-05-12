@@ -21,37 +21,37 @@ provides: [Locater.Rules]
 
 Locater.Rules = {
 
-	'positionChanged': function(context){
-		return this.context.getLatitude() == context.getLatitude()
-			|| this.context.getLongitude() == context.getLongitude();
+	'positionChanged': function(current, wacth){
+		return current.getLatitude() == wacth.getLatitude()
+			|| current.getLongitude() == wacth.getLongitude();
 	},
 
-	'latitudeChanged': function(context){
-		return this.context.getLatitude() == context.getLatitude();
+	'latitudeChanged': function(current, wacth){
+		return current.getLatitude() == wacth.getLatitude();
 	},
 
-	'longitudeChanged': function(context){
-		return this.context.getLongitude() == context.getLongitude();
+	'longitudeChanged': function(current, wacth){
+		return current.getLongitude() == wacth.getLongitude();
 	},
 
-	'altitudeChanged': function(context){
-		return this.context.getAltitude() == context.getAltitude();
+	'altitudeChanged': function(current, wacth){
+		return current.getAltitude() == wacth.getAltitude();
 	},
 
-	'accuracyChanged': function(context){
-		return this.context.getAccuracy() == context.getAccuracy();
+	'accuracyChanged': function(current, wacth){
+		return current.getAccuracy() == wacth.getAccuracy();
 	},
 
-	'altitudeAccuracyChanged': function(context){
-		return this.context.getAltitudeAccuracy() == context.getAltitudeAccuracy();
+	'altitudeAccuracyChanged': function(current, wacth){
+		return current.getAltitudeAccuracy() == wacth.getAltitudeAccuracy();
 	},
 
-	'headingChanged': function(context){
-		return this.context.getHeading() == context.getHeading();
+	'headingChanged': function(current, wacth){
+		return current.getHeading() == wacth.getHeading();
 	},
 
-	'speedChanged': function(context){
-		return this.context.getSpeed() == context.getSpeed();
+	'speedChanged': function(current, wacth){
+		return current.getSpeed() == wacth.getSpeed();
 	}
 
 };
