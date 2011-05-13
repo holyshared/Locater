@@ -10,6 +10,8 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Object
+  - Core/Function
   - Locater/Locater
   - Locater/Locater.Handler
 
@@ -18,7 +20,7 @@ provides: [Locater.Handler.Context]
 ...
 */
 
-(function($, handler){
+(function(handler){
 
 /**
  * Coordinates interface
@@ -34,20 +36,16 @@ var defaultContext = {
 	speed: 0 //double
 };
 
-handler.Context = new Class({
-
-	initialize: function(props){
-		var params = Object.merge(defaultContext, props);
-	    for (var key in params){
-	        var first = key.charAt(0).toUpperCase();
-	        var other = key.substr(1, key.length);
-	        var getter = 'get' + first + other;
-	        this[getter] = function(){
-	        	return props[key];
-	        };
-	    }
+handler.Context = function(props){
+	var params = Object.merge(defaultContext, props);
+	var context = {};
+	for (var key in params){
+		var first = key.charAt(0).toUpperCase();
+		var other = key.substr(1, key.length);
+		var getter = 'get' + first + other;
+		context[getter] = Function.from(params[key]);
 	}
+	return context;
+};
 
-});
-
-}(document.id, Locater.Handler));
+}(Locater.Handler));

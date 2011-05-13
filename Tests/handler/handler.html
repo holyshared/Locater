@@ -44,11 +44,11 @@
 					Extends: Handler,
 
 					initialized: function(context){
-						assertTrue(isEqualValues(currentValues, context));
+						assertTrue(isEqualValues(currentValues, context), 'initialized: The context is not corresponding.');
 					},
 
 					positionChanged: function(context){
-						assertTrue(isEqualValues(watchValues, context));
+						assertTrue(isEqualValues(watchValues, context), 'positionChanged: The context is not corresponding.');
 					}
 				});
 
