@@ -36,16 +36,41 @@ var defaultContext = {
 	speed: 0 //double
 };
 
+function __toGetterMethodName(name){
+	var first = name.charAt(0).toUpperCase();
+	var other = name.substr(1, name.length);
+	var getter = 'get' + first + other;
+	return getter;
+}
+
 handler.Context = function(props){
 	var params = Object.merge(defaultContext, props);
-	var context = {};
 	for (var key in params){
-		var first = key.charAt(0).toUpperCase();
-		var other = key.substr(1, key.length);
-		var getter = 'get' + first + other;
-		context[getter] = Function.from(params[key]);
+		var getter = __toGetterMethodName(key);
+		this[getter] = Function.from(params[key]);
 	}
-	return context;
+	return this;
 };
+
+handler.Context.implement({
+
+	toString: function(){
+		var tokens = [];
+		for (var key in defaultContext){
+			var getter = __toGetterMethodName(key);
+			var value = this[getter]();
+			if (Type.isObject(value)) {
+				if (Type.isFunction(value.toString)) {
+					value = value.toString();
+				} else {
+					continue;
+				}
+			}
+			tokens.push(key + '=' + value);
+		}
+		return tokens.join(' ');
+	}
+
+});
 
 }(Locater.Handler));
