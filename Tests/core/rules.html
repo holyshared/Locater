@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Locater.Rules</title>
+		<meta name="description" content="" />
+		<meta name="author" content="operator" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<script type="text/javascript" src="../../Demos/js/lib/mootools-core-1.3.1.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Rules.js"></script>
+		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
+		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
+		<script type="text/javascript" src="../js/testlib.js"></script>
+		<script type="text/javascript">
+			(function(){
+				//Alias
+				var Rules = Locater.Rules;
+				var Context = Locater.Handler.Context;
+
+				window.addEvent('domready', function(){
+
+					//positionChanged
+					var current = new Context({ latitude: 100, longitude: 100 });
+					var watch = new Context({ latitude: 100, longitude: 100 });
+					assertFalse(Rules.positionChanged(current, watch), 'positionChanged: Coordinates are the same.');
+
+					var current = new Context({ latitude: 100, longitude: 100 });
+					var watch = new Context({ latitude: 10, longitude: 100 });
+					assertTrue(Rules.positionChanged(current, watch), 'positionChanged: Coordinates are different.');
+
+					//latitudeChanged
+					var current = new Context({ latitude: 100 });
+					var watch = new Context({ latitude: 100 });
+					assertFalse(Rules.latitudeChanged(current, watch), 'latitudeChanged: Latitude are the same.');
+
+					var current = new Context({ latitude: 100 });
+					var watch = new Context({ latitude: 20 });
+					assertTrue(Rules.latitudeChanged(current, watch), 'latitudeChanged: Latitude are the same.');
+
+
+					//longitudeChanged
+					var current = new Context({ longitude: 100 });
+					var watch = new Context({ longitude: 100 });
+					assertFalse(Rules.longitudeChanged(current, watch), 'longitudeChanged: Longitude are the same.');
+
+					var current = new Context({ longitude: 100 });
+					var watch = new Context({ longitude: 20 });
+					assertTrue(Rules.longitudeChanged(current, watch), 'longitudeChanged: Longitude are the same.');
+
+
+					//altitudeChanged
+					var current = new Context({ altitude: 100 });
+					var watch = new Context({ altitude: 100 });
+					assertFalse(Rules.altitudeChanged(current, watch), 'altitudeChanged: Altitude are the same.');
+
+					var current = new Context({ altitude: 100 });
+					var watch = new Context({ altitude: 20 });
+					assertTrue(Rules.altitudeChanged(current, watch), 'altitudeChanged: Altitude are the same.');
+
+
+					//accuracyChanged
+					var current = new Context({ accuracy: 100 });
+					var watch = new Context({ accuracy: 100 });
+					assertFalse(Rules.accuracyChanged(current, watch), 'accuracyChanged: Accuracy are the same.');
+
+					var current = new Context({ accuracy: 100 });
+					var watch = new Context({ accuracy: 20 });
+					assertTrue(Rules.accuracyChanged(current, watch), 'accuracyChanged: Accuracy are the same.');
+
+
+					//altitudeAccuracyChanged
+					var current = new Context({ altitudeAccuracy: 100 });
+					var watch = new Context({ altitudeAccuracy: 100 });
+					assertFalse(Rules.altitudeAccuracyChanged(current, watch), 'altitudeAccuracyChanged: AltitudeAccuracy are the same.');
+
+					var current = new Context({ altitudeAccuracy: 100 });
+					var watch = new Context({ altitudeAccuracy: 20 });
+					assertTrue(Rules.altitudeAccuracyChanged(current, watch), 'altitudeAccuracyChanged: AltitudeAccuracy are the same.');
+
+
+					//headingChanged
+					var current = new Context({ heading: 100 });
+					var watch = new Context({ heading: 100 });
+					assertFalse(Rules.headingChanged(current, watch), 'headingChanged: Heading are the same.');
+
+					var current = new Context({ heading: 100 });
+					var watch = new Context({ heading: 20 });
+					assertTrue(Rules.headingChanged(current, watch), 'headingChanged: Heading are the same.');
+
+
+					//speedChanged
+					var current = new Context({ speed: 100 });
+					var watch = new Context({ speed: 100 });
+					assertFalse(Rules.speedChanged(current, watch), 'speedChanged: Speed are the same.');
+
+					var current = new Context({ speed: 100 });
+					var watch = new Context({ speed: 20 });
+					assertTrue(Rules.speedChanged(current, watch), 'speedChanged: Speed are the same.');
+
+
+				});
+
+			}());
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>Locater.Rules</h1>
+		</header>
+	</body>
+</html>

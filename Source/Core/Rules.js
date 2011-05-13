@@ -17,43 +17,43 @@ provides: [Locater.Rules]
 ...
 */
 
-(function($, Locater){
+(function(Locater){
 
 Locater.Rules = {
 
 	'positionChanged': function(current, wacth){
-		return current.getLatitude() == wacth.getLatitude()
-			|| current.getLongitude() == wacth.getLongitude();
+		return !(current.getLatitude() == wacth.getLatitude()
+			&& current.getLongitude() == wacth.getLongitude());
 	},
 
 	'latitudeChanged': function(current, wacth){
-		return current.getLatitude() == wacth.getLatitude();
+		return current.getLatitude() != wacth.getLatitude();
 	},
 
 	'longitudeChanged': function(current, wacth){
-		return current.getLongitude() == wacth.getLongitude();
+		return current.getLongitude() != wacth.getLongitude();
 	},
 
 	'altitudeChanged': function(current, wacth){
-		return current.getAltitude() == wacth.getAltitude();
+		return current.getAltitude() != wacth.getAltitude();
 	},
 
 	'accuracyChanged': function(current, wacth){
-		return current.getAccuracy() == wacth.getAccuracy();
+		return current.getAccuracy() != wacth.getAccuracy();
 	},
 
 	'altitudeAccuracyChanged': function(current, wacth){
-		return current.getAltitudeAccuracy() == wacth.getAltitudeAccuracy();
+		return current.getAltitudeAccuracy() != wacth.getAltitudeAccuracy();
 	},
 
 	'headingChanged': function(current, wacth){
-		return current.getHeading() == wacth.getHeading();
+		return current.getHeading() != wacth.getHeading();
 	},
 
 	'speedChanged': function(current, wacth){
-		return current.getSpeed() == wacth.getSpeed();
+		return current.getSpeed() != wacth.getSpeed();
 	}
 
 };
 
-}(document.id, Locater));
+}(Locater));
