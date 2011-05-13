@@ -18,7 +18,7 @@ provides: [Locater.Dispacher]
 ...
 */
 
-(function($, Locater){
+(function(Locater){
 
 Locater.Dispacher = new Class({
 
@@ -26,6 +26,7 @@ Locater.Dispacher = new Class({
 
 	addHandler: function(handler){
 		this._handlers.push(handler);
+		return this;
 	},
 
 	addHandlers: function(handlers){
@@ -33,9 +34,10 @@ Locater.Dispacher = new Class({
 		handlers.each(function(handler){
 			self.addHandler(handler);
 		});
+		return this;
 	},
 
-	dispach: function(eventName, context){
+	dispatch: function(eventName, context){
 		this._handlers.each(function(handler){
 			if (Type.isFunction(handler[eventName])) {
 				handler[eventName](context);
@@ -45,4 +47,4 @@ Locater.Dispacher = new Class({
 
 });
 
-}(document.id, Locater));
+}(Locater));
