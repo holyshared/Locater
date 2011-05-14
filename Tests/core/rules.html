@@ -101,6 +101,29 @@
 					assertTrue(Rules.speedChanged(current, watch), 'speedChanged: Speed are the same.');
 
 
+					Rules.define('matchLatitude', function(current, watch){
+						return watch.getLatitude() == current.getLatitude();
+					});
+
+					var current = new Context({ latitude: 100 });
+					var watch = new Context({ latitude: 100 });
+					assertTrue(Rules.matchLatitude(current, watch), 'matchLatitude: The custom rule is amusing.');
+
+
+
+					function LatitudeOverRule(latitude){
+						this.latitude = latitude;
+					}
+					LatitudeOverRule.prototype.invoke = function(current, watch){
+						return (this.latitude >= watch.getLatitude());
+					}
+
+					Rules.define('latitudeOver', new LatitudeOverRule(20));
+
+					var current = new Context({ latitude: 100 });
+					var watch = new Context({ latitude: 100 });
+					assertTrue(Rules.matchLatitude(current, watch), 'LatitudeOverRule: The custom rule is amusing.');
+
 				});
 
 			}());

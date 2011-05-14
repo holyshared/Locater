@@ -10,6 +10,8 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Object
+  - Core/Type
   - Locater/Locater
 
 provides: [Locater.Rules]
@@ -17,9 +19,11 @@ provides: [Locater.Rules]
 ...
 */
 
-(function(Locater){
+(function(locater){
 
-Locater.Rules = {
+var rules = locater.Rules = {};
+
+Object.append(rules, {
 
 	'positionChanged': function(current, wacth){
 		return !(current.getLatitude() == wacth.getLatitude()
@@ -52,6 +56,40 @@ Locater.Rules = {
 
 	'speedChanged': function(current, wacth){
 		return current.getSpeed() != wacth.getSpeed();
+	}
+
+});
+
+/**
+	paturn1:
+
+	Locater.Rules.define('foo', function(current, wacth){
+		//Distinction processing of event ignition
+	});
+
+	paturn2:
+
+	var custumRule = {
+		invoke; function(current, wacth){
+			//Distinction processing of event ignition
+		}
+	};
+
+	Locater.Rules.define('foo', custumRule);
+ */
+rules.define = function(name, rule){
+
+	if (!Type.isFunction(rule.invoke) || !Type.isFunction(rule)){
+		throw new Error('The rule is an object or it is not a function.');
+	}
+
+	switch(typeOf(rule)){
+		case 'object':
+			rules[name] = rule.invoke;
+			break;
+		case 'function':
+			rules[name] = rule;
+			break;
 	}
 
 };
