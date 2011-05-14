@@ -17,86 +17,115 @@ requires:
   - Core/Function
   - Locater/Locater
 
-provides: [Locater.Adapter, Locater.DefaultAdapter]
+provides: [Locater.Adapter, Locater.Geolocation, Locater.Adapter.CurrentPositionAdapter, Locater.Adapter.WatchPositionAdapter]
 
 ...
 */
 
 (function(Locater){
 
-Locater.Adapter = new Class({
-
-	Implements: [Options, Events],
-
-	//protected properties
-	_watchID: null,
-
-	initialize: function(options){
-		this.setOptions(options);
-	},
-
-	//abstract methods
-	start: function(){},
-	stop: function(){},
-	getWatchID: function(){},
-	isWatching: function(){}
-
-});
-
-
-Locater.DefaultAdapter = new Class({
-
-	Extends: Locater.Adapter,
+var Geolocation = Locater.Geolocation = new Class({
 
 	options: {
 		enableHighAccuracy: true,
 		timeout: 10000,
-		maximumAge: 0,
-		currentHandler: null,
-		watchHandler: null,
-		errorHandler: null
-	},
-
-	//protected properties
-	_gps: null,
-
-	initialize: function(options){
-		this.parent(options);
-		this._gps = navigator.geolocation;
-	},
-
-	start: function(){
-		if (this._gps) {
-			var opts = this.options;
-			var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-			if (opts.currentHandler == null && opts.watchPosition == null) {
-				throw new Error('Please specify either watchPosition or currentHandler.');
-			//getCurrentPosition
-			} else if (opts.currentHandler){
-				this._gps.getCurrentPosition(opts.currentHandler, opts.errorHandler, watchOpts);
-			//watchPosition
-			} else if (opts.watchPosition){
-				this._setWatchID(this._gps.watchPosition(opts.watchPosition, opts.errorHandler));
-			}
-		} else {
-			//error('not supported');
-		}
-	},
-
-	stop: function(){
-		this._gps.clearWatch(this._getWatchID());
+		maximumAge: 0
 	},
 
 	_getWatchID: function(){
 		return this._watchID;
 	}.protect(),
 
-	_setWatchID: function(){
-		return this._watchID;
+	_setWatchID: function(watchID){
+		this._watchID = watchID;
+	}.protect(),
+
+	_getGeolocation: function(){
+		return navigator.geolocation;
 	}.protect(),
 
 	isWatching: function(){
 		return (this._getWatchID() != null);
+	}
+
+});
+
+
+var Adapter = Locater.Adapter = {
+
+	create: function(name, options){
+		if (!this[name]) throw new Error('It tries to make an invalid adaptor.');
+		return new this[name](options);
+	}
+
+};
+
+Adapter.CurrentPositionAdapter = new Class({
+
+	Implements: [Geolocation, Options],
+
+	options: {
+		currentHandler: null,
+		errorHandler: null
+	},
+
+	initialize: function(options){
+		this.setOptions(options);
+	},
+
+	start: function(){
+		var gps = this._getGeolocation();
+		if (!gps){
+			throw new Error('Geolocation API is not supported.');
+		}
+
+		var opts = this.options;
+		var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
+		if (opts.currentHandler == null) {
+			throw new Error('Please specify either currentHandler.');
+		}
+		gps.getCurrentPosition(opts.currentHandler, opts.errorHandler, watchOpts);
+		this._setWatchID(true);
+	},
+
+	stop: function(){
+		this._setWatchID(null);
+	}
+
+});
+
+
+Adapter.WatchPositionAdapter = new Class({
+
+	Implements: [Geolocation, Options],
+
+	options: {
+		watchHandler: null,
+		errorHandler: null
+	},
+
+	initialize: function(options){
+		this.setOptions(options);
+	},
+
+	start: function(){
+		var gps = this._getGeolocation();
+		if (!gps){
+			throw new Error('Geolocation API is not supported.');
+		}
+
+		var opts = this.options;
+		var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
+		if (opts.watchPosition == null) {
+			throw new Error('Please specify either watchPosition or currentHandler.');
+		} else if (opts.watchPosition){
+			this._setWatchID(gps.watchPosition(opts.watchPosition, opts.errorHandler));
+		}
+	},
+
+	stop: function(){
+		var gps = this._getGeolocation();
+		gps.clearWatch(this._getWatchID());
 	}
 
 });

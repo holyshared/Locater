@@ -22,8 +22,8 @@ provides: [Locater.Handler, Locater.Handler.Handler]
 Locater.Handler = {
 
 	create: function(name, options){
-		if (!this[name]) {
-			throw new Error('not supported.');
+		if (!this[name]){
+			throw new Error('It tries to make an invalid handler.');
 		}
 		return new this[name](options);
 	}
