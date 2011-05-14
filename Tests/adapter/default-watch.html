@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>Locater.Adapter</title>
+		<title>Locater.Adapter.WatchPositionAdapter</title>
 		<meta name="description" content="" />
 		<meta name="author" content="operator" />
 		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
@@ -23,6 +23,8 @@
 			(function($){
 
 				window.addEvent('domready', function(){
+
+					var Adapter = Locater.Adapter.WatchPositionAdapter;
 
 					var maps = google.maps;
 					var element = document.getElementById('map');
@@ -57,7 +59,7 @@
 						console.log(error);
 					}
 
-					var watchAdapter = new Locater.DefaultAdapter({
+					var watchAdapter = new Adapter({
 						enableHighAccuracy: true,
 						timeout: 10000,
 						maximumAge: 0,
@@ -73,7 +75,7 @@
 	</head>
 	<body>
 		<header>
-			<h1>Locater.Adapter</h1>
+			<h1>Locater.Adapter.WatchPositionAdapter</h1>
 			<div id="map" class="map"></div>
 		</header>
 	</body>

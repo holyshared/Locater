@@ -116,16 +116,17 @@ Adapter.WatchPositionAdapter = new Class({
 
 		var opts = this.options;
 		var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-		if (opts.watchPosition == null) {
-			throw new Error('Please specify either watchPosition or currentHandler.');
-		} else if (opts.watchPosition){
-			this._setWatchID(gps.watchPosition(opts.watchPosition, opts.errorHandler));
+		if (opts.watchHandler == null) {
+			throw new Error('Please specify either watchHandler.');
+		} else if (opts.watchHandler){
+			this._setWatchID(gps.watchPosition(opts.watchHandler, opts.errorHandler));
 		}
 	},
 
 	stop: function(){
 		var gps = this._getGeolocation();
 		gps.clearWatch(this._getWatchID());
+		this._setWatchID(null);
 	}
 
 });
