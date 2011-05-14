@@ -18,11 +18,11 @@ provides: [Locater.Handler.CurrentPositionHandler]
 ...
 */
 
-(function($, Locater){
+(function($, Handler){
 
-Locater.Handler.CurrentPositionHandler = new Class({
+Handler.CurrentPositionHandler = new Class({
 
-	Extends: Locater.Handler.Handler,
+	Extends: Handler.Handler,
 
 	options: {
 		marker: null
@@ -39,4 +39,4 @@ Locater.Handler.CurrentPositionHandler = new Class({
 
 });
 
-}(document.id, Locater));
+}(Locater.Handler));

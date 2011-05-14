@@ -10,6 +10,8 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Class
+  - Core/Options
   - Locater/Locater
 
 provides: [Locater.Handler, Locater.Handler.Handler]
@@ -17,9 +19,9 @@ provides: [Locater.Handler, Locater.Handler.Handler]
 ...
 */
 
-(function($, Locater){
+(function(Locater){
 
-Locater.Handler = {
+var Handler = Locater.Handler = {
 
 	create: function(name, options){
 		if (!this[name]){
@@ -31,7 +33,7 @@ Locater.Handler = {
 };
 
 
-Locater.Handler.Handler = new Class({
+Handler.Handler = new Class({
 
 	Implements: [Options],
 
@@ -41,4 +43,4 @@ Locater.Handler.Handler = new Class({
 
 });
 
-}(document.id, Locater));
+}(Locater));

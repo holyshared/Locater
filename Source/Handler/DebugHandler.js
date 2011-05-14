@@ -22,11 +22,11 @@ provides: [Locater.Handler.DebugHandler]
 ...
 */
 
-(function(handler){
+(function(Handler){
 
-handler.DebugHandler = new Class({
+Handler.DebugHandler = new Class({
 
-	Extends: handler.Handler,
+	Extends: Handler.Handler,
 
 	options: {
 		events: ['initialized']

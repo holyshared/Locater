@@ -12,6 +12,7 @@ authors:
 requires:
   - Core/Object
   - Core/Function
+  - Core/Type
   - Locater/Locater
   - Locater/Locater.Handler
 
@@ -20,7 +21,7 @@ provides: [Locater.Handler.Context]
 ...
 */
 
-(function(handler){
+(function(Handler){
 
 /**
  * Coordinates interface
@@ -43,7 +44,7 @@ function __toGetterMethodName(name){
 	return getter;
 }
 
-handler.Context = function(props){
+Handler.Context = function(props){
 	var params = Object.merge(defaultContext, props);
 	for (var key in params){
 		var getter = __toGetterMethodName(key);
@@ -52,7 +53,7 @@ handler.Context = function(props){
 	return this;
 };
 
-handler.Context.implement({
+Handler.Context.implement({
 
 	toString: function(){
 		var tokens = [];
