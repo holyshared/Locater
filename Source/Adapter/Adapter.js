@@ -11,6 +11,10 @@ authors:
 
 requires:
   - Core/Object
+  - Core/Class
+  - Core/Options
+  - Core/Events
+  - Core/Function
   - Locater/Locater
 
 provides: [Locater.Adapter, Locater.DefaultAdapter]
@@ -18,20 +22,11 @@ provides: [Locater.Adapter, Locater.DefaultAdapter]
 ...
 */
 
-(function($, Locater){
+(function(Locater){
 
 Locater.Adapter = new Class({
 
 	Implements: [Options, Events],
-
-	options: {
-		enableHighAccuracy: true,
-		timeout: 10000,
-		maximumAge: 0,
-		currentHandler: null,
-		watchHandler: null,
-		errorHandler: null
-	},
 
 	//protected properties
 	_watchID: null,
@@ -53,6 +48,15 @@ Locater.DefaultAdapter = new Class({
 
 	Extends: Locater.Adapter,
 
+	options: {
+		enableHighAccuracy: true,
+		timeout: 10000,
+		maximumAge: 0,
+		currentHandler: null,
+		watchHandler: null,
+		errorHandler: null
+	},
+
 	//protected properties
 	_gps: null,
 
@@ -65,8 +69,15 @@ Locater.DefaultAdapter = new Class({
 		if (this._gps) {
 			var opts = this.options;
 			var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-			this._gps.getCurrentPosition(opts.currentHandler, opts.errorHandler);
-			this._setWatchID(this._gps.watchPosition(opts.watchHandler, opts.errorHandler));
+			if (opts.currentHandler == null && opts.watchPosition == null) {
+				throw new Error('Please specify either watchPosition or currentHandler.');
+			//getCurrentPosition
+			} else if (opts.currentHandler){
+				this._gps.getCurrentPosition(opts.currentHandler, opts.errorHandler, watchOpts);
+			//watchPosition
+			} else if (opts.watchPosition){
+				this._setWatchID(this._gps.watchPosition(opts.watchPosition, opts.errorHandler));
+			}
 		} else {
 			//error('not supported');
 		}
@@ -85,9 +96,9 @@ Locater.DefaultAdapter = new Class({
 	}.protect(),
 
 	isWatching: function(){
-		return (this._getWatchID() == null);
+		return (this._getWatchID() != null);
 	}
 
 });
 
-}(document.id, Locater));
+}(Locater));

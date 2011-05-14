@@ -60,7 +60,7 @@ Locater.Application = new Class({
 		var context = Locater.Handler.Context(position.coords);
 		var self = this;
 		Object.each(Locater.Rules, function(rule, key){
-			if (rule.apply({}, [this.context, context])) {
+			if (rule.apply(rule, [this.context, context])) {
 				self.dispacher.dispach(key, context);
 			}
 		});
