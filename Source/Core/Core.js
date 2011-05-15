@@ -10,17 +10,17 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Core/Native
+  - Core/MooTools
 
 provides: [Locater]
 
 ...
 */
 
-(function($){
+(function(){
 
 var Locater = this.Locater = {
-	varsion: '1.0'
+	version: '1.0'
 };
 
-}(document.id));
+}());
