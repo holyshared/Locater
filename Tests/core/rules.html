@@ -17,10 +17,14 @@
 		<script type="text/javascript">
 			(function(){
 				//Alias
-				var Rules = Locater.Rules;
+				var Rules = Locater.Rules.getRules();
+				var RulesDefinder = Locater.Rules;
 				var Context = Locater.Handler.Context;
 
 				window.addEvent('domready', function(){
+
+console.log(Rules);
+
 
 					//positionChanged
 					var current = new Context({ latitude: 100, longitude: 100 });
@@ -101,7 +105,7 @@
 					assertTrue(Rules.speedChanged(current, watch), 'speedChanged: Speed are the same.');
 
 
-					Rules.define('matchLatitude', function(current, watch){
+					RulesDefinder.define('matchLatitude', function(current, watch){
 						return watch.getLatitude() == current.getLatitude();
 					});
 
@@ -118,7 +122,7 @@
 						return (this.latitude >= watch.getLatitude());
 					}
 
-					Rules.define('latitudeOver', new LatitudeOverRule(20));
+					RulesDefinder.define('latitudeOver', new LatitudeOverRule(20));
 
 					var current = new Context({ latitude: 100 });
 					var watch = new Context({ latitude: 100 });

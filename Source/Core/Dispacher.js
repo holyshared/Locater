@@ -40,7 +40,7 @@ Locater.Dispacher = new Class({
 	dispatch: function(eventName, context){
 		this._handlers.each(function(handler){
 			if (Type.isFunction(handler[eventName])) {
-				handler[eventName](context);
+				handler[eventName].apply(handler, [context]);
 			};
 		});
 	}

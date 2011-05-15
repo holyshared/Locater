@@ -65,7 +65,7 @@ Adapter.CurrentPositionAdapter = new Class({
 	Implements: [Geolocation, Options],
 
 	options: {
-		currentHandler: null,
+		watchHandler: null,
 		errorHandler: null
 	},
 
@@ -81,10 +81,10 @@ Adapter.CurrentPositionAdapter = new Class({
 
 		var opts = this.options;
 		var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-		if (opts.currentHandler == null) {
-			throw new Error('Please specify either currentHandler.');
+		if (opts.watchHandler == null) {
+			throw new Error('Please specify either watchHandler.');
 		}
-		gps.getCurrentPosition(opts.currentHandler, opts.errorHandler, watchOpts);
+		gps.getCurrentPosition(opts.watchHandler, opts.errorHandler, watchOpts);
 		this._setWatchID(true);
 	},
 
