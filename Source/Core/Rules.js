@@ -34,7 +34,7 @@ var Rules = Locater.Rules = {
 	},
 
 	/**
-	 * if (Locater.Rules.isDefined('initialized')){
+	 * if (Locater.Rules.isDefined('currentWacthed')){
 	 *		//Rule is defined
 	 * }
 	 */
@@ -75,7 +75,7 @@ var Rules = Locater.Rules = {
 
 var defaultRules = {
 
-	'initialized': function(current, wacth){
+	'currentWacthed': function(current, wacth){
 		return (current == null);
 	},
 

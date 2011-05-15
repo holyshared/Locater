@@ -43,7 +43,7 @@
 
 					Extends: Handler,
 
-					initialized: function(context){
+					currentWacthed: function(context){
 						assertTrue(isEqualValues(currentValues, context), 'initialized: The context is not corresponding.');
 					},
 
@@ -56,7 +56,7 @@
 					var currentContext = new Context(currentValues);
 					var watchContext = new Context(watchValues);
 					var handler = new MockHandler();
-					handler.initialized(currentContext);
+					handler.currentWacthed(currentContext);
 					handler.positionChanged(watchContext);
 				});
 

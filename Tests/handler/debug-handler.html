@@ -44,9 +44,9 @@
 					var currentContext = new Context(currentValues);
 					var watchContext = new Context(watchValues);
 					var handler = new DebugHandler({
-						events: ['initialized', 'positionChanged']
+						events: ['currentWacthed', 'positionChanged']
 					});
-					handler.initialized(currentContext);
+					handler.currentWacthed(currentContext);
 					handler.positionChanged(watchContext);
 				});
 
