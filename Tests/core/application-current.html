@@ -26,20 +26,51 @@
 				var Handler = Locater.Handler;
 
 				var firstHanlder = {
-					initialized: function(context){
+					currentWacthed: function(context){
 						this.context = context;
 						console.log(context);
 					}
 				};
 				var secondHanlder = {
-					initialized: function(context){
+					currentWacthed: function(context){
 						this.context = context;
 						assertTrue((firstHanlder.context == context), 'secondHanlder: The context is not corresponding.');
 					}
 				};
 				var thirdHanlder = {
-					initialized: function(context){
+					currentWacthed: function(context){
 						assertTrue((secondHanlder.context == context), 'thirdHanlder: The context is not corresponding.');
+					}
+				};
+
+				var errorHanlder = {
+
+					start: function(){
+						this._message = document.getElementById('message');
+					},
+
+					error: function(error){
+						var row = document.createElement('li');
+						var text = document.createTextNode(error.message);
+						row.appendChild(text);
+						switch(error.code){
+							//PERMISSION_DENIED
+							case error.PERMISSION_DENIED:
+								this._message.appendChild(row);
+								break;
+							//POSITION_UNAVAILABLE
+							case error.POSITION_UNAVAILABLE:
+								this._message.appendChild(row);
+								break;
+							//TIMEOUT
+							case error.TIMEOUT:
+								this._message.appendChild(row);
+								break;
+							default:
+								this._message.appendChild(row);
+								break;
+						}
+
 					}
 				};
 
@@ -49,7 +80,8 @@
 					var app = new Application(adapter, {});
 					app.addHandler(firstHanlder);
 					app.addHandlers([secondHanlder, thirdHanlder]);
-					app.addHandler(Handler.DebugHandler({ events: ['initialized'] }));
+					app.addHandler(new Handler.DebugHandler({ events: ['currentWacthed'] }));
+					app.addHandler(errorHanlder);
 					app.run();
 
 				});
