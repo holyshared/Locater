@@ -1,20 +1,18 @@
 name: Locater
 
-web: "[http://url_to_plugin](label)"
+web: "[http://sharedhat.com](http://sharedhat.com)"
 
-description:
+description: "Locater is an application framework using Geolocation API Specification."
 
-authors:
-  - Noritaka Horio
+authors: "[Noritaka Horio](http://sharedhat.com)"
 
-license: "MIT License"
+license: "[MIT License](http://holyshared.github.com/Locater/license.txt)"
 
-copyright: "&copy; ${TM_FULLNAME}"
+copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
   - "Source/Core/Core.js"
   - "Source/Core/Rules.js"
-  - "Source/Core/Container.js"
   - "Source/Core/Dispacher.js"
   - "Source/Core/Application.js"
   - "Source/Adapter/Adapter.js"
@@ -25,12 +23,12 @@ sources:
 
 author: Noritaka Horio
 
-category: Interface
+category: Realtime
 
-tags: [framework, geo]
+tags: [framework, geo, html5, application]
 
 current: 1.0
 
-docs: http://url_to_plugin_docs
+docs: http://holyshared.github.com/Locater/docs
 
-demo: http://url_to_plugin_demo
+demo: http://holyshared.github.com/Locater/
