@@ -11,10 +11,9 @@ authors:
 
 requires:
   - Core/Object
+  - Core/Function
   - Core/Class
   - Core/Options
-  - Core/Events
-  - Core/Function
   - Locater/Locater
 
 provides: [Locater.Adapter, Locater.Geolocation, Locater.Adapter.CurrentPositionAdapter, Locater.Adapter.WatchPositionAdapter]

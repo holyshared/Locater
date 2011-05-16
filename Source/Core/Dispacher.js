@@ -10,7 +10,9 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Array
   - Core/Type
+  - Core/Class
   - Locater/Locater
 
 provides: [Locater.Dispacher]

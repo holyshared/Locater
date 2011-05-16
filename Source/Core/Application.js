@@ -11,9 +11,12 @@ authors:
 
 requires:
   - Core/Object
+  - Core/Class
+  - Core/Options
   - Locater/Locater
   - Locater/Locater.Rules
   - Locater/Locater.Dispacher
+  - Locater/Locater.Adapter
   - Locater/Locater.Handler.Handler
   - Locater/Locater.Handler.Context
 

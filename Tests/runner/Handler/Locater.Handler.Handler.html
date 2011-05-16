@@ -2,8 +2,20 @@
 <script type="text/javascript">
 (function(){
 
+	var MockHandler = new Class({
+
+		Extends: Locater.Handler.Handler,
+
+		initialize: function(options){
+			this.parent(options);
+		},
+
+		currentWatched: function(context){
+		}
+	});
+
 	window.addEventListener('load', function(){
-		console.log(Locater.version);
+		var mock = new MockHandler();
 	}, false);
 
 }());
