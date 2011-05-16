@@ -75,7 +75,7 @@ var Rules = Locater.Rules = {
 
 var defaultRules = {
 
-	'currentWacthed': function(current, wacth){
+	'currentWatched': function(current, wacth){
 		return (current == null);
 	},
 

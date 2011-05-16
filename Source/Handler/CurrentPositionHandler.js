@@ -18,7 +18,7 @@ provides: [Locater.Handler.CurrentPositionHandler]
 ...
 */
 
-(function($, Handler){
+(function(Handler){
 
 Handler.CurrentPositionHandler = new Class({
 
@@ -28,13 +28,18 @@ Handler.CurrentPositionHandler = new Class({
 		marker: null
 	},
 
-	initialized: this._update,
+	//
+	currentWatched: this._update,
+
+	//
 	positionChanged: this._update,
 
 	_update: function(context){
-		this.options.marker.setPosition(google.maps.LatLng({
-
-		}));
+		var marker = this.options.marker;
+		var lat = context.getLatitude();
+		var lng = context.getLongitude();
+		var latlng = new google.maps.LatLng(lat, lng);
+		marker.setPosition(latlng);
 	}.protect()
 
 });
