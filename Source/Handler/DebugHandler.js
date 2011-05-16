@@ -29,7 +29,7 @@ Handler.DebugHandler = new Class({
 	Extends: Handler.Handler,
 
 	options: {
-		events: ['currentWacthed']
+		events: ['currentWatched']
 	},
 
 	initialize: function(options){

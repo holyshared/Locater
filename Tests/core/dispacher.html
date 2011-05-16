@@ -26,9 +26,9 @@
 
 					Extends: Handler,
 
-					currentWacthed: function(context){
+					currentWatched: function(context){
 						assertTrue(isEqualValues(initContext, context), 'MockHanlder - initialized: The context is not corresponding.');
-						currentWacthedCount++;
+						currentWatchedCount++;
 					},
 
 					positionChanged: function(context){
@@ -41,9 +41,9 @@
 
 				var defaultHanlder = {
 
-					currentWacthed: function(context){
+					currentWatched: function(context){
 						assertTrue(isEqualValues(initContext, context), 'defaultHanlder - initialized: The context is not corresponding.');
-						currentWacthedCount++;
+						currentWatchedCount++;
 					},
 
 					positionChanged: function(context){
@@ -56,7 +56,7 @@
 				var initContext = { latitude: 35.6763, longitude: 139.8105 };
 				var positionContext = { latitude: 35.6763, longitude: 139.8100 };
 
-				var currentWacthedCount = 0;
+				var currentWatchedCount = 0;
 				var positionChangedCount = 0;
 
 				window.addEvent('domready', function(){
@@ -66,12 +66,12 @@
 						.addHandler(defaultHanlder);
 
 					var context = new Context(initContext);
-					dispacher.dispatch('currentWacthed', context);
+					dispacher.dispatch('currentWatched', context);
 
 					var context = new Context(positionContext);
 					dispacher.dispatch('positionChanged', context);
 
-					assertTrue((currentWacthedCount == 2), 'currentWacthed - There is an event not executed.');
+					assertTrue((currentWatchedCount == 2), 'currentWatched - There is an event not executed.');
 					assertTrue((positionChangedCount == 2), 'positionChanged - There is an event not executed.');
 
 				});

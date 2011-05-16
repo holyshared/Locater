@@ -20,7 +20,7 @@ Please make it as much as possible though it is unquestionable for the error han
 
 	#js
 	var myHanlder = {
-		currentWacthed: function(context){
+		currentWatched: function(context){
 			//do something
 		}
 	};
@@ -39,7 +39,7 @@ The event that the event can be handled is as follows.
 
 A positional event takes a present position in the argument.
 
-* **currentWacthed** - When the coordinates position is acquired, it is generated only once most first.
+* **currentWatched** - When the coordinates position is acquired, it is generated only once most first.
 * **positionChanged** - When latitude and the longitude change, it is generated.
 * **latitudeChanged** - When latitude changes, it is generated. 
 * **longitudeChanged** - When longitude changes, it is generated. 
@@ -102,7 +102,7 @@ A final code is as follows.
 
 		//Handlers
 		var myHanlder = {
-			currentWacthed: function(context){
+			currentWatched: function(context){
 				//do something
 			}
 		};

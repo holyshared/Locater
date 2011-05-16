@@ -34,7 +34,7 @@ var Rules = Locater.Rules = {
 	},
 
 	/**
-	 * if (Locater.Rules.isDefined('currentWacthed')){
+	 * if (Locater.Rules.isDefined('currentWatched')){
 	 *		//Rule is defined
 	 * }
 	 */

@@ -26,19 +26,19 @@
 				var Handler = Locater.Handler;
 
 				var firstHanlder = {
-					currentWacthed: function(context){
+					currentWatched: function(context){
 						this.context = context;
 						console.log(context);
 					}
 				};
 				var secondHanlder = {
-					currentWacthed: function(context){
+					currentWatched: function(context){
 						this.context = context;
 						assertTrue((firstHanlder.context == context), 'secondHanlder: The context is not corresponding.');
 					}
 				};
 				var thirdHanlder = {
-					currentWacthed: function(context){
+					currentWatched: function(context){
 						assertTrue((secondHanlder.context == context), 'thirdHanlder: The context is not corresponding.');
 					}
 				};
@@ -80,7 +80,7 @@
 					var app = new Application(adapter, {});
 					app.addHandler(firstHanlder);
 					app.addHandlers([secondHanlder, thirdHanlder]);
-					app.addHandler(new Handler.DebugHandler({ events: ['currentWacthed'] }));
+					app.addHandler(new Handler.DebugHandler({ events: ['currentWatched'] }));
 					app.addHandler(errorHanlder);
 					app.run();
 
