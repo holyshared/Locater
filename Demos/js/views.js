@@ -1,5 +1,16 @@
 (function(maps){
 
+var renderPosition = {
+	bottom: maps.ControlPosition.BOTTOM,
+	bottomLeft: maps.ControlPosition.BOTTOM_LEFT,
+	bottomRight: maps.ControlPosition.BOTTOM_RIGHT,
+	left: maps.ControlPosition.LEFT,
+	right: maps.ControlPosition.RIGHT,
+	top: maps.ControlPosition.TOP,
+	topRight: maps.ControlPosition.TOP_RIGHT,
+	topLeft: maps.ControlPosition.TOP_LEFT
+};
+
 var props = [
 	{
 		name: '_latitude',
@@ -17,7 +28,9 @@ var defaultOptions = {
 	title: 'current',
 	latitude: 35.6763,
 	longitude: 139.8105,
-	map: null
+	map: null,
+	style: 'currentPositionView',
+	renderPosition: 'topLeft'
 }
 
 function CurrentPositionView(opts){
@@ -30,15 +43,16 @@ function CurrentPositionView(opts){
 			mergeOpts[key] = value;
 		}
 	}
-	this._opts = mergeOpts;
+	this.setValues(mergeOpts);
 }
 
 function draw(){
 }
 
 function onAdd(){
-	var map = this.getMap();
-	map.controls[maps.ControlPosition.TOP_LEFT].push(_build.call(this));
+	var position = this.get('renderPosition');
+	var map = this.get('map');
+	render.apply(this, [position, map]);
 }
 
 function onRemove(){
@@ -47,9 +61,27 @@ function onRemove(){
 	this._element = null;
 }
 
+function render(position, map){
+	var renderPosition = _toRenderPosition(position);
+	if (!map){
+		map = this.getMap();
+	}
+	map.controls[renderPosition].push(_build.call(this));	
+}
+
+function _toRenderPosition(position){
+	return renderPosition[position];
+}
+
+function _isBuild(){
+	return (this._viewPanel) ? true : false;
+}
+
 function _build(){
+	if (this._viewPanel) return this._viewPanel;
+
 	var viewPanel =	document.createElement('aside');
-	viewPanel.setAttribute('class', 'currentPositionView');
+	viewPanel.setAttribute('class', this.get('style'));
 
 	viewPanel.appendChild(_buildHeader.call(this));
 	viewPanel.appendChild(_buildBody.call(this));
@@ -61,7 +93,7 @@ function _build(){
 function _buildHeader(){
 	var viewPanelHeader = document.createElement('header');
 	var viewPanelTitle = document.createElement('h3');
-	var titleText = document.createTextNode(this._opts.title);
+	var titleText = document.createTextNode(this.get('title'));
 	viewPanelTitle.appendChild(titleText);
 	viewPanelHeader.appendChild(viewPanelTitle);
 	this._title = viewPanelTitle;
@@ -77,7 +109,7 @@ function _buildBody(){
 		var label = document.createElement('dt');
 		var content = document.createElement('dd');
 		var labelText = document.createTextNode(prop.label);
-		var contentText = document.createTextNode(this._opts[prop.key]);
+		var contentText = document.createTextNode(this.get(prop.key));
 
 		label.appendChild(labelText);
 		content.appendChild(contentText);
@@ -92,10 +124,40 @@ function _buildBody(){
 	return viewPanelBody;
 }
 
+function titleChanged(){
+console.log('titleChanged');
+	_setValue.apply(this, ['title']);
+}
+
+function latitudeChanged(){
+console.log('latitudeChanged');
+	_setValue.apply(this, ['latitude']);
+}
+
+function longitudeChanged(){
+console.log('longitudeChanged');
+	_setValue.apply(this, ['longitude']);
+}
+
+function _setValue(name){
+	if (!_isBuild.call(this)) return false;
+	var propKey = '_' + name;
+	var changeValue = this.get(name);
+	if (this[propKey].textContent){
+		this[propKey].textContent = changeValue;
+	} else {
+		this[propKey].innerHtml = changeValue;
+	}
+}
+
 var methods = {
 	draw: draw,
 	onAdd: onAdd,
-	onRemove: onRemove
+	onRemove: onRemove,
+	render: render,
+	title_changed: titleChanged,
+	latitude_changed: latitudeChanged,
+	longitude_changed: longitudeChanged
 };
 
 CurrentPositionView.prototype = new maps.OverlayView();

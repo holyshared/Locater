@@ -15,10 +15,9 @@ window.addEventListener('load', function(){
 		center: defaultPosition
 	});
 
-	var view = new CurrentPositionView({
-		title: 'foo',
-		map: map
-	});
+	var view = new CurrentPositionView({ title: 'Your position' });
+	view.render('topLeft', map);
+	view.set('latitude', 139.8102);
 
 }, false);
 
