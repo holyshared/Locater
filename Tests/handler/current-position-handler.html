@@ -56,7 +56,7 @@
 					
 					var position = marker.getPosition();
 					var value = (position.lat() == 35.6763 && position.lng() == 139.81029999999998);					
-					assertTrue(value, 'aaaa');
+					assertTrue(value, 'currentWatched: The marker is not corresponding to the coordinates position of the context.');
 
 					(function(){
 						handler.positionChanged(new Context({
@@ -66,7 +66,7 @@
 
 						var position = marker.getPosition();
 						var value = (position.lat() == 35.6763 && position.lng() == 139.81039999999996);
-						assertTrue(value, 'aaaa');
+						assertTrue(value, 'positionChanged: The marker is not corresponding to the coordinates position of the context.');
 
 					}).delay(1000);
 
