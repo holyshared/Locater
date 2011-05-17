@@ -2,7 +2,7 @@
 ---
 name: Locater.Handler.CurrentPositionHandler
 
-description: 
+description: The coordinates position is observed, and the present place is displayed in Google Maps as a marker.
 
 license: MIT-style
 
@@ -10,6 +10,9 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Type
+  - Core/Function
+  - Core/Class
   - Locater/Locater
   - Locater/Locater.Handler
 
@@ -24,22 +27,26 @@ Handler.CurrentPositionHandler = new Class({
 
 	Extends: Handler.Handler,
 
-	options: {
-		marker: null
+	initialize: function(marker){
+		if (!Type.isFunction(marker.setPosition)){
+			throw new Error('The setPosition method is not mounted.');
+		}
+		this._marker = marker;
 	},
 
-	//
-	currentWatched: this._update,
+	currentWatched: function(context){
+		this._update(context);
+	},
 
-	//
-	positionChanged: this._update,
+	positionChanged: function(context){
+		this._update(context);
+	},
 
 	_update: function(context){
-		var marker = this.options.marker;
 		var lat = context.getLatitude();
 		var lng = context.getLongitude();
 		var latlng = new google.maps.LatLng(lat, lng);
-		marker.setPosition(latlng);
+		this._marker.setPosition(latlng);
 	}.protect()
 
 });
