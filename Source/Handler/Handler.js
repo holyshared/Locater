@@ -2,7 +2,7 @@
 ---
 name: Locater.Handler
 
-description: 
+description: Event handler of application.
 
 license: MIT-style
 

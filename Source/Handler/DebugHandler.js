@@ -2,7 +2,7 @@
 ---
 name: Locater.Handler.DebugHandler
 
-description: 
+description: Present location is displayed in the debugging console. 
 
 license: MIT-style
 

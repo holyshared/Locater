@@ -2,7 +2,7 @@
 ---
 name: Locater.Rules
 
-description: 
+description: The application is controlled the event, and a new event addition becomes possible. 
 
 license: MIT-style
 

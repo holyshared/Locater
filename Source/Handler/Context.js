@@ -2,7 +2,7 @@
 ---
 name: Locater.Handler.Context
 
-description: 
+description: Context of event handler.
 
 license: MIT-style
 

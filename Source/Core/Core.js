@@ -2,7 +2,7 @@
 ---
 name: Locater
 
-description: 
+description: The core and the name space of locater are supported.
 
 license: MIT-style
 

@@ -2,7 +2,7 @@
 ---
 name: Locater.Dispacher
 
-description: 
+description: The execution of the event handler of the application can be controlled.
 
 license: MIT-style
 

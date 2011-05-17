@@ -2,7 +2,7 @@
 ---
 name: Locater.Application
 
-description: 
+description: The application and two or more handlers are executed.
 
 license: MIT-style
 

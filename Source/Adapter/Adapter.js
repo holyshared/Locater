@@ -2,7 +2,7 @@
 ---
 name: Locater.Adapter
 
-description: 
+description: Adaptor that acquisition or observes location information.
 
 license: MIT-style
 
