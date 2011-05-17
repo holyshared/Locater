@@ -125,6 +125,20 @@ A final code is as follows.
 	}());
 
 
+Build
+------------------------------------------------------------------------
+
+Please select the component if necessary.
+**locater.js** of the minimum configuration and **locater-full.js** including all components are in the **Build directory** in default.
+
+### Necessary minimum component composition
+packager build Locater/Locater.Application +use-only Locater
+
+### All components
+packager build Locater/Locater.Application Locater/Locater.Handler.DebugHandler Locater/Locater.Handler.CurrentPositionHandler +use-only Locater
+
+
+
 Screenshots
 ------------------------------------------------------------------------
 
