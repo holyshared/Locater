@@ -2,7 +2,7 @@
 ---
 name: Locater
 
-description: 
+description: The core and the name space of locater are supported.
 
 license: MIT-style
 
@@ -29,7 +29,7 @@ var Locater = this.Locater = {
 ---
 name: Locater.Rules
 
-description: 
+description: The application is controlled the event, and a new event addition becomes possible. 
 
 license: MIT-style
 
@@ -159,7 +159,7 @@ for (key in defaultRules) {
 ---
 name: Locater.Dispacher
 
-description: 
+description: The execution of the event handler of the application can be controlled.
 
 license: MIT-style
 
@@ -212,7 +212,7 @@ Locater.Dispacher = new Class({
 ---
 name: Locater.Adapter
 
-description: 
+description: Adaptor that acquisition or observes location information.
 
 license: MIT-style
 
@@ -346,7 +346,7 @@ Adapter.WatchPositionAdapter = new Class({
 ---
 name: Locater.Handler
 
-description: 
+description: Event handler of application.
 
 license: MIT-style
 
@@ -393,7 +393,7 @@ Handler.Handler = new Class({
 ---
 name: Locater.Handler.Context
 
-description: 
+description: Context of event handler.
 
 license: MIT-style
 
@@ -473,7 +473,7 @@ Handler.Context.implement({
 ---
 name: Locater.Application
 
-description: 
+description: The application and two or more handlers are executed.
 
 license: MIT-style
 
