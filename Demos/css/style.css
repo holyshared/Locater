@@ -39,6 +39,7 @@ dd {
 	-moz-border-radius: 5px;
 	background: #333333;
 	opacity: 0.8;
+	margin: 10px;
 }
 
 .currentPositionView header {

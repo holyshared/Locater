@@ -30,43 +30,24 @@ var defaultOptions = {
 	longitude: 139.8105,
 	map: null,
 	style: 'currentPositionView',
-	renderPosition: 'topLeft'
+	position: 'topLeft'
 }
 
 function CurrentPositionView(opts){
 	var mergeOpts = {};
 	for (var key in defaultOptions){
 		var value = opts[key] || defaultOptions[key];
-		if (key == 'map'){
-			this.setMap(value);
-		} else {
-			mergeOpts[key] = value;
-		}
+		mergeOpts[key] = value;
 	}
 	this.setValues(mergeOpts);
-}
-
-function draw(){
-}
-
-function onAdd(){
-	var position = this.get('renderPosition');
-	var map = this.get('map');
-	render.apply(this, [position, map]);
-}
-
-function onRemove(){
-	var parent = this._element.parentNode;
-	parent.removeChild(this._element);
-	this._element = null;
 }
 
 function render(position, map){
 	var renderPosition = _toRenderPosition(position);
 	if (!map){
-		map = this.getMap();
+		map = this.get('map');
 	}
-	map.controls[renderPosition].push(_build.call(this));	
+	map.controls[renderPosition].push(_build.call(this));
 }
 
 function _toRenderPosition(position){
@@ -75,6 +56,10 @@ function _toRenderPosition(position){
 
 function _isBuild(){
 	return (this._viewPanel) ? true : false;
+}
+
+function _getPanel(){
+	return this._viewPanel;
 }
 
 function _build(){
@@ -124,19 +109,32 @@ function _buildBody(){
 	return viewPanelBody;
 }
 
+function mapChanged(){
+	if (!this.get('position')) return;
+	this.render(this.get('position'));
+}
+
 function titleChanged(){
-console.log('titleChanged');
 	_setValue.apply(this, ['title']);
 }
 
 function latitudeChanged(){
-console.log('latitudeChanged');
 	_setValue.apply(this, ['latitude']);
 }
 
 function longitudeChanged(){
-console.log('longitudeChanged');
 	_setValue.apply(this, ['longitude']);
+}
+
+function styleChanged(){
+	if (!_isBuild.call(this)) return;
+	var panel = _getPanel.call(this);
+	panel.setAttribute('class', this.get('style'));
+}
+
+function positionChanged(){
+	if (!this.get('map')) return;
+	this.render(this.get('position'), this.get('map'));
 }
 
 function _setValue(name){
@@ -151,16 +149,16 @@ function _setValue(name){
 }
 
 var methods = {
-	draw: draw,
-	onAdd: onAdd,
-	onRemove: onRemove,
 	render: render,
+	map_changed: mapChanged,
+	position_changed: positionChanged,
+	style_changed: styleChanged,
 	title_changed: titleChanged,
 	latitude_changed: latitudeChanged,
 	longitude_changed: longitudeChanged
 };
 
-CurrentPositionView.prototype = new maps.OverlayView();
+CurrentPositionView.prototype = new maps.MVCObject();
 for (var key in methods){
 	CurrentPositionView.prototype[key] = methods[key];
 }
