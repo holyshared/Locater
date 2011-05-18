@@ -125,7 +125,14 @@ A final code is as follows.
 	}());
 
 
-Build
+Required libraries
+------------------------------------------------------------------------
+
+### Mootools Core
+http://mootools.net/core/3db61bb25aa2a339b7aee42f4d7bad03
+
+
+Building Locater
 ------------------------------------------------------------------------
 
 Please select the component if necessary.
