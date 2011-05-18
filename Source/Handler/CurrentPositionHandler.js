@@ -27,7 +27,12 @@ Handler.CurrentPositionHandler = new Class({
 
 	Extends: Handler.Handler,
 
-	initialize: function(marker){
+	options: {
+		currentMapSync: true
+	},
+
+	initialize: function(marker, options){
+		this.parent(options);
 		if (!Type.isFunction(marker.setPosition)){
 			throw new Error('The setPosition method is not mounted.');
 		}
@@ -47,6 +52,10 @@ Handler.CurrentPositionHandler = new Class({
 		var lng = context.getLongitude();
 		var latlng = new google.maps.LatLng(lat, lng);
 		this._marker.setPosition(latlng);
+		if (this._marker.getMap() && this.options.currentMapSync){
+			var map = this._marker.getMap();
+			map.setCenter(latlng);
+		};
 	}.protect()
 
 });

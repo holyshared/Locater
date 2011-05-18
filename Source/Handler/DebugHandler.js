@@ -39,6 +39,7 @@ Handler.DebugHandler = new Class({
 
 	write: function(context){
 		if (!window.console) return;
+		if (!context) return;
 		window.console.log(context.toString());
 	},
 
