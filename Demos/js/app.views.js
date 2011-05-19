@@ -1,4 +1,9 @@
-(function(maps){
+(function(maps, App){
+
+App.Views = {
+	CurrentPositionView: CurrentPositionView,
+	StatusView: StatusView
+};
 
 var renderPosition = {
 	bottom: maps.ControlPosition.BOTTOM,
@@ -33,26 +38,11 @@ var defaultOptions = {
 	position: 'topLeft'
 }
 
-function CurrentPositionView(opts){
-	var mergeOpts = {};
-	for (var key in defaultOptions){
-		var value = opts[key] || defaultOptions[key];
-		mergeOpts[key] = value;
-	}
-	this.setValues(mergeOpts);
-}
-
-function render(position, map){
-	var renderPosition = _toRenderPosition(position);
-	if (!map){
-		map = this.get('map');
-	}
-	map.controls[renderPosition].push(_build.call(this));
-}
-
-function _toRenderPosition(position){
-	return renderPosition[position];
-}
+/**
+ *============================================= 
+ * View Common Function
+ *============================================= 
+ */
 
 function _isBuild(){
 	return (this._viewPanel) ? true : false;
@@ -62,20 +52,69 @@ function _getPanel(){
 	return this._viewPanel;
 }
 
-function _build(){
+function _toRenderPosition(position){
+	return renderPosition[position];
+}
+
+function _setValue(name){
+	if (!_isBuild.call(this)) return false;
+	var propKey = '_' + name;
+	var changeValue = this.get(name);
+	if (this[propKey].textContent){
+		this[propKey].textContent = changeValue;
+	} else {
+		this[propKey].innerHtml = changeValue;
+	}
+}
+
+function render(position, map){
+	var renderPosition = this._toRenderPosition(position);
+	if (!map){
+		map = this.get('map');
+	}
+	map.controls[renderPosition].push(this._build.call(this));
+}
+
+function mapChanged(){
+	if (!this.get('position')) return;
+	this.render(this.get('position'));
+}
+
+function styleChanged(){
+	if (!this._isBuild.call(this)) return;
+	var panel = this._getPanel.call(this);
+	panel.setAttribute('class', this.get('style'));
+}
+
+
+/**
+ *============================================= 
+ * CurrentPositionView
+ *============================================= 
+ */
+function CurrentPositionView(opts){
+	var mergeOpts = {};
+	for (var key in defaultOptions){
+		var value = opts[key] || defaultOptions[key];
+		mergeOpts[key] = value;
+	}
+	this.setValues(mergeOpts);
+}
+
+function _buildCpvPanel(){
 	if (this._viewPanel) return this._viewPanel;
 
 	var viewPanel =	document.createElement('aside');
 	viewPanel.setAttribute('class', this.get('style'));
 
-	viewPanel.appendChild(_buildHeader.call(this));
-	viewPanel.appendChild(_buildBody.call(this));
+	viewPanel.appendChild(this._buildHeader.call(this));
+	viewPanel.appendChild(this._buildBody.call(this));
 
 	this._viewPanel = viewPanel;
 	return viewPanel;
 }
 
-function _buildHeader(){
+function _buildCpvHeader(){
 	var viewPanelHeader = document.createElement('header');
 	var viewPanelTitle = document.createElement('h3');
 	var titleText = document.createTextNode(this.get('title'));
@@ -85,7 +124,7 @@ function _buildHeader(){
 	return viewPanelHeader;
 }
 
-function _buildBody(){
+function _buildCpvBody(){
 	var viewPanelBody = document.createElement('div');
 	var propList = document.createElement('dl');
 
@@ -109,59 +148,83 @@ function _buildBody(){
 	return viewPanelBody;
 }
 
-function mapChanged(){
-	if (!this.get('position')) return;
-	this.render(this.get('position'));
+
+
+function cpvTitleChanged(){
+	this._setValue.apply(this, ['title']);
 }
 
-function titleChanged(){
-	_setValue.apply(this, ['title']);
+function cpvLatitudeChanged(){
+	this._setValue.apply(this, ['latitude']);
 }
 
-function latitudeChanged(){
-	_setValue.apply(this, ['latitude']);
+function cpvLongitudeChanged(){
+	this._setValue.apply(this, ['longitude']);
 }
 
-function longitudeChanged(){
-	_setValue.apply(this, ['longitude']);
-}
-
-function styleChanged(){
-	if (!_isBuild.call(this)) return;
-	var panel = _getPanel.call(this);
-	panel.setAttribute('class', this.get('style'));
-}
-
-function positionChanged(){
+function cpvPositionChanged(){
 	if (!this.get('map')) return;
 	this.render(this.get('position'), this.get('map'));
 }
 
-function _setValue(name){
-	if (!_isBuild.call(this)) return false;
-	var propKey = '_' + name;
-	var changeValue = this.get(name);
-	if (this[propKey].textContent){
-		this[propKey].textContent = changeValue;
-	} else {
-		this[propKey].innerHtml = changeValue;
-	}
-}
-
-var methods = {
+CurrentPositionView.implement(new maps.MVCObject());
+CurrentPositionView.implement({
+	_toRenderPosition: _toRenderPosition,
+	_isBuild: _isBuild,
+	_getPanel: _getPanel,
+	_setValue: _setValue,
+	_build: _buildCpvPanel,
+	_buildHeader: _buildCpvHeader,
+	_buildBody: _buildCpvBody,
 	render: render,
 	map_changed: mapChanged,
-	position_changed: positionChanged,
+	position_changed: cpvPositionChanged,
 	style_changed: styleChanged,
-	title_changed: titleChanged,
-	latitude_changed: latitudeChanged,
-	longitude_changed: longitudeChanged
-};
+	title_changed: cpvTitleChanged,
+	latitude_changed: cpvLatitudeChanged,
+	longitude_changed: cpvLongitudeChanged
+});
 
-CurrentPositionView.prototype = new maps.MVCObject();
-for (var key in methods){
-	CurrentPositionView.prototype[key] = methods[key];
+
+/**
+ *============================================= 
+ * StatusView
+ *============================================= 
+ */
+function StatusView(opts){
+	var mergeOpts = {};
+	for (var key in defaultOptions){
+		var value = opts[key] || defaultOptions[key];
+		mergeOpts[key] = value;
+	}
+	this.setValues(mergeOpts);
 }
-window.CurrentPositionView = CurrentPositionView;
 
-}(google.maps));
+
+function _buildSvPanel(){
+	if (this._viewPanel) return this._viewPanel;
+/*
+	var viewPanel =	document.createElement('aside');
+	viewPanel.setAttribute('class', this.get('style'));
+
+	viewPanel.appendChild(_buildHeader.call(this));
+	viewPanel.appendChild(_buildBody.call(this));
+
+	this._viewPanel = viewPanel;
+	return viewPanel;
+*/
+}
+
+CurrentPositionView.implement(new maps.MVCObject());
+CurrentPositionView.implement({
+	_toRenderPosition: _toRenderPosition,
+	_isBuild: _isBuild,
+	_getPanel: _getPanel,
+	_setValue: _setValue,
+	_build: _buildSvPanel,
+	render: render,
+	map_changed: mapChanged,
+	style_changed: styleChanged
+});
+
+}(google.maps, App));

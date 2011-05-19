@@ -1,4 +1,4 @@
-(function(maps, Application, Adapter, Handler){
+(function(maps, Application, Adapter, Handler, App){
 
 window.addEventListener('load', function(){
 
@@ -25,7 +25,7 @@ window.addEventListener('load', function(){
 	});
 
 	//View pane displays the current position
-	var view = new CurrentPositionView({
+	var view = new App.Views.CurrentPositionView({
 		map: map,
 		title: 'Your position',
 		position: 'left'
@@ -39,7 +39,8 @@ window.addEventListener('load', function(){
 		new Handler.DebugHandler({
 			events: debugEvents
 		}),
-		new Handler.CurrentPositionHandler(marker)
+		new Handler.CurrentPositionHandler(marker),
+		new App.Handlers.ErrorHandler()
 	];
 
 	//Running Applications
@@ -49,4 +50,4 @@ window.addEventListener('load', function(){
 
 }, false);
 
-}(google.maps, Locater.Application, Locater.Adapter, Locater.Handler));
+}(google.maps, Locater.Application, Locater.Adapter, Locater.Handler, App));
