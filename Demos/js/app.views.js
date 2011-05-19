@@ -16,28 +16,6 @@ var renderPosition = {
 	topLeft: maps.ControlPosition.TOP_LEFT
 };
 
-var props = [
-	{
-		name: '_latitude',
-		key: 'latitude',
-		label: 'latitude'
-	},
-	{
-		name: '_longitude',
-		key: 'longitude',
-		label: 'longitude'
-	}
-];
-
-var defaultOptions = {
-	title: 'current',
-	latitude: 35.6763,
-	longitude: 139.8105,
-	map: null,
-	style: 'currentPositionView',
-	position: 'topLeft'
-}
-
 /**
  *============================================= 
  * View Common Function
@@ -87,15 +65,45 @@ function styleChanged(){
 }
 
 
+function positionChanged(){
+	if (!this.get('map')) return;
+	this.render(this.get('position'), this.get('map'));
+}
+
+
 /**
  *============================================= 
  * CurrentPositionView
  *============================================= 
  */
+
+
+var defaultCpvOptions = {
+	title: 'current',
+	latitude: 35.6763,
+	longitude: 139.8105,
+	map: null,
+	style: 'currentPositionView',
+	position: 'topLeft'
+}
+
+var cpvProps = [
+	{
+		name: '_latitude',
+		key: 'latitude',
+		label: 'latitude'
+	},
+	{
+		name: '_longitude',
+		key: 'longitude',
+		label: 'longitude'
+	}
+];
+
 function CurrentPositionView(opts){
 	var mergeOpts = {};
-	for (var key in defaultOptions){
-		var value = opts[key] || defaultOptions[key];
+	for (var key in defaultCpvOptions){
+		var value = opts[key] || defaultCpvOptions[key];
 		mergeOpts[key] = value;
 	}
 	this.setValues(mergeOpts);
@@ -118,6 +126,9 @@ function _buildCpvHeader(){
 	var viewPanelHeader = document.createElement('header');
 	var viewPanelTitle = document.createElement('h3');
 	var titleText = document.createTextNode(this.get('title'));
+
+	viewPanelHeader.setAttribute('class', 'hd');
+
 	viewPanelTitle.appendChild(titleText);
 	viewPanelHeader.appendChild(viewPanelTitle);
 	this._title = viewPanelTitle;
@@ -128,11 +139,13 @@ function _buildCpvBody(){
 	var viewPanelBody = document.createElement('div');
 	var propList = document.createElement('dl');
 
-	for (var i = 0; l = props.length, i < l; i++){
-		var prop = props[i];
+	viewPanelBody.setAttribute('class', 'bd');
+
+	for (var i = 0; l = cpvProps.length, i < l; i++){
+		var prop = cpvProps[i];
 		var label = document.createElement('dt');
 		var content = document.createElement('dd');
-		var labelText = document.createTextNode(prop.label);
+		var labelText = document.createTextNode(prop.label + ': ');
 		var contentText = document.createTextNode(this.get(prop.key));
 
 		label.appendChild(labelText);
@@ -162,10 +175,6 @@ function cpvLongitudeChanged(){
 	this._setValue.apply(this, ['longitude']);
 }
 
-function cpvPositionChanged(){
-	if (!this.get('map')) return;
-	this.render(this.get('position'), this.get('map'));
-}
 
 CurrentPositionView.implement(new maps.MVCObject());
 CurrentPositionView.implement({
@@ -178,7 +187,7 @@ CurrentPositionView.implement({
 	_buildBody: _buildCpvBody,
 	render: render,
 	map_changed: mapChanged,
-	position_changed: cpvPositionChanged,
+	position_changed: positionChanged,
 	style_changed: styleChanged,
 	title_changed: cpvTitleChanged,
 	latitude_changed: cpvLatitudeChanged,
@@ -191,10 +200,18 @@ CurrentPositionView.implement({
  * StatusView
  *============================================= 
  */
+
+var defaultSvOptions = {
+	map: null,
+	style: 'statusView',
+	position: 'bottom',
+	message: ''
+}
+
 function StatusView(opts){
 	var mergeOpts = {};
-	for (var key in defaultOptions){
-		var value = opts[key] || defaultOptions[key];
+	for (var key in defaultSvOptions){
+		var value = opts[key] || defaultSvOptions[key];
 		mergeOpts[key] = value;
 	}
 	this.setValues(mergeOpts);
@@ -203,20 +220,27 @@ function StatusView(opts){
 
 function _buildSvPanel(){
 	if (this._viewPanel) return this._viewPanel;
-/*
+
 	var viewPanel =	document.createElement('aside');
 	viewPanel.setAttribute('class', this.get('style'));
 
-	viewPanel.appendChild(_buildHeader.call(this));
-	viewPanel.appendChild(_buildBody.call(this));
+	var message = document.createElement('strong');
+	var text = document.createTextNode(this.get('message'));
+	message.appendChild(text);
 
+	viewPanel.appendChild(message);
+
+	this._message = message;
 	this._viewPanel = viewPanel;
 	return viewPanel;
-*/
 }
 
-CurrentPositionView.implement(new maps.MVCObject());
-CurrentPositionView.implement({
+function svMessageChanged(){
+	this._setValue.apply(this, ['message']);
+}
+
+StatusView.implement(new maps.MVCObject());
+StatusView.implement({
 	_toRenderPosition: _toRenderPosition,
 	_isBuild: _isBuild,
 	_getPanel: _getPanel,
@@ -224,7 +248,9 @@ CurrentPositionView.implement({
 	_build: _buildSvPanel,
 	render: render,
 	map_changed: mapChanged,
-	style_changed: styleChanged
+	style_changed: styleChanged,
+	message_changed: svMessageChanged,
+	position_changed: positionChanged
 });
 
 }(google.maps, App));

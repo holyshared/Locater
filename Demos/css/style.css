@@ -33,18 +33,42 @@ dd {
 	border: 5px solid #cccccc;
 }
 
-.currentPositionView {
+.statusView {
 	padding: 10px;
 	color: #ffffff;
 	-moz-border-radius: 5px;
 	background: #333333;
 	opacity: 0.8;
 	margin: 10px;
+	width: 600px;
+	text-align: center;
 }
 
-.currentPositionView header {
-	display: block;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #111111;
-	margin-bottom: 5px;
+.currentPositionView {
+	padding: 10px;
+	margin: 10px;
+	color: #ffffff;
+	-moz-border-radius: 5px;
+	background: #333333;
+	opacity: 0.8;
+	text-align: center;
+	width: 600px;
+}
+
+.currentPositionView .hd {
+	display: inline;
+	padding-right: 10px;
+	text-align: center;
+}
+
+.currentPositionView .hd h3,
+.currentPositionView .bd,
+.currentPositionView dl,
+.currentPositionView dt,
+.currentPositionView dd {
+	display: inline;
+}
+
+.currentPositionView dd {
+	padding-right: 10px;
 }

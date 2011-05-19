@@ -25,22 +25,27 @@ window.addEventListener('load', function(){
 	});
 
 	//View pane displays the current position
-	var view = new App.Views.CurrentPositionView({
+	var currentPositionView = new App.Views.CurrentPositionView({
 		map: map,
 		title: 'Your position',
-		position: 'left'
+		position: 'top'
+	});
+
+	var statusView = new App.Views.StatusView({
+		map: map,
+		message: 'stating',
+		position: 'bottom'
 	});
 
 	//Debugging event DebugHandler
-	var debugEvents = ['start', 'stop', 'error', 'currentWatched'];
+	var debugEvents = ['currentWatched', 'error'];
 
 	//Using Event Handlers
 	var handlers = [
-		new Handler.DebugHandler({
-			events: debugEvents
-		}),
+		new App.Handlers.StatusHandler(statusView),
+		new Handler.DebugHandler({ events: debugEvents }),
 		new Handler.CurrentPositionHandler(marker),
-		new App.Handlers.ErrorHandler()
+		new App.Handlers.ErrorHandler(statusView)
 	];
 
 	//Running Applications
