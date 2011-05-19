@@ -44,6 +44,20 @@ dd {
 	text-align: center;
 }
 
+.highlight {
+	-webkit-animation: ease-in;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-name: highlight;
+}
+
+@-webkit-keyframes highlight {
+	from{ background: #333333;}
+	33%{ background: #006699;}
+    66%{ background: #333333;}
+    99%{ background: #006699;}
+    to{ background: #333333;}
+}
+
 .currentPositionView {
 	padding: 10px;
 	margin: 10px;
