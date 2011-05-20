@@ -237,6 +237,28 @@ function _buildSvPanel(){
 
 function svMessageChanged(){
 	this._setValue.apply(this, ['message']);
+	this._highlight();
+}
+
+function _addClass(value){
+	var panel = this._getPanel();
+	var classValue = panel.getAttribute('class');
+	panel.setAttribute('class', classValue + ' ' + value);
+}
+
+function _removeClass(value){
+	var panel = this._getPanel();
+	var classValue = panel.getAttribute('class');
+	panel.setAttribute('class', classValue.replace(' ' + value, ''));
+}
+
+function _highlight(){
+	var self = this;
+	var panel = this._getPanel();
+	this._addClass('highlight');
+	var listener = maps.event.addDomListenerOnce(panel, 'webkitAnimationEnd', function(event){
+		self._removeClass('highlight');
+	});
 }
 
 StatusView.implement(new maps.MVCObject());
@@ -246,6 +268,9 @@ StatusView.implement({
 	_getPanel: _getPanel,
 	_setValue: _setValue,
 	_build: _buildSvPanel,
+	_addClass: _addClass,
+	_removeClass: _removeClass,
+	_highlight: _highlight,
 	render: render,
 	map_changed: mapChanged,
 	style_changed: styleChanged,

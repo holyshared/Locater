@@ -48,6 +48,10 @@ dd {
 	-webkit-animation: ease-in;
 	-webkit-animation-duration: 1s;
 	-webkit-animation-name: highlight;
+	animation: ease-in;
+	animation-duration: 1s;
+	animation-name: highlight;
+	animation-iteration-count: infinite;
 }
 
 @-webkit-keyframes highlight {
@@ -57,6 +61,15 @@ dd {
     99%{ background: #006699;}
     to{ background: #333333;}
 }
+
+@keyframes highlight {
+	from{ background: #333333;}
+	33%{ background: #006699;}
+    66%{ background: #333333;}
+    99%{ background: #006699;}
+    to{ background: #333333;}
+}
+
 
 .currentPositionView {
 	padding: 10px;
