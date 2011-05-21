@@ -49,6 +49,8 @@ dd {
 }
 
 .statusView {
+	width: 600px;
+	margin: 10px auto;
 	padding: 10px;
 	color: #ffffff;
 	-moz-border-radius: 5px;
@@ -56,8 +58,6 @@ dd {
 	border-radius: 5px;
 	background: #333333;
 	opacity: 0.8;
-	margin: 10px;
-	width: 600px;
 	text-align: center;
 }
 
@@ -89,14 +89,16 @@ dd {
 
 
 .currentPositionView {
+	width: 600px;
 	padding: 10px;
-	margin: 10px;
+	margin: 10px auto;
 	color: #ffffff;
 	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	background: #333333;
 	opacity: 0.8;
 	text-align: center;
-	width: 600px;
 }
 
 .currentPositionView .hd {
