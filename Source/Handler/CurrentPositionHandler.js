@@ -15,6 +15,7 @@ requires:
   - Core/Class
   - Locater/Locater
   - Locater/Locater.Handler
+  - Locater/Locater.Handler.Handler
 
 provides: [Locater.Handler.CurrentPositionHandler]
 
@@ -25,14 +26,14 @@ provides: [Locater.Handler.CurrentPositionHandler]
 
 Handler.CurrentPositionHandler = new Class({
 
-	Extends: Handler.Handler,
+	Implements: [Options, Handler.Handler],
 
 	options: {
 		currentMapSync: true
 	},
 
 	initialize: function(marker, options){
-		this.parent(options);
+		this.setOptions(options);
 		if (!Type.isFunction(marker.setPosition)){
 			throw new Error('The setPosition method is not mounted.');
 		}

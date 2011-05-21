@@ -8,7 +8,7 @@
 		<meta name="author" content="operator" />
 		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<script type="text/javascript" src="../../Demos/js/lib/mootools-core-1.3.1.js"></script>
+		<script type="text/javascript" src="../js/mootools.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
@@ -17,6 +17,7 @@
 			(function(){
 				//Alias
 				var Context = Locater.Handler.Context;
+				var SimpleHandler = Locater.Handler.SimpleHandler;
 				var Handler = Locater.Handler.Handler;
 
 				var currentValues = {
@@ -41,7 +42,7 @@
 
 				var MockHandler = new Class({
 
-					Extends: Handler,
+					Implements: [Options, Handler],
 
 					currentWatched: function(context){
 						assertTrue(isEqualValues(currentValues, context), 'initialized: The context is not corresponding.');
@@ -58,6 +59,14 @@
 					var handler = new MockHandler();
 					handler.currentWatched(currentContext);
 					handler.positionChanged(watchContext);
+
+					var simpleHandler = new SimpleHandler({
+						currentWatched: function(context){
+							assertTrue(isEqualValues(currentValues, context), 'initialized: The context is not corresponding.');
+						}						
+					});
+					simpleHandler.currentWatched(currentContext);
+
 				});
 
 			}());

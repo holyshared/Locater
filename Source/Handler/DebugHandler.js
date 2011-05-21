@@ -16,6 +16,7 @@ requires:
   - Core/Options
   - Locater/Locater
   - Locater/Locater.Handler
+  - Locater/Locater.Handler.Handler
 
 provides: [Locater.Handler.DebugHandler]
 
@@ -26,14 +27,14 @@ provides: [Locater.Handler.DebugHandler]
 
 Handler.DebugHandler = new Class({
 
-	Extends: Handler.Handler,
+	Implements: [Options, Handler.Handler],
 
 	options: {
 		events: ['currentWatched']
 	},
 
 	initialize: function(options){
-		this.parent(options);
+		this.setOptions(options);
 		this._setup();
 	},
 

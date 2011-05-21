@@ -8,15 +8,15 @@
 		<meta name="author" content="operator" />
 		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<script type="text/javascript" src="../../Demos/js/lib/mootools-core-1.3.1.js"></script>
+		<script type="text/javascript" src="../js/mootools.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Rules.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Dispacher.js"></script>
 		<script type="text/javascript" src="../../Source/Adapter/Adapter.js"></script>
-		<script type="text/javascript" src="../../Source/Core/Application.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/DebugHandler.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Application.js"></script>
 		<script type="text/javascript" src="../js/testlib.js"></script>
 		<script type="text/javascript">
 			(function(){
@@ -24,24 +24,25 @@
 				var Application = Locater.Application;
 				var Adapter = Locater.Adapter;
 				var Handler = Locater.Handler;
+				var SimpleHandler = Locater.Handler.SimpleHandler;
 
-				var firstHanlder = {
+				var firstHanlder = new SimpleHandler({
 					currentWatched: function(context){
 						this.context = context;
 						console.log(context);
 					}
-				};
-				var secondHanlder = {
+				});
+				var secondHanlder = new SimpleHandler({
 					currentWatched: function(context){
 						this.context = context;
 						assertTrue((firstHanlder.context == context), 'secondHanlder: The context is not corresponding.');
 					}
-				};
-				var thirdHanlder = {
+				});
+				var thirdHanlder = new SimpleHandler({
 					currentWatched: function(context){
 						assertTrue((secondHanlder.context == context), 'thirdHanlder: The context is not corresponding.');
 					}
-				};
+				});
 
 				var errorHanlder = {
 

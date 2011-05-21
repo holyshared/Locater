@@ -10,11 +10,12 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Type
   - Core/Class
   - Core/Options
   - Locater/Locater
 
-provides: [Locater.Handler, Locater.Handler.Handler]
+provides: [Locater.Handler, Locater.Handler.Handler, Locater.Handler.SimpleHandler, Locater.Handler.ApplicationProxy]
 
 ...
 */
@@ -28,19 +29,36 @@ var Handler = Locater.Handler = {
 			throw new Error('It tries to make an invalid handler.');
 		}
 		return new this[name](options);
+	},
+
+	isHandler: function(target){
+		var name = 'Application';
+		var result = (Type.isFunction(target['set' + name])
+			&& Type.isFunction(target['get' + name]));
+		return result;
 	}
 
 };
 
-
 Handler.Handler = new Class({
 
-	Implements: [Options],
+	setApplication: function(app){
+		var proxy = {
+			start: app.start,
+			stop: app.stop
+		};
+		this.app = proxy;
+	},
 
-	initialize: function(options){
-		this.setOptions(options);
+	getApplication: function(app){
+		return this.app;
 	}
 
 });
+
+Handler.SimpleHandler = function(handler){
+	return Object.merge(this, handler);
+};
+Handler.SimpleHandler.implement(new Handler.Handler());
 
 }(Locater));
