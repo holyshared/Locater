@@ -40,11 +40,15 @@ function _setValue(name){
 	if (!this._isBuild()) this._build();
 	var propKey = '_' + name;
 	var changeValue = this.get(name);
+
 	if (this[propKey].textContent){
-		this[propKey].textContent = changeValue;
+		this[propKey].textContent = '';
 	} else {
-		this[propKey].innerHtml = changeValue;
+		this[propKey].innerHtml = '';
 	}
+
+	var text = document.createTextNode(changeValue);
+	this[propKey].appendChild(text);
 }
 
 function render(position, map){
@@ -160,11 +164,11 @@ function _buildCpvPanel(){
 function _buildCpvHeader(){
 	var viewPanelHeader = document.createElement('header');
 	var viewPanelTitle = document.createElement('h3');
-	var titleText = document.createTextNode(this.get('title'));
+//	var titleText = document.createTextNode(this.get('title'));
 
 	viewPanelHeader.setAttribute('class', 'hd');
 
-	viewPanelTitle.appendChild(titleText);
+//	viewPanelTitle.appendChild(titleText);
 	viewPanelHeader.appendChild(viewPanelTitle);
 	this._title = viewPanelTitle;
 	return viewPanelHeader;
@@ -181,10 +185,10 @@ function _buildCpvBody(){
 		var label = document.createElement('dt');
 		var content = document.createElement('dd');
 		var labelText = document.createTextNode(prop.label + ': ');
-		var contentText = document.createTextNode(this.get(prop.key));
+//		var contentText = document.createTextNode(this.get(prop.key));
 
 		label.appendChild(labelText);
-		content.appendChild(contentText);
+//		content.appendChild(contentText);
 
 		propList.appendChild(label);
 		propList.appendChild(content);
@@ -262,8 +266,8 @@ function _buildSvPanel(){
 	viewPanel.setAttribute('class', this.get('style'));
 
 	var message = document.createElement('strong');
-	var text = document.createTextNode(this.get('message'));
-	message.appendChild(text);
+//	var text = document.createTextNode(this.get('message'));
+	//message.appendChild(text);
 
 	viewPanel.appendChild(message);
 
