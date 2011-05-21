@@ -9,6 +9,19 @@ body {
 	padding: 0px;
 }
 
+.head {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.main {
+	margin-bottom: 15px;
+}
+
+.foot {
+	text-align: center;
+}
+
 dt {
 	font-weight: bold;
 	text-transform: capitalize;
@@ -30,6 +43,8 @@ dd {
 	height: 500px;
 	margin: 0px auto;
 	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	border: 5px solid #cccccc;
 }
 
@@ -37,6 +52,8 @@ dd {
 	padding: 10px;
 	color: #ffffff;
 	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	background: #333333;
 	opacity: 0.8;
 	margin: 10px;
