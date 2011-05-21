@@ -2,6 +2,7 @@
 
 App.Handlers = {
 	StatusHandler: StatusHandler,
+	CurrentPositionHandler: CurrentPositionHandler,
 	ErrorHandler: ErrorHandler
 };
 
@@ -24,20 +25,7 @@ StatusHandler.implement({
 
 	stop: function(){
 		this._view.set('message', 'The detection at the present place was stopped.');
-	}
-
-});
-
-
-
-/**
- * ErrorHandler
- */
-function ErrorHandler(view){
-	this._view = view;
-};
-
-ErrorHandler.implement({
+	},
 
 	error: function(error){
 		switch(error.code){
@@ -73,6 +61,72 @@ ErrorHandler.implement({
 
 	_default: function(error){
 		this._view.set('message', error.message);
+	}.protect()
+
+});
+
+
+/**
+ * CurrentPositionHandler
+ */
+function CurrentPositionHandler(view){
+	this._view = view;
+};
+
+CurrentPositionHandler.implement({
+
+	currentWatched: function(context){
+		this._view.setValues({
+			latitude: context.getLatitude(),
+			longitude: context.getLongitude(),
+			visible: true
+		});
+	},
+
+	stop: function(){
+	}
+
+});
+
+
+/**
+ * ErrorHandler
+ */
+function ErrorHandler(){
+};
+
+ErrorHandler.implement({
+
+	error: function(error){
+		switch(error.code){
+			//PERMISSION_DENIED
+			case error.PERMISSION_DENIED:
+				this._permissionDenied(error);
+				break;
+			//POSITION_UNAVAILABLE
+			case error.POSITION_UNAVAILABLE:
+				this._positionUnavailable(error);
+				break;
+			//TIMEOUT
+			case error.TIMEOUT:
+				this._timeout(error);
+				break;
+			default:
+				this._default(error);
+				break;
+		}
+	},
+
+	_permissionDenied: function(error){
+	}.protect(),
+
+	_positionUnavailable: function(error){
+	}.protect(),
+
+	_timeout: function(error){
+	}.protect(),
+
+	_default: function(error){
 	}.protect()
 
 });

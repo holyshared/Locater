@@ -28,7 +28,8 @@ window.addEventListener('load', function(){
 	var currentPositionView = new App.Views.CurrentPositionView({
 		map: map,
 		title: 'Your position',
-		position: 'top'
+		position: 'top',
+		visible: false
 	});
 
 	var statusView = new App.Views.StatusView({
@@ -43,9 +44,10 @@ window.addEventListener('load', function(){
 	//Using Event Handlers
 	var handlers = [
 		new App.Handlers.StatusHandler(statusView),
+		new App.Handlers.CurrentPositionHandler(currentPositionView),
 		new Handler.DebugHandler({ events: debugEvents }),
 		new Handler.CurrentPositionHandler(marker),
-		new App.Handlers.ErrorHandler(statusView)
+		new App.Handlers.ErrorHandler()
 	];
 
 	//Running Applications

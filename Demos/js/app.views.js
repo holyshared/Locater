@@ -22,6 +22,8 @@ var renderPosition = {
  *============================================= 
  */
 
+/* View
+--------------------------------------------------*/
 function _isBuild(){
 	return (this._viewPanel) ? true : false;
 }
@@ -50,9 +52,14 @@ function render(position, map){
 	if (!map){
 		map = this.get('map');
 	}
-	map.controls[renderPosition].push(this._build.call(this));
+	var panel = this._build();
+	var style = panel.style;
+	(this.get('visible')) ? style.display = '' : style.display = 'none';
+	map.controls[renderPosition].push(panel);
 }
 
+/* State changed
+--------------------------------------------------*/
 function mapChanged(){
 	if (!this.get('position')) return;
 	this.render(this.get('position'));
@@ -64,10 +71,30 @@ function styleChanged(){
 	panel.setAttribute('class', this.get('style'));
 }
 
-
 function positionChanged(){
 	if (!this.get('map')) return;
 	this.render(this.get('position'), this.get('map'));
+}
+
+function visibleChanged(){
+	if (!this.get('visible')) return;
+	var panel = this._getPanel();
+	var style = panel.style;
+	(this.get('visible')) ? style.display = '' : style.display = 'none';
+}
+
+
+/* State animation
+--------------------------------------------------*/
+function highlight(){
+	if (!(Browser.safari || Browser.chrome)) return;
+
+	var self = this;
+	var panel = this._getPanel();
+	this._addClass('highlight');
+	var listener = maps.event.addDomListenerOnce(panel, 'webkitAnimationEnd', function(event){
+		self._removeClass('highlight');
+	});
 }
 
 
@@ -77,14 +104,14 @@ function positionChanged(){
  *============================================= 
  */
 
-
 var defaultCpvOptions = {
 	title: 'current',
 	latitude: 35.6763,
 	longitude: 139.8105,
 	map: null,
 	style: 'currentPositionView',
-	position: 'topLeft'
+	position: 'topLeft',
+	visible: false
 }
 
 var cpvProps = [
@@ -161,18 +188,16 @@ function _buildCpvBody(){
 	return viewPanelBody;
 }
 
-
-
 function cpvTitleChanged(){
-	this._setValue.apply(this, ['title']);
+	this._setValue('title');
 }
 
 function cpvLatitudeChanged(){
-	this._setValue.apply(this, ['latitude']);
+	this._setValue('latitude');
 }
 
 function cpvLongitudeChanged(){
-	this._setValue.apply(this, ['longitude']);
+	this._setValue('longitude');
 }
 
 
@@ -186,9 +211,11 @@ CurrentPositionView.implement({
 	_buildHeader: _buildCpvHeader,
 	_buildBody: _buildCpvBody,
 	render: render,
+	_highlight: highlight,
 	map_changed: mapChanged,
 	position_changed: positionChanged,
 	style_changed: styleChanged,
+	visible_changed: visibleChanged,
 	title_changed: cpvTitleChanged,
 	latitude_changed: cpvLatitudeChanged,
 	longitude_changed: cpvLongitudeChanged
@@ -205,7 +232,8 @@ var defaultSvOptions = {
 	map: null,
 	style: 'statusView',
 	position: 'bottom',
-	message: ''
+	message: '',
+	visible: true
 }
 
 function StatusView(opts){
@@ -216,7 +244,6 @@ function StatusView(opts){
 	}
 	this.setValues(mergeOpts);
 }
-
 
 function _buildSvPanel(){
 	if (this._viewPanel) return this._viewPanel;
@@ -236,7 +263,7 @@ function _buildSvPanel(){
 }
 
 function svMessageChanged(){
-	this._setValue.apply(this, ['message']);
+	this._setValue('message');
 	this._highlight();
 }
 
@@ -249,16 +276,8 @@ function _addClass(value){
 function _removeClass(value){
 	var panel = this._getPanel();
 	var classValue = panel.getAttribute('class');
-	panel.setAttribute('class', classValue.replace(' ' + value, ''));
-}
-
-function _highlight(){
-	var self = this;
-	var panel = this._getPanel();
-	this._addClass('highlight');
-	var listener = maps.event.addDomListenerOnce(panel, 'webkitAnimationEnd', function(event){
-		self._removeClass('highlight');
-	});
+	classValue = classValue.replace(value, '');
+	panel.setAttribute('class', classValue);
 }
 
 StatusView.implement(new maps.MVCObject());
@@ -270,8 +289,9 @@ StatusView.implement({
 	_build: _buildSvPanel,
 	_addClass: _addClass,
 	_removeClass: _removeClass,
-	_highlight: _highlight,
+	_highlight: highlight,
 	render: render,
+	visible_changed: visibleChanged,
 	map_changed: mapChanged,
 	style_changed: styleChanged,
 	message_changed: svMessageChanged,
