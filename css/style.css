@@ -61,6 +61,14 @@ dd {
 	text-align: center;
 }
 
+.hidden {
+	visibility: hidden;
+}
+
+.visible {
+	visibility: visible;
+}
+
 .highlight {
 	-webkit-animation: ease-in;
 	-webkit-animation-duration: 1s;
@@ -99,6 +107,7 @@ dd {
 	background: #333333;
 	opacity: 0.8;
 	text-align: center;
+	display: block;
 }
 
 .currentPositionView .hd {
