@@ -81,6 +81,7 @@ function visibleChanged(){
 	var panel = this._getPanel();
 	var style = panel.style;
 	(this.get('visible')) ? style.display = '' : style.display = 'none';
+	this._highlight();
 }
 
 
