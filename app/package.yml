@@ -1,0 +1,26 @@
+name: YourPosition
+
+web: "[http://sharedhat.com](http://sharedhat.com)"
+
+description: "Locater demo application"
+
+authors: "[Noritaka Horio](http://sharedhat.com)"
+
+license: "[MIT License](http://holyshared.github.com/Locater/license.txt)"
+
+copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
+
+sources:
+  - "source/app.namespace.js"
+  - "source/app.utils.js"
+  - "source/app.dialog.js"
+  - "source/app.views.js"
+  - "source/app.handler.js"
+
+author: Noritaka Horio
+
+category: Realtime
+
+tags: [application, geo, html5]
+
+current: 1.0

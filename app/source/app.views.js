@@ -1,6 +1,27 @@
-(function(maps, App){
+/*
+---
+name: YourPosition.View
 
-App.Views = {
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Core/Function
+  - Core/Browser
+  - YourPosition/YourPosition
+
+provides: [YourPosition.Views, YourPosition.Views.CurrentPositionView, YourPosition.Views.StatusView]
+
+...
+*/
+
+(function(maps, YourPosition){
+
+YourPosition.Views = {
 	CurrentPositionView: CurrentPositionView,
 	StatusView: StatusView
 };
@@ -313,4 +334,4 @@ StatusView.implement({
 	position_changed: positionChanged
 });
 
-}(google.maps, App));
+}(google.maps, YourPosition));

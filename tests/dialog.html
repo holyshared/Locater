@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>YourPosition.Dialog</title>
+		<meta name="description" content="" />
+		<meta name="author" content="operator" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" media="screen,print" />
+		<script type="text/javascript" src="../js/lib/mootools-core-1.3.2.js"></script>
+		<script type="text/javascript" src="../app/source/app.namespace.js"></script>
+		<script type="text/javascript" src="../app/source/app.utils.js"></script>
+		<script type="text/javascript" src="../app/source/app.dialog.js"></script>
+		<script type="text/javascript">
+			(function(App){
+
+				window.addEventListener('load', function(){
+
+					var openButton = document.getElementById('open');
+					openButton.addEventListener('click', function(event){
+
+						YourPosition.Dialog.conform('title', 'content', function(){
+							alert('ok');
+						}, function(){
+							alert('close');
+						});
+
+					}, false);
+
+					var cancelButton = document.getElementById('cancel');
+					cancelButton.addEventListener('click', function(event){
+
+						YourPosition.Dialog.conform('title', 'content', function(){
+							//Close cancel
+							return false;
+						}, function(){
+							alert('close');
+						});
+
+					}, false);
+
+
+					var optionalButton = document.getElementById('optional');
+					optionalButton.addEventListener('click', function(event){
+
+						YourPosition.Dialog.conform('title', 'content', function(){
+							alert('ok');
+						});
+
+					}, false);
+
+					var alertButton = document.getElementById('alert');
+					alertButton.addEventListener('click', function(event){
+
+						YourPosition.Dialog.alert('title', 'content');
+
+					}, false);
+
+
+				}, false);
+
+			}(YourPosition));
+		</script>
+	</head>
+	<body>
+		<article class="page">
+		    <header>
+		    	<h1>Dialog</h1>
+		    </header>
+		    <article class="main">
+				<input id="open" type="button" value="open" />
+				<input id="cancel" type="button" value="cancel test" />
+				<input id="optional" type="button" value="optional test" />
+				<input id="alert" type="button" value="alert test" />
+		    </article>
+		    <footer>
+				<p>&copy; Copyright 2011 Noritaka Horio All rights reserved.</p>
+		    </footer>
+		</article>
+	</body>
+</html>

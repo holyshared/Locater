@@ -1,0 +1,33 @@
+<style type="text/css">
+.dialog {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	margin-left: -75px;
+	margin-top: -75px;
+	-moz-box-shadow: 0px 0px 5px #cccccc;
+	padding: 20px;
+}
+
+</style>
+
+<button id="open" type="button">open</button>
+
+<script type="text/javascript" src="/depender/build?require=YourPosition/YourPosition.Dialog"></script>
+<script type="text/javascript">
+(function(){
+
+	window.addEventListener('load', function(){
+
+		var openButton = document.getElementById('open');
+		openButton.addEventListener('click' , function(event){
+			YourPosition.Dialog.conform('title', 'content', function(event){
+				alert('ok');
+			});
+		}, false);
+
+	}, false);
+
+}());
+</script>

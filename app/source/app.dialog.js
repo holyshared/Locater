@@ -1,6 +1,27 @@
-(function(App){
+/*
+---
+name: YourPosition.Dialog
 
-App.Dialog = Dialog;
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Core/Function
+  - YourPosition/YourPosition
+  - YourPosition/YourPosition.MVCObject
+
+provides: [YourPosition.Dialog]
+
+...
+*/
+
+(function(YourPosition){
+
+YourPosition.Dialog = Dialog;
 
 /**
  *============================================= 
@@ -46,8 +67,7 @@ function _removeClass(value){
 	panel.setAttribute('class', classValue);
 }
 
-
-function toggleVisibleState() {
+function _toggleVisibleState() {
 	var visible = this._visible;
 	this._removeClass('hidden');
 	this._removeClass('visible');
@@ -61,8 +81,7 @@ function toggleVisibleState() {
 var defaultDialogOptions = {
 	title: 'current',
 	style: 'dialog',
-	content: 'dialog',
-	buttons: {}
+	content: 'dialog'
 }
 
 function Dialog(opts){
@@ -71,7 +90,7 @@ function Dialog(opts){
 		options[key] = opts[key] || defaultDialogOptions[key];
 	}
 	this.setValues(options);
-	this._buildButton(options.buttons);
+	this._buildButton(opts.buttons);
 	this._visible = false;
 }
 
@@ -110,12 +129,19 @@ function _buildDialogPanel(){
 
 function open(){
 	this._visible = true;
+	if (!this._isBuild()) this._build();
 	this._toggleVisibleState();
 }
 
 function close(){
 	this._visible = false;
-	this._toggleVisibleState();
+	this._destroy();
+}
+
+function _destroy(){
+	var panel = this._getPanel();
+	var parent = panel.parentNode;
+	parent.removeChild(panel);
 }
 
 function contentChanged(){
@@ -133,34 +159,62 @@ function styleChanged(){
 
 function _buildButton(buttons){
 	for (var key in buttons){
-alert(key);
 		var button = document.createElement('button');
 		var text = document.createTextNode(key);
 		button.setAttribute('type', 'button');
 		button.setAttribute('class', 'button');
-		button.addEventListener('click', buttons[key], false);
+		button.addEventListener('click', this._bindHandler(buttons[key]), false);
 		button.appendChild(text);
 		this._footer.appendChild(button);
 	}
 }
 
-Dialog.implement({
-	set: function(name, value){
-		if (this[name] == value) return;
-		this[name] = value;
-		if (this[name + '_changed']) {
-			this[name + '_changed']();
-		}
-	},
-	get: function(name){
-		return (this[name] == undefined || this[name] == null) ? '' : this[name];
-	},
-	setValues: function(values){
-		for (var name in values){
-			this.set(name, values[name]);
+function _bindHandler(handler){
+	var self = this;
+	return function(){
+		var isClose = handler.call(self);
+		if (isClose != false){
+			self.close();
 		}
 	}
-});
+}
+
+/**
+ * Dialog.conform('fuga', 'hoge', okHandler, cancelHandler);
+ */
+function showConfirm(title, content, okHandler, cancelHandler){
+	var options = {
+		title: title,
+		content: content,
+		buttons: {
+			'Ok': okHandler,
+			'Cancel': cancelHandler || function(){}
+		}
+	};
+	var dialog = new Dialog(options);
+	return dialog;
+}
+Dialog.conform = showConfirm;
+
+
+/**
+ * Dialog.alert('fuga', 'hoge', okHandler);
+ */
+function showAlert(title, content, okHandler){
+	var options = {
+		title: title,
+		content: content,
+		buttons: {
+			'Ok': okHandler || function(){}
+		}
+	};
+	var dialog = new Dialog(options);
+	return dialog;
+}
+Dialog.alert = showAlert;
+
+
+Dialog.implement(new YourPosition.MVCObject());
 Dialog.implement({
 	_isBuild: _isBuild,
 	_getPanel: _getPanel,
@@ -169,7 +223,9 @@ Dialog.implement({
 	_buildButton: _buildButton,
 	_addClass: _addClass,
 	_removeClass: _removeClass,
-	_toggleVisibleState: toggleVisibleState,
+	_toggleVisibleState: _toggleVisibleState,
+	_bindHandler: _bindHandler,
+	_destroy: _destroy,
 	open: open,
 	close: close,
 	style_changed: styleChanged,
@@ -177,4 +233,4 @@ Dialog.implement({
 	content_changed: contentChanged
 });
 
-}(App));
+}(YourPosition));

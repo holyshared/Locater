@@ -1,6 +1,29 @@
-(function(App){
+/*
+---
+name: YourPosition.Handler
 
-App.Handlers = {
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - YourPosition/YourPosition
+  - YourPosition/YourPosition.Dialog
+  - YourPosition/YourPosition.Views.StatusView
+  - YourPosition/YourPosition.Views.CurrentPositionView
+  - Locater/Locater.Handler.SimpleHandler
+
+provides: [YourPosition.Handlers, YourPosition.Handlers.StatusHandler, YourPosition.Handlers.CurrentPositionHandler, YourPosition.Handlers.ErrorHandler]
+
+...
+*/
+
+(function(YourPosition, Dialog, SimpleHandler){
+
+YourPosition.Handlers = {
 	StatusHandler: StatusHandler,
 	CurrentPositionHandler: CurrentPositionHandler,
 	ErrorHandler: ErrorHandler
@@ -12,7 +35,7 @@ App.Handlers = {
 function StatusHandler(view){
 	this._view = view;
 };
-
+StatusHandler.implement(new SimpleHandler());
 StatusHandler.implement({
 
 	start: function(){
@@ -73,6 +96,7 @@ function CurrentPositionHandler(view){
 	this._view = view;
 };
 
+CurrentPositionHandler.implement(new SimpleHandler());
 CurrentPositionHandler.implement({
 
 	currentWatched: function(context){
@@ -81,9 +105,6 @@ CurrentPositionHandler.implement({
 			longitude: context.getLongitude(),
 			visible: true
 		});
-	},
-
-	stop: function(){
 	}
 
 });
@@ -92,9 +113,17 @@ CurrentPositionHandler.implement({
 /**
  * ErrorHandler
  */
+var TITLE_REACQUISITION = 'Reacquisition of coordinates position';
+var TITLE_NO_SUPPORT = 'The support is off the subject.';
+
+var MSG_PERMISSION_DENIED = 'Are coordinates acquired again though the acquisition of the location information was canceled?';
+var MSG_POSITION_UNAVAILABLE = 'Is the location information acquired again?';
+var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.<br />Please try by a modern browser such as Firefox, Chrome, and Safari.'
+
 function ErrorHandler(){
 };
 
+ErrorHandler.implement(new SimpleHandler());
 ErrorHandler.implement({
 
 	error: function(error){
@@ -118,17 +147,29 @@ ErrorHandler.implement({
 	},
 
 	_permissionDenied: function(error){
+		var self = this;
+		Dialog.confirm(TITLE_REACQUISITION, MSG_PERMISSION_DENIED, function(){
+			//
+			self.app.start();
+		});
 	}.protect(),
 
 	_positionUnavailable: function(error){
+		Dialog.confirm(TITLE_REACQUISITION, MSG_POSITION_UNAVAILABLE, function(){
+			//
+		});
 	}.protect(),
 
 	_timeout: function(error){
+		Dialog.confirm(TITLE_REACQUISITION, MSG_POSITION_UNAVAILABLE, function(){
+			//
+		});
 	}.protect(),
 
 	_default: function(error){
+		Dialog.alert(TITLE_NO_SUPPORT, MSG_NO_SUPPORT);
 	}.protect()
 
 });
 
-}(App));
+}(YourPosition, YourPosition.Dialog, Locater.Handler.SimpleHandler));

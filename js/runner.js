@@ -1,4 +1,4 @@
-(function(maps, Application, Adapter, Handler, App){
+(function(maps, Application, Adapter, Handler, YourPosition){
 
 window.addEventListener('load', function(){
 
@@ -25,14 +25,14 @@ window.addEventListener('load', function(){
 	});
 
 	//View pane displays the current position
-	var currentPositionView = new App.Views.CurrentPositionView({
+	var currentPositionView = new YourPosition.Views.CurrentPositionView({
 		map: map,
 		title: 'Your position',
 		position: 'top',
 		visible: false
 	});
 
-	var statusView = new App.Views.StatusView({
+	var statusView = new YourPosition.Views.StatusView({
 		map: map,
 		message: 'stating',
 		position: 'bottom'
@@ -43,11 +43,11 @@ window.addEventListener('load', function(){
 
 	//Using Event Handlers
 	var handlers = [
-		new App.Handlers.StatusHandler(statusView),
-		new App.Handlers.CurrentPositionHandler(currentPositionView),
+		new YourPosition.Handlers.StatusHandler(statusView),
+		new YourPosition.Handlers.CurrentPositionHandler(currentPositionView),
 		new Handler.DebugHandler({ events: debugEvents }),
 		new Handler.CurrentPositionHandler(marker),
-		new App.Handlers.ErrorHandler()
+		new YourPosition.Handlers.ErrorHandler()
 	];
 
 	//Running Applications
@@ -57,4 +57,4 @@ window.addEventListener('load', function(){
 
 }, false);
 
-}(google.maps, Locater.Application, Locater.Adapter, Locater.Handler, App));
+}(google.maps, Locater.Application, Locater.Adapter, Locater.Handler, YourPosition));
