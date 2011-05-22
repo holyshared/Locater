@@ -15,7 +15,7 @@ requires:
   - Core/Options
   - Locater/Locater
 
-provides: [Locater.Handler, Locater.Handler.Handler, Locater.Handler.SimpleHandler, Locater.Handler.ApplicationProxy]
+provides: [Locater.Handler, Locater.Handler.Handler, Locater.Handler.SimpleHandler]
 
 ...
 */
@@ -45,7 +45,8 @@ Handler.Handler = new Class({
 	setApplication: function(app){
 		var proxy = {
 			start: app.start,
-			stop: app.stop
+			stop: app.stop,
+			isWatching: app.isWatching
 		};
 		this.app = proxy;
 	},

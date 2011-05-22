@@ -45,9 +45,12 @@ function __toGetterMethodName(name){
 }
 
 Handler.Context = function(props){
+	var params = {};
 	var keys = Object.keys(defaultContext);
-	var ctx = Object.subset(props, keys);
-	var params = Object.merge(defaultContext, ctx);
+	var context = Object.subset(props, keys);
+	Object.each(context, function(value, key){
+		params[key] = value || defaultContext[key];
+	});
 	for (var key in params){
 		var getter = __toGetterMethodName(key);
 		this[getter] = Function.from(params[key]);

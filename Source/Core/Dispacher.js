@@ -14,19 +14,23 @@ requires:
   - Core/Type
   - Core/Class
   - Locater/Locater
+  - Locater/Locater.Handler
 
 provides: [Locater.Dispacher]
 
 ...
 */
 
-(function(Locater){
+(function(Locater, Handler){
 
 Locater.Dispacher = new Class({
 
 	_handlers: [],
 
 	addHandler: function(handler){
+		if (!Handler.isHandler(handler)) {
+			throw new Error('It is not a handler.');
+		}
 		this._handlers.push(handler);
 		return this;
 	},
@@ -39,6 +43,26 @@ Locater.Dispacher = new Class({
 		return this;
 	},
 
+	removeHandler: function(handler){
+		if (!this.hasHandler(handler)){
+			return this;
+		}
+		this._handlers.erase(handler);
+		return this;
+	},
+
+	removeHandlers: function(handlers){
+		var self = this;
+		handlers.each(function(handler){
+			self.removeHandler(handler);
+		});
+		return this;
+	},
+
+	hasHandler: function(handler){
+		return this._handlers.contains(handler);
+	},
+
 	dispatch: function(eventName, context){
 		this._handlers.each(function(handler){
 			if (Type.isFunction(handler[eventName])) {
@@ -49,4 +73,4 @@ Locater.Dispacher = new Class({
 
 });
 
-}(Locater));
+}(Locater, Locater.Handler));

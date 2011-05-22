@@ -4,15 +4,15 @@
 
 	window.addEventListener('load', function(){
 
-		var watchHandler = {
+		var watchHandler = new Locater.Handler.SimpleHandler({
 			currentWatch: function(context){
 			}
-		};
+		});
 
-		var errorHandler = {
+		var errorHandler = new Locater.Handler.SimpleHandler({
 			error: function(error) {
 			}
-		};
+		});
 
 		var adapter = new Locater.Adapter.CurrentPositionAdapter();
 		var app = new Locater.Application(adapter);

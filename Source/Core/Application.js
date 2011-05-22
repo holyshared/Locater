@@ -15,9 +15,9 @@ requires:
   - Core/Options
   - Locater/Locater
   - Locater/Locater.Rules
+  - Locater/Locater.Handler
   - Locater/Locater.Dispacher
   - Locater/Locater.Adapter
-  - Locater/Locater.Handler
   - Locater/Locater.Handler.SimpleHandler
   - Locater/Locater.Handler.Context
 
@@ -26,7 +26,7 @@ provides: [Locater.Application]
 ...
 */
 
-(function(Locater, Handler){
+(function(Locater, Adapter, Handler){
 
 Locater.Application = new Class({
 
@@ -42,20 +42,39 @@ Locater.Application = new Class({
 	_dispacher: null,
 
 	initialize: function(adapter, options){
+		if (!Adapter.isAdapter(adapter)) {
+			throw new Error('It is not an adaptor.');
+		}
 		this.setOptions(options);
 		this._adapter = adapter;
+		this._adapter.setOptions({
+			'watchHandler': this.onWatchSuccess.bind(this),
+			'errorHandler': this.onError.bind(this)
+		});
 		this._dispacher = new Locater.Dispacher();
 	},
 
 	addHandler: function(handler){
-		var appHandler = (!Handler.isHandler(handler)) ? new Handler.SimpleHandler(handler) : handler;
-		appHandler.setApplication(this);
-		this._dispacher.addHandler(appHandler);
+		if (!Handler.isHandler(handler)) {
+			throw new Error('It is not a handler.');
+		}
+		handler.setApplication(this);
+		this._dispacher.addHandler(handler);
 		return this;
 	},
 
 	addHandlers: function(handlers){
 		this._dispacher.addHandlers(handlers);
+		return this;
+	},
+
+	removeHandler: function(handler){
+		this._dispacher.removeHandler(handler);
+		return this;
+	},
+
+	removeHandlers: function(handlers){
+		this._dispacher.removeHandlers(handlers);
 		return this;
 	},
 
@@ -76,15 +95,16 @@ Locater.Application = new Class({
 	},
 
 	run: function(){
+		if (this.isWatching()) return;
+		this._dispacher.dispatch('start');
 		this.start();
 	},
 
+	isWatching: function(){
+		return this._adapter.isWatching();
+	},
+
 	start: function(){
-		this._dispacher.dispatch('start');
-		this._adapter.setOptions({
-			'watchHandler': this.onWatchSuccess.bind(this),
-			'errorHandler': this.onError.bind(this)
-		});
 		this._adapter.start();
 	},
 
@@ -95,4 +115,4 @@ Locater.Application = new Class({
 
 });
 
-}(Locater, Locater.Handler));
+}(Locater, Locater.Adapter, Locater.Handler));

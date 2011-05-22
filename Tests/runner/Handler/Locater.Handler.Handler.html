@@ -4,10 +4,10 @@
 
 	var MockHandler = new Class({
 
-		Extends: Locater.Handler.Handler,
+		Implements: [Options, Locater.Handler.Handler],
 
 		initialize: function(options){
-			this.parent(options);
+			this.setOptions(options);
 		},
 
 		currentWatched: function(context){

@@ -11,8 +11,8 @@
 		<script type="text/javascript" src="../js/mootools.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Rules.js"></script>
-		<script type="text/javascript" src="../../Source/Core/Dispacher.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Dispacher.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
 		<script type="text/javascript" src="../js/testlib.js"></script>
 		<script type="text/javascript">
@@ -21,6 +21,7 @@
 				var Dispacher = Locater.Dispacher;
 				var Context = Locater.Handler.Context;
 				var Handler = Locater.Handler.Handler;
+				var SimpleHandler = Locater.Handler.SimpleHandler;
 
 				var MockHanlder = new Class({
 
@@ -61,9 +62,12 @@
 
 				window.addEvent('domready', function(){
 
+					var mockHandler = new MockHanlder();
+					var simpleHanlder = new SimpleHandler(defaultHanlder);
+
 					var dispacher = new Dispacher();
-					dispacher.addHandler(new MockHanlder())
-						.addHandler(defaultHanlder);
+					dispacher.addHandler(mockHandler)
+						.addHandler(simpleHanlder);
 
 					var context = new Context(initContext);
 					dispacher.dispatch('currentWatched', context);
@@ -73,6 +77,26 @@
 
 					assertTrue((currentWatchedCount == 2), 'currentWatched - There is an event not executed.');
 					assertTrue((positionChangedCount == 2), 'positionChanged - There is an event not executed.');
+
+					var removeHandler = new SimpleHandler({
+						start: function(){
+						}
+					});
+					dispacher.addHandler(removeHandler);
+					dispacher.removeHandler(removeHandler);
+
+					assertFalse(dispacher.hasHandler(removeHandler), 'removeHandler [removeHandler] - he handler has not been deleted.');
+
+					dispacher.removeHandlers([mockHandler, simpleHanlder]);
+
+					assertFalse(dispacher.hasHandler(mockHandler), 'removeHandlers [mockHandler] - The handler has not been deleted.');
+					assertFalse(dispacher.hasHandler(simpleHanlder), 'removeHandlers [simpleHanlder] - The handler has not been deleted.');
+
+					try {
+						dispacher.addHandler('foo');
+						assertTrue(false, 'addHandler - It is possible to register excluding the handler.');
+					} catch(e){
+					}
 
 				});
 

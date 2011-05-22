@@ -37,12 +37,49 @@
 					speed: 58.4
 				};
 
+				var replaceValues = {
+					latitude: 0,
+					longitude: 0,
+					altitude: 0,
+					accuracy: 0,
+					altitudeAccuracy: 0,
+					heading: 0,
+					speed: 0
+				};
+
+				var NaNValues = {
+					latitude: NaN,
+					longitude: NaN,
+					altitude: NaN,
+					accuracy: NaN,
+					altitudeAccuracy: NaN,
+					heading: NaN,
+					speed: NaN
+				};
+
+				var undefinedValues = {
+					latitude: undefined,
+					longitude: undefined,
+					altitude: undefined,
+					accuracy: undefined,
+					altitudeAccuracy: undefined,
+					heading: undefined,
+					speed: undefined
+				};
+
 				window.addEvent('domready', function(){
 					var current = new Context(currentValues);
 					var watch = new Context(watchValues);
 
 					assertTrue(isEqualValues(currentValues, current), 'currentContext: The context is not corresponding.');
 					assertTrue(isEqualValues(watchValues, watch), 'watchContext: The context is not corresponding.');
+
+					var nanContext = new Context(NaNValues);
+					assertTrue(isEqualValues(replaceValues, nanContext), 'NaNValues: The context is not corresponding.');
+
+					var undefinedContext = new Context(undefinedValues);
+					assertTrue(isEqualValues(replaceValues, undefinedContext), 'undefinedValues: The context is not corresponding.');
+
 				});
 
 			}());
