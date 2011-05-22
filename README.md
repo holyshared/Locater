@@ -19,17 +19,17 @@ Please make it as much as possible though it is unquestionable for the error han
 #### Hanlder Example
 
 	#js
-	var myHanlder = {
+	var myHanlder = new Locater.Handler.SimpleHandler({
 		currentWatched: function(context){
 			//do something
 		}
-	};
+	});
 
-	var errorHanlder = {
+	var errorHanlder = new Locater.Handler.SimpleHandler({
 		error: function(error){
 			alert(error.message);
 		}
-	};
+	});
 
 The event that the event can be handled is as follows.
 
@@ -101,17 +101,17 @@ A final code is as follows.
 		var Handler = Locater.Handler;
 
 		//Handlers
-		var myHanlder = {
+		var myHanlder = new Handler.SimpleHandler({
 			currentWatched: function(context){
 				//do something
 			}
-		};
+		});
 
-		var errorHanlder = {
+		var errorHanlder = new Handler.SimpleHandler({
 			error: function(error){
 				alert(error.message);
 			}
-		};
+		});
 
 		window.addEvent('domready', function(){
 

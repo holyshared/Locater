@@ -157,6 +157,72 @@ for (key in defaultRules) {
 
 /*
 ---
+name: Locater.Handler
+
+description: Event handler of application.
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Core/Type
+  - Core/Class
+  - Core/Options
+  - Locater/Locater
+
+provides: [Locater.Handler, Locater.Handler.Handler, Locater.Handler.SimpleHandler]
+
+...
+*/
+
+(function(Locater){
+
+var Handler = Locater.Handler = {
+
+	create: function(name, options){
+		if (!this[name]){
+			throw new Error('It tries to make an invalid handler.');
+		}
+		return new this[name](options);
+	},
+
+	isHandler: function(target){
+		var name = 'Application';
+		var result = (Type.isFunction(target['set' + name])
+			&& Type.isFunction(target['get' + name]));
+		return result;
+	}
+
+};
+
+Handler.Handler = new Class({
+
+	setApplication: function(app){
+		var proxy = {
+			start: app.start,
+			stop: app.stop,
+			isWatching: app.isWatching
+		};
+		this.app = proxy;
+	},
+
+	getApplication: function(app){
+		return this.app;
+	}
+
+});
+
+Handler.SimpleHandler = function(handler){
+	return Object.merge(this, handler);
+};
+Handler.SimpleHandler.implement(new Handler.Handler());
+
+}(Locater));
+
+/*
+---
 name: Locater.Dispacher
 
 description: The execution of the event handler of the application can be controlled.
@@ -171,19 +237,23 @@ requires:
   - Core/Type
   - Core/Class
   - Locater/Locater
+  - Locater/Locater.Handler
 
 provides: [Locater.Dispacher]
 
 ...
 */
 
-(function(Locater){
+(function(Locater, Handler){
 
 Locater.Dispacher = new Class({
 
 	_handlers: [],
 
 	addHandler: function(handler){
+		if (!Handler.isHandler(handler)) {
+			throw new Error('It is not a handler.');
+		}
 		this._handlers.push(handler);
 		return this;
 	},
@@ -196,6 +266,26 @@ Locater.Dispacher = new Class({
 		return this;
 	},
 
+	removeHandler: function(handler){
+		if (!this.hasHandler(handler)){
+			return this;
+		}
+		this._handlers.erase(handler);
+		return this;
+	},
+
+	removeHandlers: function(handlers){
+		var self = this;
+		handlers.each(function(handler){
+			self.removeHandler(handler);
+		});
+		return this;
+	},
+
+	hasHandler: function(handler){
+		return this._handlers.contains(handler);
+	},
+
 	dispatch: function(eventName, context){
 		this._handlers.each(function(handler){
 			if (Type.isFunction(handler[eventName])) {
@@ -206,7 +296,7 @@ Locater.Dispacher = new Class({
 
 });
 
-}(Locater));
+}(Locater, Locater.Handler));
 
 /*
 ---
@@ -265,6 +355,10 @@ var Adapter = Locater.Adapter = {
 	create: function(name, options){
 		if (!this[name]) throw new Error('It tries to make an invalid adaptor.');
 		return new this[name](options);
+	},
+
+	isAdapter: function(adapter){
+		return (Type.isFunction(adapter.start) && Type.isFunction(adapter.stop));
 	}
 
 };
@@ -344,53 +438,6 @@ Adapter.WatchPositionAdapter = new Class({
 
 /*
 ---
-name: Locater.Handler
-
-description: Event handler of application.
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Core/Class
-  - Core/Options
-  - Locater/Locater
-
-provides: [Locater.Handler, Locater.Handler.Handler]
-
-...
-*/
-
-(function(Locater){
-
-var Handler = Locater.Handler = {
-
-	create: function(name, options){
-		if (!this[name]){
-			throw new Error('It tries to make an invalid handler.');
-		}
-		return new this[name](options);
-	}
-
-};
-
-
-Handler.Handler = new Class({
-
-	Implements: [Options],
-
-	initialize: function(options){
-		this.setOptions(options);
-	}
-
-});
-
-}(Locater));
-
-/*
----
 name: Locater.Handler.Context
 
 description: Context of event handler.
@@ -436,9 +483,12 @@ function __toGetterMethodName(name){
 }
 
 Handler.Context = function(props){
+	var params = {};
 	var keys = Object.keys(defaultContext);
-	var ctx = Object.subset(props, keys);
-	var params = Object.merge(defaultContext, ctx);
+	var context = Object.subset(props, keys);
+	Object.each(context, function(value, key){
+		params[key] = value || defaultContext[key];
+	});
 	for (var key in params){
 		var getter = __toGetterMethodName(key);
 		this[getter] = Function.from(params[key]);
@@ -486,9 +536,10 @@ requires:
   - Core/Options
   - Locater/Locater
   - Locater/Locater.Rules
+  - Locater/Locater.Handler
   - Locater/Locater.Dispacher
   - Locater/Locater.Adapter
-  - Locater/Locater.Handler.Handler
+  - Locater/Locater.Handler.SimpleHandler
   - Locater/Locater.Handler.Context
 
 provides: [Locater.Application]
@@ -496,7 +547,7 @@ provides: [Locater.Application]
 ...
 */
 
-(function(Locater){
+(function(Locater, Adapter, Handler){
 
 Locater.Application = new Class({
 
@@ -512,18 +563,39 @@ Locater.Application = new Class({
 	_dispacher: null,
 
 	initialize: function(adapter, options){
+		if (!Adapter.isAdapter(adapter)) {
+			throw new Error('It is not an adaptor.');
+		}
 		this.setOptions(options);
 		this._adapter = adapter;
+		this._adapter.setOptions({
+			'watchHandler': this.onWatchSuccess.bind(this),
+			'errorHandler': this.onError.bind(this)
+		});
 		this._dispacher = new Locater.Dispacher();
 	},
 
 	addHandler: function(handler){
+		if (!Handler.isHandler(handler)) {
+			throw new Error('It is not a handler.');
+		}
+		handler.setApplication(this);
 		this._dispacher.addHandler(handler);
 		return this;
 	},
 
 	addHandlers: function(handlers){
 		this._dispacher.addHandlers(handlers);
+		return this;
+	},
+
+	removeHandler: function(handler){
+		this._dispacher.removeHandler(handler);
+		return this;
+	},
+
+	removeHandlers: function(handlers){
+		this._dispacher.removeHandlers(handlers);
 		return this;
 	},
 
@@ -544,15 +616,16 @@ Locater.Application = new Class({
 	},
 
 	run: function(){
+		if (this.isWatching()) return;
+		this._dispacher.dispatch('start');
 		this.start();
 	},
 
+	isWatching: function(){
+		return this._adapter.isWatching();
+	},
+
 	start: function(){
-		this._dispacher.dispatch('start');
-		this._adapter.setOptions({
-			'watchHandler': this.onWatchSuccess.bind(this),
-			'errorHandler': this.onError.bind(this)
-		});
 		this._adapter.start();
 	},
 
@@ -563,4 +636,4 @@ Locater.Application = new Class({
 
 });
 
-}(Locater));
+}(Locater, Locater.Adapter, Locater.Handler));
