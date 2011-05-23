@@ -51,7 +51,7 @@ Handler.Handler = new Class({
 		this.app = proxy;
 	},
 
-	getApplication: function(app){
+	getApplication: function(){
 		return this.app;
 	}
 

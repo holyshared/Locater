@@ -208,7 +208,7 @@ Handler.Handler = new Class({
 		this.app = proxy;
 	},
 
-	getApplication: function(app){
+	getApplication: function(){
 		return this.app;
 	}
 
@@ -585,7 +585,10 @@ Locater.Application = new Class({
 	},
 
 	addHandlers: function(handlers){
-		this._dispacher.addHandlers(handlers);
+		var self = this;
+		handlers.each(function(handler, key){
+			self.addHandler(handler);
+		});
 		return this;
 	},
 

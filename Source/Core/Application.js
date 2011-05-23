@@ -64,7 +64,10 @@ Locater.Application = new Class({
 	},
 
 	addHandlers: function(handlers){
-		this._dispacher.addHandlers(handlers);
+		var self = this;
+		handlers.each(function(handler, key){
+			self.addHandler(handler);
+		});
 		return this;
 	},
 
