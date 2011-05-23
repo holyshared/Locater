@@ -20,7 +20,7 @@
 					var openButton = document.getElementById('open');
 					openButton.addEventListener('click', function(event){
 
-						YourPosition.Dialog.conform('title', 'content', function(){
+						YourPosition.Dialog.confirm('title', 'content', function(){
 							alert('ok');
 						}, function(){
 							alert('close');
@@ -31,7 +31,7 @@
 					var cancelButton = document.getElementById('cancel');
 					cancelButton.addEventListener('click', function(event){
 
-						YourPosition.Dialog.conform('title', 'content', function(){
+						YourPosition.Dialog.confirm('title', 'content', function(){
 							//Close cancel
 							return false;
 						}, function(){
@@ -44,7 +44,7 @@
 					var optionalButton = document.getElementById('optional');
 					optionalButton.addEventListener('click', function(event){
 
-						YourPosition.Dialog.conform('title', 'content', function(){
+						YourPosition.Dialog.confirm('title', 'content', function(){
 							alert('ok');
 						});
 

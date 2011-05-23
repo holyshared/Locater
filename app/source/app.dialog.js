@@ -180,7 +180,7 @@ function _bindHandler(handler){
 }
 
 /**
- * Dialog.conform('fuga', 'hoge', okHandler, cancelHandler);
+ * Dialog.confirm('fuga', 'hoge', okHandler, cancelHandler);
  */
 function showConfirm(title, content, okHandler, cancelHandler){
 	var options = {
@@ -194,7 +194,7 @@ function showConfirm(title, content, okHandler, cancelHandler){
 	var dialog = new Dialog(options);
 	return dialog;
 }
-Dialog.conform = showConfirm;
+Dialog.confirm = showConfirm;
 
 
 /**
