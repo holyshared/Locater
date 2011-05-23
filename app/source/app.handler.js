@@ -147,22 +147,23 @@ ErrorHandler.implement({
 	},
 
 	_permissionDenied: function(error){
-		var self = this;
+		var app = this.getApplication();
 		Dialog.confirm(TITLE_REACQUISITION, MSG_PERMISSION_DENIED, function(){
-			//
-			self.app.start();
+			app.start();
 		});
 	}.protect(),
 
 	_positionUnavailable: function(error){
+		var app = this.getApplication();
 		Dialog.confirm(TITLE_REACQUISITION, MSG_POSITION_UNAVAILABLE, function(){
-			//
+			app.start();
 		});
 	}.protect(),
 
 	_timeout: function(error){
+		var app = this.getApplication();
 		Dialog.confirm(TITLE_REACQUISITION, MSG_POSITION_UNAVAILABLE, function(){
-			//
+			app.start();
 		});
 	}.protect(),
 
