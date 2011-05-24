@@ -104,6 +104,16 @@ A final code is as follows.
 		var myHanlder = new Handler.SimpleHandler({
 			currentWatched: function(context){
 				//do something
+				/*
+					//Context methods
+					context.getLatitude();
+					context.getLongitude();
+					context.getAltitude();
+					context.getAccuracy();
+					context.getAltitudeAccuracy();
+					context.getHeading();
+					context.getSpeed();
+				*/
 			}
 		});
 
