@@ -40,19 +40,23 @@ var Handler = Locater.Handler = {
 
 };
 
+function _createProxy(app){
+	var appProxyMethods = ['start', 'stop', 'isWatching'];
+	var proxy = {};
+	appProxyMethods.each(function(method){
+		proxy[method] = Function.from(app[method]).bind(app)
+	});
+	return proxy;
+};
+
 Handler.Handler = new Class({
 
 	setApplication: function(app){
-		var proxy = {
-			start: app.start,
-			stop: app.stop,
-			isWatching: app.isWatching
-		};
-		this.app = proxy;
+		this._app = _createProxy(app);
 	},
 
 	getApplication: function(){
-		return this.app;
+		return this._app;
 	}
 
 });
