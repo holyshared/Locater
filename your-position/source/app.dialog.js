@@ -50,8 +50,14 @@ function _setValue(name){
 		this[propKey].innerHtml = '';
 	}
 
-	var text = document.createTextNode(changeValue);
-	this[propKey].appendChild(text);
+	var lines =	changeValue.split('\n');
+	for (var i = 0; i < lines.length; i++){
+		var text = document.createTextNode(lines[i]);
+		this[propKey].appendChild(text);
+
+		var br = document.createElement('br');
+		this[propKey].appendChild(br);
+	}
 }
 
 function _addClass(value){
@@ -212,7 +218,6 @@ function showAlert(title, content, okHandler){
 	return dialog;
 }
 Dialog.alert = showAlert;
-
 
 Dialog.implement(new YourPosition.MVCObject());
 Dialog.implement({

@@ -3,19 +3,21 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>Locater Home</title>
+		<title>Locater - Your Position</title>
 		<meta name="description" content="" />
 		<meta name="author" content="Noritaka Horio" />
 		<link rel="stylesheet" type="text/css" href="css/libraries.css" media="screen,print" />
-		<link rel="stylesheet" type="text/css" href="css/home.css" media="screen,print" />
+		<link rel="stylesheet" type="text/css" href="css/your-position.css" media="screen,print" />
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&amp;sensor=true"></script>
 		<script type="text/javascript" src="js/lib/mootools-core-1.3.2.js"></script>
 		<script type="text/javascript" src="js/lib/locater-full-compress.js"></script>
-		<script type="text/javascript" src="js/runner.js"></script>
+		<script type="text/javascript" src="js/your-position.js"></script>
+		<script type="text/javascript" src="js/your-position-runner.js"></script>
 	</head>
 	<body>
 		<article class="page">
 		    <header class="head">
-		    	<h1>Locater</h1>
+		    	<h1>Locater - Your Position</h1>
 		    	<nav>
 		    		<ul class="nav">
 						<li><a title="Locater Home" href="index.html">Locater Home</a></li>
@@ -24,7 +26,7 @@
 		    	</nav>
 		    </header>
 		    <article class="main">
-				<div id="context" class="context">The situation is displayed here.</div>
+				<div id="map" class="map"></div>
 				<p class="control"><button id="doWatch" type="button" class="button">Start Watch</button></p>
 		    </article>
 		    <footer class="foot">
