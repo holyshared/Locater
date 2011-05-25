@@ -284,7 +284,6 @@ function showAlert(title, content, okHandler){
 }
 Dialog.alert = showAlert;
 
-
 Dialog.implement(new YourPosition.MVCObject());
 Dialog.implement({
 	_isBuild: _isBuild,
@@ -760,12 +759,9 @@ CurrentPositionHandler.implement({
 /**
  * ErrorHandler
  */
-var TITLE_REACQUISITION = 'Reacquisition of coordinates position';
 var TITLE_NO_SUPPORT = 'The support is off the subject.';
 
-var MSG_PERMISSION_DENIED = 'Are coordinates acquired again though the acquisition of the location information was canceled?';
-var MSG_POSITION_UNAVAILABLE = 'Is the location information acquired again?';
-var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.<br />Please try by a modern browser such as Firefox, Chrome, and Safari.'
+var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.<br/>Please try by a modern browser such as Firefox, Chrome, and Safari.';
 
 function ErrorHandler(){
 };
@@ -775,44 +771,11 @@ ErrorHandler.implement({
 
 	error: function(error){
 		switch(error.code){
-			//PERMISSION_DENIED
-			case error.PERMISSION_DENIED:
-				this._permissionDenied(error);
-				break;
-			//POSITION_UNAVAILABLE
-			case error.POSITION_UNAVAILABLE:
-				this._positionUnavailable(error);
-				break;
-			//TIMEOUT
-			case error.TIMEOUT:
-				this._timeout(error);
-				break;
 			default:
 				this._default(error);
 				break;
 		}
 	},
-
-	_permissionDenied: function(error){
-		var app = this.getApplication();
-		Dialog.confirm(TITLE_REACQUISITION, MSG_PERMISSION_DENIED, function(){
-			app.start();
-		});
-	}.protect(),
-
-	_positionUnavailable: function(error){
-		var app = this.getApplication();
-		Dialog.confirm(TITLE_REACQUISITION, MSG_POSITION_UNAVAILABLE, function(){
-			app.start();
-		});
-	}.protect(),
-
-	_timeout: function(error){
-		var app = this.getApplication();
-		Dialog.confirm(TITLE_REACQUISITION, MSG_POSITION_UNAVAILABLE, function(){
-			app.start();
-		});
-	}.protect(),
 
 	_default: function(error){
 		Dialog.alert(TITLE_NO_SUPPORT, MSG_NO_SUPPORT);
