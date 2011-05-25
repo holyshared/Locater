@@ -11,9 +11,6 @@ window.addEventListener('load', function(){
 				var dc = document;
 				var view = dc.getElementById('context');
 
-				//var lat = context.getLatitude();
-				//var lng = context.getLongitude();
-
 				var text = 'Latitude: ' + new String(context.getLatitude())
 				 + ', Longitude: ' + new String(context.getLongitude());
 
