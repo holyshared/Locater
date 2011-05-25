@@ -8,6 +8,8 @@ window.addEventListener('load', function(){
 
 			currentWatched: function(context){
 
+console.log(context);
+
 				var dc = document;
 				var view = dc.getElementById('context');
 
@@ -22,8 +24,35 @@ window.addEventListener('load', function(){
 				view.appendChild(p);
 			}
 
+		}),
+
+		new Handler.SimpleHandler({
+
+			error: function(error){
+				switch(error.code){
+					//PERMISSION_DENIED
+					//POSITION_UNAVAILABLE
+					//TIMEOUT
+					case error.PERMISSION_DENIED:
+					case error.POSITION_UNAVAILABLE:
+					case error.TIMEOUT:
+						this._exception(error);
+						break;
+					default:
+						this._default(error);
+						break;
+				}
+			},
+
+			_exception: function(error){
+			}.protect(),
+
+			_default: function(error){
+			}.protect()
+
 		})
 	];
+
 
 	//Create Applications
 	var adapter = new Adapter.CurrentPositionAdapter();
