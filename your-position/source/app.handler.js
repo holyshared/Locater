@@ -115,7 +115,7 @@ CurrentPositionHandler.implement({
  */
 var TITLE_NO_SUPPORT = 'The support is off the subject.';
 
-var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.\nPlease try by a modern browser such as Firefox, Chrome, and Safari.'
+var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.\nPlease try by a modern browser such as Firefox, Chrome, and Safari.';
 
 function ErrorHandler(){
 };
@@ -125,6 +125,13 @@ ErrorHandler.implement({
 
 	error: function(error){
 		switch(error.code){
+			//PERMISSION_DENIED
+			//POSITION_UNAVAILABLE
+			//TIMEOUT
+			case error.PERMISSION_DENIED:
+			case error.POSITION_UNAVAILABLE:
+			case error.TIMEOUT:
+				break;
 			default:
 				this._default(error);
 				break;
