@@ -611,7 +611,7 @@ Locater.Application = new Class({
 		var self = this;
 		var rules = Locater.Rules.getRules();
 		Object.each(rules, function(rule, key){
-			if (rule.apply(rule, [this.context, context])) {
+			if (rule.apply(rule, [self.context, context])) {
 				self._dispacher.dispatch(key, context);
 			}
 		});
