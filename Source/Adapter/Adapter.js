@@ -87,8 +87,24 @@ Adapter.CurrentPositionAdapter = new Class({
 		if (opts.watchHandler == null) {
 			throw new Error('Please specify either watchHandler.');
 		}
-		gps.getCurrentPosition(opts.watchHandler, opts.errorHandler, watchOpts);
+		gps.getCurrentPosition(opts._watchHandler, this._errorHandler, watchOpts);
 		this._setWatchID(true);
+	},
+
+	_watchHandler: function(context){
+		if (!this.isWatching()) return;
+
+		var opts = this.options;
+		opts.watchHandler(context);
+		this.stop();
+	},
+
+	_errorHandler: function(error){
+		if (!this.isWatching()) return;
+
+		var opts = this.options;
+		opts.errorHandler(error);
+		this.stop();
 	},
 
 	stop: function(){

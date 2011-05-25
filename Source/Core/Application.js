@@ -86,7 +86,7 @@ Locater.Application = new Class({
 		var self = this;
 		var rules = Locater.Rules.getRules();
 		Object.each(rules, function(rule, key){
-			if (rule.apply(rule, [this.context, context])) {
+			if (rule.apply(rule, [self.context, context])) {
 				self._dispacher.dispatch(key, context);
 			}
 		});
@@ -108,10 +108,12 @@ Locater.Application = new Class({
 	},
 
 	start: function(){
+		if (this.isWatching()) return;
 		this._adapter.start();
 	},
 
 	stop: function(){
+		if (!this.isWatching()) return;
 		this._adapter.stop();
 		this._dispacher.dispatch('stop');
 	}

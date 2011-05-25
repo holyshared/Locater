@@ -391,8 +391,24 @@ Adapter.CurrentPositionAdapter = new Class({
 		if (opts.watchHandler == null) {
 			throw new Error('Please specify either watchHandler.');
 		}
-		gps.getCurrentPosition(opts.watchHandler, opts.errorHandler, watchOpts);
+		gps.getCurrentPosition(opts._watchHandler, this._errorHandler, watchOpts);
 		this._setWatchID(true);
+	},
+
+	_watchHandler: function(context){
+		if (!this.isWatching()) return;
+
+		var opts = this.options;
+		opts.watchHandler(context);
+		this.stop();
+	},
+
+	_errorHandler: function(error){
+		if (!this.isWatching()) return;
+
+		var opts = this.options;
+		opts.errorHandler(error);
+		this.stop();
 	},
 
 	stop: function(){
@@ -611,7 +627,7 @@ Locater.Application = new Class({
 		var self = this;
 		var rules = Locater.Rules.getRules();
 		Object.each(rules, function(rule, key){
-			if (rule.apply(rule, [this.context, context])) {
+			if (rule.apply(rule, [self.context, context])) {
 				self._dispacher.dispatch(key, context);
 			}
 		});
@@ -633,10 +649,12 @@ Locater.Application = new Class({
 	},
 
 	start: function(){
+		if (this.isWatching()) return;
 		this._adapter.start();
 	},
 
 	stop: function(){
+		if (!this.isWatching()) return;
 		this._adapter.stop();
 		this._dispacher.dispatch('stop');
 	}
