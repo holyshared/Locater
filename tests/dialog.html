@@ -17,6 +17,9 @@
 
 				window.addEventListener('load', function(){
 
+					var TITLE_NO_SUPPORT = 'The support is off the subject.';
+					var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.\nPlease try by a modern browser such as Firefox, Chrome, and Safari.';
+
 					var openButton = document.getElementById('open');
 					openButton.addEventListener('click', function(event){
 
@@ -55,7 +58,7 @@
 					var alertButton = document.getElementById('alert');
 					alertButton.addEventListener('click', function(event){
 
-						YourPosition.Dialog.alert('title', 'content');
+						YourPosition.Dialog.alert(TITLE_NO_SUPPORT, MSG_NO_SUPPORT);
 
 					}, false);
 

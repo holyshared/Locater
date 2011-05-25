@@ -59,6 +59,7 @@ dd {
 
 .button {
 	display: inline-block;
+	min-width: 80px;
 	font-weight: bold;
 	text-decoration: none;
 	-moz-border-radius: 5px;
