@@ -57,6 +57,47 @@ dd {
 	margin: 0px auto;
 }
 
+.dialog {
+	width: 300px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background: #333333;
+	-moz-box-shadow: 0px 0px 5px #333333;
+	-webkit-box-shadow: 0px 0px 5px #333333;
+	box-shadow: 0px 0px 5px #333333;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+}
+
+.dialog .hd {
+	font-size: 108%;
+	padding: 5px 10px;
+	background: #cccccc;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-radius-top-left: 5px;
+	-webkit-border-radius-top-right: 5px;
+}
+
+.dialog .bd {
+	background: #ffffff;
+	padding: 10px;
+}
+
+.dialog .ft {
+	border-top: 1px dotted #dddddd;
+	text-align: right;
+	padding: 10px;
+	background: #ffffff;
+	text-align: center;
+}
+
+
+
 .button {
 	display: inline-block;
 	min-width: 80px;

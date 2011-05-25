@@ -1,6 +1,16 @@
 (function(Application, Adapter, Handler){
 
-window.addEventListener('load', function(){
+var Observer = {
+	attach: function(target, type, handler){
+		if (target.addEventListener){
+			target.addEventListener(type, handler, false);
+		} else {
+			target.attachEvent('on' + type, handler);
+		}
+	}
+};
+
+Observer.attach(window, 'load', function(){
 
 	//Using Event Handlers
 	var handlers = [
@@ -43,9 +53,11 @@ window.addEventListener('load', function(){
 			},
 
 			_exception: function(error){
+				alert('Please execute it again.');
 			}.protect(),
 
 			_default: function(error){
+				alert('Your browser doesn\'t correspond to the acquisition of the location information.');
 			}.protect()
 
 		})
@@ -58,15 +70,15 @@ window.addEventListener('load', function(){
 	app.addHandlers(handlers);
 
 	var doWatch = document.getElementById('doWatch');
-	doWatch.addEventListener('click', function(event){
 
+	Observer.attach(doWatch, 'click', function(event){
 		//Running Applications
-		if (!app.isWatching()){
-			app.run();
+		if (app.isWatching()){
+			app.stop();
 		}
+		app.run();
+	});
 
-	}, false);
-
-}, false);
+});
 
 }(Locater.Application, Locater.Adapter, Locater.Handler));

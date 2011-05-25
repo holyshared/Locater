@@ -1,6 +1,18 @@
 (function(maps, Application, Adapter, Handler, YourPosition){
 
-window.addEventListener('load', function(){
+var Observer = {
+	attach: function(target, type, handler){
+		if (target.addEventListener){
+			target.addEventListener(type, handler, false);
+		} else {
+			target.attachEvent('on' + type, handler);
+		}
+	}
+};
+
+
+
+Observer.attach(window, 'load', function(){
 
 	var element = document.getElementById('map');
 
@@ -55,17 +67,16 @@ window.addEventListener('load', function(){
 	var app = this.app = new Application(adapter);
 	app.addHandlers(handlers);
 
-
 	var doWatch = document.getElementById('doWatch');
-	doWatch.addEventListener('click', function(event){
 
+	Observer.attach(doWatch, 'click', function(event){
 		//Running Applications
-		if (!app.isWatching()){
-			app.run();
+		if (app.isWatching()){
+			app.stop();
 		}
+		app.run();
+	});
 
-	}, false);
-
-}, false);
+});
 
 }(google.maps, Locater.Application, Locater.Adapter, Locater.Handler, YourPosition));
