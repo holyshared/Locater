@@ -99,8 +99,12 @@ Locater.Application = new Class({
 
 	run: function(){
 		if (this.isWatching()) return;
+		try {
+			this._adapter.start();
+		} catch(e){
+			this._dispacher.dispatch('error', e);
+		}
 		this._dispacher.dispatch('start');
-		this.start();
 	},
 
 	isWatching: function(){
@@ -108,8 +112,7 @@ Locater.Application = new Class({
 	},
 
 	start: function(){
-		if (this.isWatching()) return;
-		this._adapter.start();
+		this.run();
 	},
 
 	stop: function(){
