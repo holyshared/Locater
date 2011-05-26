@@ -131,6 +131,9 @@ ErrorHandler.implement({
 			case error.PERMISSION_DENIED:
 			case error.POSITION_UNAVAILABLE:
 			case error.TIMEOUT:
+				if (window.console){
+					window.console.log(error.message);
+				}
 				break;
 			default:
 				this._default(error);

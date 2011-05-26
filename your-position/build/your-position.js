@@ -121,8 +121,14 @@ function _setValue(name){
 		this[propKey].innerHtml = '';
 	}
 
-	var text = document.createTextNode(changeValue);
-	this[propKey].appendChild(text);
+	var lines =	changeValue.split('\n');
+	for (var i = 0; i < lines.length; i++){
+		var text = document.createTextNode(lines[i]);
+		this[propKey].appendChild(text);
+
+		var br = document.createElement('br');
+		this[propKey].appendChild(br);
+	}
 }
 
 function _addClass(value){
@@ -761,7 +767,7 @@ CurrentPositionHandler.implement({
  */
 var TITLE_NO_SUPPORT = 'The support is off the subject.';
 
-var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.<br />Please try by a modern browser such as Firefox, Chrome, and Safari.'
+var MSG_NO_SUPPORT = 'I am sorry, the support is off the subject.\nPlease try by a modern browser such as Firefox, Chrome, and Safari.';
 
 function ErrorHandler(){
 };
@@ -771,6 +777,16 @@ ErrorHandler.implement({
 
 	error: function(error){
 		switch(error.code){
+			//PERMISSION_DENIED
+			//POSITION_UNAVAILABLE
+			//TIMEOUT
+			case error.PERMISSION_DENIED:
+			case error.POSITION_UNAVAILABLE:
+			case error.TIMEOUT:
+				if (window.console){
+					window.console.log(error.message);
+				}
+				break;
 			default:
 				this._default(error);
 				break;

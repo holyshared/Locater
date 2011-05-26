@@ -53,16 +53,21 @@ Observer.attach(window, 'load', function(){
 			},
 
 			_exception: function(error){
+				if (window.console){
+					window.console.log(error.message);
+				}
 				alert('Please execute it again.');
 			}.protect(),
 
 			_default: function(error){
+				if (window.console){
+					window.console.log(error.message);
+				}
 				alert('Your browser doesn\'t correspond to the acquisition of the location information.');
 			}.protect()
 
 		})
 	];
-
 
 	//Create Applications
 	var adapter = new Adapter.CurrentPositionAdapter();
