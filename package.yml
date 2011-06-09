@@ -21,7 +21,7 @@ sources:
   - "Source/Handler/DebugHandler.js"
   - "Source/Handler/CurrentPositionHandler.js"
 
-author: Noritaka Horio
+author: holyshared
 
 category: Realtime
 
