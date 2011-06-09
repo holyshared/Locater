@@ -5,7 +5,7 @@ Locater is an application framework using [Geolocation API Specification](http:/
 It is possible to correspond from the medium scale flexibly because it is the best for the application of a large scale, and event operation type.
 The event can control a detailed event by being able to customize and coming.
 
-![Screenshot1](url_to_image1)
+![Locater](http://holyshared.github.com/Locater/img_logo.jpg "Locater")
 
 How to use
 ------------------------------------------------------------------------
