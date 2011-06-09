@@ -1,0 +1,153 @@
+@charset "utf-8";
+
+body {
+	font:13px/1.231 "MS Trebuchet", Arial, sans-serif;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+h1 {
+	margin-bottom: 20px;
+}
+
+dt {
+	font-weight: bold;
+	text-transform: capitalize;
+}
+
+dd {
+	margin-bottom: 10px;
+}
+
+
+.head {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.main {
+	margin-bottom: 15px;
+}
+
+.foot {
+	text-align: center;
+}
+
+
+.nav {
+	list-style: none;
+	display: inline;
+}
+
+.nav li {
+	display: inline;
+}
+
+.nav li a {
+	padding: 5px 10px;
+	background: #eeeeee;
+}
+
+
+.page {
+	width: 960px;
+	margin: 0px auto;
+}
+
+.dialog {
+	width: 300px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background: #333333;
+	-moz-box-shadow: 0px 0px 5px #333333;
+	-webkit-box-shadow: 0px 0px 5px #333333;
+	box-shadow: 0px 0px 5px #333333;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+}
+
+.dialog .hd {
+	font-size: 108%;
+	padding: 5px 10px;
+	background: #cccccc;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-radius-top-left: 5px;
+	-webkit-border-radius-top-right: 5px;
+}
+
+.dialog .bd {
+	background: #ffffff;
+	padding: 10px;
+}
+
+.dialog .ft {
+	border-top: 1px dotted #dddddd;
+	text-align: right;
+	padding: 10px;
+	background: #ffffff;
+	text-align: center;
+}
+
+
+
+.button {
+	display: inline-block;
+	min-width: 80px;
+	font-weight: bold;
+	text-decoration: none;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	border: 2px solid #E6EBF2;
+	padding: 7px 15px;
+	color: #ffffff;
+	background: #4971A0;
+	background: -moz-linear-gradient(
+		center bottom,
+    	#4971A0 0%,
+    	#6A8EBB 80%,
+    	#6A8EBB 100%
+	);
+	background: -webkit-gradient(
+    	linear,
+    	left 80%,
+    	left top,
+    	color-stop(0, #4971A0),
+    	color-stop(1, #6A8EBB),
+    	color-stop(1, #6A8EBB)
+	);
+}
+
+.button:hover {
+	color: #ffffff;
+	border: 2px solid #F4F2A8;
+	background: #898612;
+	background: -moz-linear-gradient(
+		center bottom,
+    	#898612 0%,
+    	#B3AE17 80%,
+    	#B3AE17 100%
+	);
+	background: -webkit-gradient(
+    	linear,
+    	left 80%,
+    	left top,
+    	color-stop(0, #898612),
+    	color-stop(1, #B3AE17),
+    	color-stop(1, #B3AE17)
+	);
+}
+
+.button:visited { color: #ffffff; }
+
+.control {
+	text-align: center;
+}

@@ -1,47 +1,36 @@
 @charset "utf-8";
 
-body {
-	font:13px/1.231 "MS Trebuchet", Arial, sans-serif;
-}
-
-* {
-	margin: 0px;
-	padding: 0px;
-}
-
-dt {
-	font-weight: bold;
-	text-transform: capitalize;
-}
-
-dd {
-	margin-bottom: 10px;
-}
-
-.page {
-	width: 960px;
-	margin: 0px auto;
-}
-
 .map {
 	background-color: #cccccc;
 	padding: 5px;
 	width: 930px;
 	height: 500px;
-	margin: 0px auto;
+	margin: 0px auto 15px auto;
 	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	border: 5px solid #cccccc;
 }
 
 .statusView {
+	width: 600px;
+	margin: 10px auto;
 	padding: 10px;
 	color: #ffffff;
 	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	background: #333333;
 	opacity: 0.8;
-	margin: 10px;
-	width: 600px;
 	text-align: center;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.visible {
+	visibility: visible;
 }
 
 .highlight {
@@ -72,14 +61,17 @@ dd {
 
 
 .currentPositionView {
+	width: 600px;
 	padding: 10px;
-	margin: 10px;
+	margin: 10px auto;
 	color: #ffffff;
 	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	background: #333333;
 	opacity: 0.8;
 	text-align: center;
-	width: 600px;
+	display: block;
 }
 
 .currentPositionView .hd {
@@ -99,3 +91,4 @@ dd {
 .currentPositionView dd {
 	padding-right: 10px;
 }
+

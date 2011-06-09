@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+.context {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	text-align: center;
+	padding: 10px;
+	background: #eeeeee;
+	margin-bottom: 20px;
+	line-height: 180%;
+}

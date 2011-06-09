@@ -1,6 +1,27 @@
-(function(maps, App){
+/*
+---
+name: YourPosition.View
 
-App.Views = {
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Core/Function
+  - Core/Browser
+  - YourPosition/YourPosition
+
+provides: [YourPosition.Views, YourPosition.Views.CurrentPositionView, YourPosition.Views.StatusView]
+
+...
+*/
+
+(function(maps, YourPosition){
+
+YourPosition.Views = {
 	CurrentPositionView: CurrentPositionView,
 	StatusView: StatusView
 };
@@ -37,14 +58,18 @@ function _toRenderPosition(position){
 }
 
 function _setValue(name){
-	if (!_isBuild.call(this)) return false;
+	if (!this._isBuild()) this._build();
 	var propKey = '_' + name;
 	var changeValue = this.get(name);
+
 	if (this[propKey].textContent){
-		this[propKey].textContent = changeValue;
+		this[propKey].textContent = '';
 	} else {
-		this[propKey].innerHtml = changeValue;
+		this[propKey].innerHtml = '';
 	}
+
+	var text = document.createTextNode(changeValue);
+	this[propKey].appendChild(text);
 }
 
 function render(position, map){
@@ -52,11 +77,10 @@ function render(position, map){
 	if (!map){
 		map = this.get('map');
 	}
-	var panel = this._build();
-	var style = panel.style;
-	(this.get('visible')) ? style.display = '' : style.display = 'none';
-	map.controls[renderPosition].push(panel);
+	map.controls[renderPosition].push(this._build());
+	this._toggleVisibleState();
 }
+
 
 /* State changed
 --------------------------------------------------*/
@@ -66,8 +90,7 @@ function mapChanged(){
 }
 
 function styleChanged(){
-	if (!this._isBuild.call(this)) return;
-	var panel = this._getPanel.call(this);
+	var panel = (this._isBuild()) ? this._getPanel() : this._build();
 	panel.setAttribute('class', this.get('style'));
 }
 
@@ -77,12 +100,22 @@ function positionChanged(){
 }
 
 function visibleChanged(){
-	if (!this.get('visible')) return;
-	var panel = this._getPanel();
-	var style = panel.style;
-	(this.get('visible')) ? style.display = '' : style.display = 'none';
+	if (!this._isBuild()) this._build();
+	this._toggleVisibleState();
+	this._highlight();
 }
 
+function toggleVisibleState() {
+	var visible = this.get('visible');
+	visible = (visible == undefined) ? false : visible;
+	this._removeClass('hidden');
+	this._removeClass('visible');
+	if (visible){
+		this._addClass('visible');
+	} else {
+		this._addClass('hidden');
+	}
+}
 
 /* State animation
 --------------------------------------------------*/
@@ -128,12 +161,11 @@ var cpvProps = [
 ];
 
 function CurrentPositionView(opts){
-	var mergeOpts = {};
+	var options = {};
 	for (var key in defaultCpvOptions){
-		var value = opts[key] || defaultCpvOptions[key];
-		mergeOpts[key] = value;
+		options[key] = opts[key] || defaultCpvOptions[key];
 	}
-	this.setValues(mergeOpts);
+	this.setValues(options);
 }
 
 function _buildCpvPanel(){
@@ -146,17 +178,18 @@ function _buildCpvPanel(){
 	viewPanel.appendChild(this._buildBody.call(this));
 
 	this._viewPanel = viewPanel;
+	this._toggleVisibleState();
 	return viewPanel;
 }
 
 function _buildCpvHeader(){
 	var viewPanelHeader = document.createElement('header');
 	var viewPanelTitle = document.createElement('h3');
-	var titleText = document.createTextNode(this.get('title'));
+//	var titleText = document.createTextNode(this.get('title'));
 
 	viewPanelHeader.setAttribute('class', 'hd');
 
-	viewPanelTitle.appendChild(titleText);
+//	viewPanelTitle.appendChild(titleText);
 	viewPanelHeader.appendChild(viewPanelTitle);
 	this._title = viewPanelTitle;
 	return viewPanelHeader;
@@ -173,10 +206,10 @@ function _buildCpvBody(){
 		var label = document.createElement('dt');
 		var content = document.createElement('dd');
 		var labelText = document.createTextNode(prop.label + ': ');
-		var contentText = document.createTextNode(this.get(prop.key));
+//		var contentText = document.createTextNode(this.get(prop.key));
 
 		label.appendChild(labelText);
-		content.appendChild(contentText);
+//		content.appendChild(contentText);
 
 		propList.appendChild(label);
 		propList.appendChild(content);
@@ -210,8 +243,11 @@ CurrentPositionView.implement({
 	_build: _buildCpvPanel,
 	_buildHeader: _buildCpvHeader,
 	_buildBody: _buildCpvBody,
-	render: render,
+	_toggleVisibleState: toggleVisibleState,
 	_highlight: highlight,
+	_addClass: _addClass,
+	_removeClass: _removeClass,
+	render: render,
 	map_changed: mapChanged,
 	position_changed: positionChanged,
 	style_changed: styleChanged,
@@ -232,17 +268,16 @@ var defaultSvOptions = {
 	map: null,
 	style: 'statusView',
 	position: 'bottom',
-	message: '',
+	message: 'display status',
 	visible: true
 }
 
 function StatusView(opts){
-	var mergeOpts = {};
+	var options = {};
 	for (var key in defaultSvOptions){
-		var value = opts[key] || defaultSvOptions[key];
-		mergeOpts[key] = value;
+		options[key] = opts[key] || defaultSvOptions[key];
 	}
-	this.setValues(mergeOpts);
+	this.setValues(options);
 }
 
 function _buildSvPanel(){
@@ -252,8 +287,8 @@ function _buildSvPanel(){
 	viewPanel.setAttribute('class', this.get('style'));
 
 	var message = document.createElement('strong');
-	var text = document.createTextNode(this.get('message'));
-	message.appendChild(text);
+//	var text = document.createTextNode(this.get('message'));
+	//message.appendChild(text);
 
 	viewPanel.appendChild(message);
 
@@ -290,6 +325,7 @@ StatusView.implement({
 	_addClass: _addClass,
 	_removeClass: _removeClass,
 	_highlight: highlight,
+	_toggleVisibleState: toggleVisibleState,
 	render: render,
 	visible_changed: visibleChanged,
 	map_changed: mapChanged,
@@ -298,4 +334,4 @@ StatusView.implement({
 	position_changed: positionChanged
 });
 
-}(google.maps, App));
+}(google.maps, YourPosition));

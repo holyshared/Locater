@@ -1,60 +1,89 @@
-(function(maps, Application, Adapter, Handler, App){
+(function(Application, Adapter, Handler){
 
-window.addEventListener('load', function(){
+var Observer = {
+	attach: function(target, type, handler){
+		if (target.addEventListener){
+			target.addEventListener(type, handler, false);
+		} else {
+			target.attachEvent('on' + type, handler);
+		}
+	}
+};
 
-	var element = document.getElementById('map');
-
-	var defaultPosition = new maps.LatLng(35.6763, 139.8105);
-
-	var map = new maps.Map(element, {
-		disableDefaultUI: false,
-		disableDoubleClickZoom: false,
-		draggable: false,
-		mapTypeControl: false,
-		mapTypeId: maps.MapTypeId.ROADMAP,
-		navigationControl: false,
-		streetViewControl: false,
-		zoom: 18,
-		center: defaultPosition
-	});
-
-	//To view the current marker position
-	var marker = new maps.Marker({
-		map: map,
-		position: defaultPosition
-	});
-
-	//View pane displays the current position
-	var currentPositionView = new App.Views.CurrentPositionView({
-		map: map,
-		title: 'Your position',
-		position: 'top',
-		visible: false
-	});
-
-	var statusView = new App.Views.StatusView({
-		map: map,
-		message: 'stating',
-		position: 'bottom'
-	});
-
-	//Debugging event DebugHandler
-	var debugEvents = ['currentWatched', 'error'];
+Observer.attach(window, 'load', function(){
 
 	//Using Event Handlers
 	var handlers = [
-		new App.Handlers.StatusHandler(statusView),
-		new App.Handlers.CurrentPositionHandler(currentPositionView),
-		new Handler.DebugHandler({ events: debugEvents }),
-		new Handler.CurrentPositionHandler(marker),
-		new App.Handlers.ErrorHandler()
+		new Handler.SimpleHandler({
+
+			currentWatched: function(context){
+
+				var dc = document;
+				var view = dc.getElementById('context');
+
+				var text = 'Latitude: ' + new String(context.getLatitude())
+				 + ', Longitude: ' + new String(context.getLongitude());
+
+				var p = dc.createElement('p');
+				var textNode = dc.createTextNode(text);
+
+				p.appendChild(textNode);
+
+				view.appendChild(p);
+			}
+
+		}),
+
+		new Handler.SimpleHandler({
+
+			error: function(error){
+				switch(error.code){
+					//PERMISSION_DENIED
+					//POSITION_UNAVAILABLE
+					//TIMEOUT
+					case error.PERMISSION_DENIED:
+					case error.POSITION_UNAVAILABLE:
+					case error.TIMEOUT:
+						this._exception(error);
+						break;
+					default:
+						this._default(error);
+						break;
+				}
+			},
+
+			_exception: function(error){
+				if (window.console){
+					window.console.log(error.message);
+				}
+				alert('Please execute it again.');
+			}.protect(),
+
+			_default: function(error){
+				if (window.console){
+					window.console.log(error.message);
+				}
+				alert('Your browser doesn\'t correspond to the acquisition of the location information.');
+			}.protect()
+
+		})
 	];
 
-	//Running Applications
+	//Create Applications
 	var adapter = new Adapter.CurrentPositionAdapter();
-	var app = new Application(adapter);
-	app.addHandlers(handlers).run();
+	var app = this.app = new Application(adapter);
+	app.addHandlers(handlers);
 
-}, false);
+	var doWatch = document.getElementById('doWatch');
 
-}(google.maps, Locater.Application, Locater.Adapter, Locater.Handler, App));
+	Observer.attach(doWatch, 'click', function(event){
+		//Running Applications
+		if (app.isWatching()){
+			app.stop();
+		}
+		app.run();
+	});
+
+});
+
+}(Locater.Application, Locater.Adapter, Locater.Handler));
