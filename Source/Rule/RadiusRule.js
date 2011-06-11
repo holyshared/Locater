@@ -17,32 +17,80 @@ provides: [Locater.Rules.RadiusRule]
 ...
 */
 
+
 (function(Rules){
 
-function RadiusRule(radius) {
+function RadiusRule(radius){
 	this._radius = radius;
-	this._watch = null;
 }
 
-RadiusRule.prototype.invoke = function(current, watch){
-	if (!(this._compute(watch) > this._radius)) {
-		return false;
+function radians(value){
+	return (2 * Math.PI) * value / 360;
+}
+
+function invoke(current, watch) {
+	var result = true;
+	if (!(this.distance(watch) > this.getRadius())) {
+		result = false;
 	}
+	this.setCurrent(watch);
+	return result;
+}
+
+function getRate(){
+	return this._rate;
+}
+
+function getRadius(){
+	return this._radius;
+}
+
+function getCurrent(){
+	return this._watch;
+}
+
+function setCurrent(watch){
 	this._watch = watch;
-	return true;
 }
 
-RadiusRule.prototype._compute = function(point){
-	if (!point) return 0; //diff is 0km
-	return 100;
+//@see http://code.google.com/intl/ja/apis/maps/articles/phpsqlsearch.html
+function distance(watch){
+
+	if (!this.getCurrent()) return 0;
+
+	var current = this.getCurrent();
+	var oldlat = this.radians(current.getLatitude());
+	var oldlng = this.radians(current.getLongitude());
+
+	var newlat = this.radians(watch.getLatitude());
+	var newlng = this.radians(watch.getLongitude());
+
+	var distance = this.getRate() * Math.acos(
+        Math.cos(oldlat)
+        *
+        Math.cos(newlat)
+        *
+        Math.cos(newlng - oldlng)
+        +
+        Math.sin(oldlat)
+        *
+        Math.sin(newlat)
+    );
+	return distance;
 }
 
-/*
-Rules.define('fiveHundredOverd', new RadiusRule(500));
-Rules.define('fourHundredOverd', new RadiusRule(400));
-Rules.define('threeHundredOverd', new RadiusRule(300));
-Rules.define('twoHundredOverd', new RadiusRule(200));
-Rules.define('oneHundredOverd', new RadiusRule(100));
-*/
+RadiusRule.implement({
+	_watch: null,
+	_rate: 0,
+	radians: radians.protect(),
+	invoke: invoke,
+	distance: distance,
+	getRate: getRate.protect(),
+	getRadius: getRadius.protect(),
+	getCurrent: getCurrent.protect(),
+	setCurrent: setCurrent.protect()
+});
+
+Rules.RadiusRule = RadiusRule;
 
 }(Locater.Rules));
