@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Locater.Rules.KilometerRule</title>
+		<meta name="description" content="" />
+		<meta name="author" content="operator" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<script type="text/javascript" src="../js/mootools.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Rules.js"></script>
+		<script type="text/javascript" src="../../Source/Rule/RadiusRule.js"></script>
+		<script type="text/javascript" src="../../Source/Rule/KilometerRule.js"></script>
+		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
+		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
+		<script type="text/javascript" src="../js/testlib.js"></script>
+		<script type="text/javascript">
+			(function(){
+				var Rules = Locater.Rules;
+				var Context = Locater.Handler.Context;
+
+				window.addEvent('domready', function(){
+
+					var rule = new Rules.KilometerRule(40);
+
+					var first = new Context({ latitude: 37, longitude: -122 });
+					var second = new Context({ latitude: 37.386339, longitude: -122.085823 });
+
+					console.log(rule.distance(first));
+
+					assertFalse(rule.invoke(null, first), 'saaaa');
+
+					console.log(rule.distance(second));
+
+					assertTrue(rule.invoke(first, second), 'saaaa');
+
+				});
+
+			}());
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>Locater.Rules.KilometerRule</h1>
+		</header>
+	</body>
+</html>
