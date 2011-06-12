@@ -14,18 +14,16 @@
 		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
 		<script type="text/javascript" src="../../Source/Rule/RadiusRule.js"></script>
-
 		<script type="text/javascript" src="../js/testlib.js"></script>
 		<script type="text/javascript">
 			(function(){
 				var Context = Locater.Handler.Context;
 				var Rules = Locater.Rules;
 
-
 				function MileRule(radius){
 					Rules.RadiusRule.apply(this, [radius]);
 				}
-				
+
 				MileRule.implement(new Rules.RadiusRule());
 				MileRule.implement({ _rate: 3959 });
 				Rules.MileRule = MileRule;
@@ -38,6 +36,7 @@
 					var rule = new Rules.MileRule(25);
 					assertFalse(rule.invoke(null, first), '25 miles yet are not exceeded.');
 					assertTrue(rule.invoke(first, second), '25 miles are still exceeded.');
+					assertFalse(rule.invoke(second, second), 'It is not away from a new position at 25 miles.');
 
 				});
 
@@ -48,6 +47,5 @@
 		<header>
 			<h1>Locater.Rules.RadiusRule</h1>
 		</header>
-		<div id="map" class="map"></div>
 	</body>
 </html>

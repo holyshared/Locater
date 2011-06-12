@@ -17,7 +17,6 @@ provides: [Locater.Rules.RadiusRule]
 ...
 */
 
-
 (function(Rules){
 
 function RadiusRule(radius){
@@ -29,12 +28,13 @@ function radians(value){
 }
 
 function invoke(current, watch) {
-	var result = true;
-	if (!(this.distance(watch) > this.getRadius())) {
-		result = false;
+	if (!this.getCurrent()) this.setCurrent(watch);
+	if (!(this.distance(this.getCurrent(), watch) > this.getRadius())) {
+		return false;
+	} else {
+		this.setCurrent(watch);
+		return true;
 	}
-	this.setCurrent(watch);
-	return result;
 }
 
 function getRate(){
@@ -54,11 +54,8 @@ function setCurrent(watch){
 }
 
 //@see http://code.google.com/intl/ja/apis/maps/articles/phpsqlsearch.html
-function distance(watch){
+function distance(current, watch){
 
-	if (!this.getCurrent()) return 0;
-
-	var current = this.getCurrent();
 	var oldlat = this.radians(current.getLatitude());
 	var oldlng = this.radians(current.getLongitude());
 
