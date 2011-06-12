@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Rules.js"></script>
 		<script type="text/javascript" src="../../Source/Rule/RadiusRule.js"></script>
-		<script type="text/javascript" src="../../Source/Rule/KilometerRule.js"></script>
+		<script type="text/javascript" src="../../Source/Rule/MileRule.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
 		<script type="text/javascript" src="../js/testlib.js"></script>
@@ -23,19 +23,19 @@
 
 				window.addEvent('domready', function(){
 
-					var rule = new Rules.MileRule(20);
+					var rule = new Rules.MileRule(25);
 
 					var first = new Context({ latitude: 37, longitude: -122 });
 					var second = new Context({ latitude: 37.386339, longitude: -122.085823 });
+					var third = new Context({ latitude: 37, longitude: -122.453 });
+					var fourth = new Context({ latitude: 37, longitude: -122.4718 });
 
-					console.log(rule.distance(first));
-
-					assertFalse(rule.invoke(null, first), 'saaaa');
-
-					console.log(rule.distance(second));
-
-					assertTrue(rule.invoke(first, second), 'saaaa');
-
+					assertFalse(rule.invoke(null, first), '25 miles yet are not exceeded.');
+					assertTrue(rule.invoke(first, second), '25 miles are still exceeded.');
+					assertFalse(rule.invoke(second, second), 'It is not away from a new position at 25 miles.');
+					assertTrue(rule.invoke(second, first), '25 miles are still exceeded.');
+					assertFalse(rule.invoke(first, third), '25 miles yet are not exceeded.');
+					assertTrue(rule.invoke(first, fourth), '25 miles are still exceeded.');
 				});
 
 			}());

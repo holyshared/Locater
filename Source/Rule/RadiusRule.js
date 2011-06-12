@@ -73,7 +73,8 @@ function distance(current, watch){
         *
         Math.sin(newlat)
     );
-	return distance;
+	//27.5545132 -> 27.55
+	return Math.round(distance * 100) / 100;
 }
 
 RadiusRule.implement({
