@@ -13,6 +13,9 @@ copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 sources:
   - "Source/Core/Core.js"
   - "Source/Core/Rules.js"
+  - "Source/Rule/RadiusRule.js"
+  - "Source/Rule/MileRule.js"
+  - "Source/Rule/KilometerRule.js"
   - "Source/Core/Dispacher.js"
   - "Source/Core/Application.js"
   - "Source/Adapter/Adapter.js"
@@ -27,7 +30,7 @@ category: Realtime
 
 tags: [framework, geo, html5, application]
 
-current: 1.0
+current: 1.1
 
 #docs: http://holyshared.github.com/Locater/docs
 
