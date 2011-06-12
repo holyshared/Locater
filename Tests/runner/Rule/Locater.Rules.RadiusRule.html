@@ -1,0 +1,13 @@
+<script type="text/javascript" src="/depender/build?require=Locater/Locater.Rules.RadiusRule"></script>
+<script type="text/javascript">
+(function(){
+
+	function MileRule(radius){
+		Locater.Rules.RadiusRule.apply(this, [radius]);
+	}
+
+	MileRule.implement(new Locater.Rules.RadiusRule());
+	MileRule.implement({ _rate: 3959 });
+
+}());
+</script>

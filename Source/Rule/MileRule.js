@@ -10,7 +10,7 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Locater/Locater.Rules.MileRule
+  - Locater/Locater.Rules.RadiusRule
 
 provides: [Locater.Rules.MileRule]
 

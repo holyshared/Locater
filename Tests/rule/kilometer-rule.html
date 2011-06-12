@@ -27,14 +27,15 @@
 
 					var first = new Context({ latitude: 37, longitude: -122 });
 					var second = new Context({ latitude: 37.386339, longitude: -122.085823 });
+					var third = new Context({ latitude: 37, longitude: -122.4504 }); // first - third = 40km
+					var fourth = new Context({ latitude: 37, longitude: -122.4617 }); // first - fourth = 41km
 
-					console.log(rule.distance(first));
-
-					assertFalse(rule.invoke(null, first), 'saaaa');
-
-					console.log(rule.distance(second));
-
-					assertTrue(rule.invoke(first, second), 'saaaa');
+					assertFalse(rule.invoke(null, first), '40km yet are not exceeded.');
+					assertTrue(rule.invoke(first, second), '40km are still exceeded.');
+					assertTrue(rule.invoke(second, first), '40km yet are not exceeded.');
+					assertFalse(rule.invoke(first, third), 'It is not away from a new position at 40km.');
+					assertTrue(rule.invoke(first, fourth), '40km are still exceeded.');
+					assertTrue(rule.invoke(fourth, first), '40km are still exceeded.');
 
 				});
 
