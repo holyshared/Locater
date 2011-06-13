@@ -2,7 +2,7 @@
 ---
 name: Locater.Adapter
 
-description: Adaptor that acquisition or observes location information.
+description: 
 
 license: MIT-style
 
@@ -16,7 +16,7 @@ requires:
   - Core/Options
   - Locater/Locater
 
-provides: [Locater.Adapter, Locater.Geolocation, Locater.Adapter.CurrentPositionAdapter, Locater.Adapter.WatchPositionAdapter]
+provides: [Locater.Adapter, Locater.Geolocation]
 
 ...
 */
@@ -62,75 +62,5 @@ var Adapter = Locater.Adapter = {
 	}
 
 };
-
-Adapter.CurrentPositionAdapter = new Class({
-
-	Implements: [Geolocation, Options],
-
-	options: {
-		watchHandler: null,
-		errorHandler: null
-	},
-
-	initialize: function(options){
-		this.setOptions(options);
-	},
-
-	start: function(){
-		var gps = this._getGeolocation();
-		if (!gps){
-			throw new Error('Geolocation API is not supported.');
-		}
-
-		var opts = this.options;
-		var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-		if (opts.watchHandler == null) {
-			throw new Error('Please specify either watchHandler.');
-		}
-		gps.getCurrentPosition(opts.watchHandler, opts.errorHandler, watchOpts);
-		this._setWatchID(new Date().toString());
-	},
-
-	stop: function(){
-		this._setWatchID(null);
-	}
-
-});
-
-
-Adapter.WatchPositionAdapter = new Class({
-
-	Implements: [Geolocation, Options],
-
-	options: {
-		watchHandler: null,
-		errorHandler: null
-	},
-
-	initialize: function(options){
-		this.setOptions(options);
-	},
-
-	start: function(){
-		var gps = this._getGeolocation();
-		if (!gps){
-			throw new Error('Geolocation API is not supported.');
-		}
-
-		var opts = this.options;
-		var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
-		if (opts.watchHandler == null) {
-			throw new Error('Please specify either watchHandler.');
-		};
-		this._setWatchID(gps.watchPosition(opts.watchHandler, opts.errorHandler, watchOpts));
-	},
-
-	stop: function(){
-		var gps = this._getGeolocation();
-		gps.clearWatch(this._getWatchID());
-		this._setWatchID(null);
-	}
-
-});
 
 }(Locater));

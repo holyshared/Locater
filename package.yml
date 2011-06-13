@@ -19,6 +19,8 @@ sources:
   - "Source/Core/Dispacher.js"
   - "Source/Core/Application.js"
   - "Source/Adapter/Adapter.js"
+  - "Source/Adapter/Adapter.CurrentPositionAdapter.js"
+  - "Source/Adapter/Adapter.WatchPositionAdapter.js"
   - "Source/Emulator/Emulator.js"
   - "Source/Emulator/Emulator.CurrentPositionEmulator.js"
   - "Source/Handler/Handler.js"
