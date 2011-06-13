@@ -121,9 +121,8 @@ Adapter.WatchPositionAdapter = new Class({
 		var watchOpts = Object.subset(opts, ['enableHighAccuracy', 'timeout', 'maximumAge']);
 		if (opts.watchHandler == null) {
 			throw new Error('Please specify either watchHandler.');
-		} else if (opts.watchHandler){
-			this._setWatchID(gps.watchPosition(opts.watchHandler, opts.errorHandler));
-		}
+		};
+		this._setWatchID(gps.watchPosition(opts.watchHandler, opts.errorHandler, watchOpts));
 	},
 
 	stop: function(){
