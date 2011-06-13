@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Locater.Emulator.CurrentPositionEmulator</title>
+		<meta name="description" content="" />
+		<meta name="author" content="operator" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<script type="text/javascript" src="../js/mootools.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
+		<script type="text/javascript" src="../../Source/Emulator/Core.js"></script>
+		<script type="text/javascript" src="../../Source/Emulator/CurrentPositionEmulator.js"></script>
+		<script type="text/javascript" src="../js/testlib.js"></script>
+		<script type="text/javascript">
+			(function(){
+				//Alias
+				var CurrentPositionEmulator = Locater.Emulator.CurrentPositionEmulator;
+
+				window.addEvent('domready', function(){
+
+					var value = { coords: { latitude: 37, longitude: -122 } };
+					var emulator = new CurrentPositionEmulator({
+						watchHandler: function(watch){
+							assertTrue(watch.coords.latitude == value.coords.latitude, 'aaaaa');
+							assertTrue(watch.coords.longitude == value.coords.longitude, 'aaaaa');
+						},
+						errorHandler: function(error){
+							assertTrue(error.TIMEOUT == 3, 'aaaaa');
+						},
+						value: value
+					});
+					emulator.start();
+
+					var error = new Error('TIMEOUT Error');
+					error.TIMEOUT = 3; //TIMEOUT
+
+					emulator.setValue(error);
+					emulator.start();
+
+				});
+
+			}());
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>Locater.Emulator.CurrentPositionEmulator</h1>
+		</header>
+	</body>
+</html>

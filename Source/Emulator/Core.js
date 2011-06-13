@@ -2,7 +2,7 @@
 ---
 name: Locater.Emulator
 
-description:
+description: Emulator interface of adaptor.
 
 license: MIT-style
 
@@ -10,6 +10,7 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Class
   - Locater/Locater
 
 provides: [Locater.Emulator]
