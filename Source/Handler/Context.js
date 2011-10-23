@@ -64,6 +64,11 @@ Handler.Context.implement({
 		var tokens = [];
 		for (var key in defaultContext){
 			var getter = __toGetterMethodName(key);
+
+			if (!this[getter]) {
+				continue;
+			}
+
 			var value = this[getter]();
 			if (Type.isObject(value)) {
 				if (Type.isFunction(value.toString)) {
