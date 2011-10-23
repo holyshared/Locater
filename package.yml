@@ -23,6 +23,7 @@ sources:
   - "Source/Adapter/Adapter.WatchPositionAdapter.js"
   - "Source/Emulator/Emulator.js"
   - "Source/Emulator/Emulator.CurrentPositionEmulator.js"
+  - "Source/Emulator/Emulator.WatchPositionEmulator.js"
   - "Source/Handler/Handler.js"
   - "Source/Handler/Context.js"
   - "Source/Handler/DebugHandler.js"
