@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Locater.Emulator.WatchPositionAdapter</title>
+		<meta name="description" content="" />
+		<meta name="author" content="operator" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<script type="text/javascript" src="../js/mootools.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
+		<script type="text/javascript" src="../../Source/Emulator/Emulator.js"></script>
+		<script type="text/javascript" src="../../Source/Emulator/Emulator.WatchPositionAdapter.js"></script>
+		<script type="text/javascript" src="../js/testlib.js"></script>
+		<script type="text/javascript">
+			(function(){
+				//Alias
+				var WatchPositionAdapter = Locater.Emulator.WatchPositionAdapter;
+
+				window.addEvent('domready', function(){
+
+					var emulator1Positions = [
+						{ coords: { latitude: 37, longitude: -122 } },
+						{ coords: { latitude: 36, longitude: -123 } },
+						{ coords: { latitude: 35, longitude: -124 } }
+					];
+
+					var emulator1Current = 0;
+
+					var emulator1 = new WatchPositionAdapter({
+						positions: emulator1Positions,
+						interval: 3000,
+						watchHandler: function(watch){
+							var currentCoords = emulator1Positions[emulator1Current];
+
+							assertTrue(currentCoords.coords.latitude == watch.coords.latitude, 'invalid latitude');
+							assertTrue(currentCoords.coords.longitude == watch.coords.longitude, 'invalid longitude');
+							emulator1Current++;
+						}
+					});
+
+					emulator1.start();
+
+
+					var error = new Error('TIMEOUT Error');
+					error.TIMEOUT = 3; //TIMEOUT
+
+					var emulator2Positions = [
+						{ coords: { latitude: 37, longitude: -122 } },
+						{ coords: { latitude: 36, longitude: -123 } },
+						error
+					];
+
+					var emulator2Current = 0;
+
+					var emulator2 = new WatchPositionAdapter({
+						watchHandler: function(watch){
+							var currentCoords = emulator2Positions[emulator2Current];
+
+							assertTrue(currentCoords.coords.latitude == watch.coords.latitude, 'invalid latitude');
+							assertTrue(currentCoords.coords.longitude == watch.coords.longitude, 'invalid longitude');
+							emulator2Current++;
+						},
+						errorHandler: function(error){
+							assertTrue(error.TIMEOUT == 3, 'invalid error');
+						}
+					});
+
+					emulator2.setInterval(2000)
+						.setPositions(emulator2Positions);
+
+					emulator2.start();
+
+				});
+
+			}());
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>Locater.Emulator.WatchPositionAdapter</h1>
+		</header>
+	</body>
+</html>

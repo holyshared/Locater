@@ -34,10 +34,17 @@ Emulator.WatchPositionAdapter = new Class({
 		interval: 1000
 	},
 
+	_current: 0,
+	_positions: [],
+	_interval: 1000,
+
 	initialize: function(options){
 		this.setOptions(options);
 		var values = Object.subset(this.options, ['positions', 'interval']);
 		Object.each(values, function(value, key){
+			if (value == null || value == undefined) {
+				return;
+			}
 			this['set' + key.capitalize()](value);
 			delete this.options[key];
 		}, this);
@@ -45,28 +52,47 @@ Emulator.WatchPositionAdapter = new Class({
 
 	setPositions: function(positions){
 		if (!Type.isArray(positions)){
-			throw new TypeError('It is necessary to specify the coordinates position in array.');
+			throw new TypeError('Please specify the coordinates position in array.');
 		}
 		this._positions = positions;
+		return this;
 	},
 
 	getPositions: function(){
 		return this._positions;
 	},
 
-	_getNextPosition: function(){
+	setInterval: function(interval){
+		if (!Type.isNumber(interval)){
+			throw new TypeError('Please specify interval numerically.');
+		}
+		this._interval = interval;
+		return this;
+	},
+
+	getInterval: function(){
+		return this._interval;
+	},
+
+	_nextPosition: function(){
 		var next = this._current + 1;
 		if (next >= this._positions.length) {
 			clearTimeout(this._getWatchID());
 			return false;
 		}
 		this._current = next;
+		return true;
+	},
+
+	_getWatchPosition: function(){
 		return this._positions[this._current];
 	},
 
 	_watchPosition: function(){
 		var opts = this.options;
-		var position = this._getNextPosition();
+		var position = this._getWatchPosition();
+		var interval = this.getInterval();
+
 		if (position === false){
 			return;
 		} else if (position instanceof Error){
@@ -76,7 +102,10 @@ Emulator.WatchPositionAdapter = new Class({
 		} else {
 			throw new TypeError('Please specify coordinates information for the verification or the error object.'); 
 		}
-		this._watchPosition.delay(opts.interval);
+
+		if (this._nextPosition()) {
+			this._watchPosition.delay(interval, this);
+		}
 	},
 
 	start: function(){
