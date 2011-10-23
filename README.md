@@ -135,6 +135,180 @@ A final code is as follows.
 	}());
 
 
+The definition of a custom-made rule
+------------------------------------------------------------------------
+
+The following example defines the custom-made event when latitude longitude turns up rather than Tokyo.  
+The definition of a custom-made event has the method of defining functionally, and the method of specifying by an object.  
+An event name can be decided freely.  
+
+### When a definition is given function 
+
+	Locater.Rules.define('fooEvent', function(current, wacth){
+		//In the first stage, the position of current is null. 
+		//It can be referred to now from the 2nd time or subsequent ones.
+		if (current == null) return false;
+
+		//A custom-made event when latitude longitude turns up rather than Tokyo
+		if (wacth.getLatitude() > 35.4122 && wacth.getLatitude() > 139.4130){
+			return true;
+		} else {
+			return false;
+		}
+	});
+
+### When defining by an object
+
+	var custumRule = {
+		invoke: function(current, wacth){
+			//In the first stage, the position of current is null. 
+			//It can be referred to now from the 2nd time or subsequent ones.
+			if (current == null) return false;
+	
+			//A custom-made event when latitude longitude turns up rather than Tokyo
+			if (wacth.getLatitude() > 35.4122 && wacth.getLatitude() > 139.4130){
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
+	Locater.Rules.define('fooEvent', custumRule);
+
+
+### Mounting of event handler
+
+The rest only mounts processing at the time of an event occurring in an event hair drier.  
+Since **fooEvent** defined the event name, it mounts in an event hair drier by a key called **fooEvent**.
+
+	(function(){
+		//Alias
+		var Application = Locater.Application;
+		var Adapter = Locater.Adapter;
+		var Handler = Locater.Handler;
+
+		//Handlers
+		var myHanlder = new Handler.SimpleHandler({
+			fooEvent: function(context){
+				//do something
+			}
+		});
+
+		window.addEvent('domready', function(){
+
+			var adapter = new Adapter.CurrentPositionAdapter();
+			var app = new Application(adapter);
+			app.addHandler(myHanlder);
+			app.run();
+
+		});
+	}());
+
+
+
+Use of an inclusion rule 
+------------------------------------------------------------------------
+
+There are **Locater.Rules.MileRule** and **Locater.Rules.KilometerRule** which can define the custom-made event performed whenever a fixed distance separates in Locator.  
+There is the following feature, respectively. 
+
+* Locater.Rules.MileRule - The mileage specified by coordinates can define the event performed whenever it gets used.
+* Locater.Rules.KilometerRule - The number of kilometers specified by coordinates can define the event performed whenever it gets used.
+
+### The definition method of a rule 
+
+	//Whenever it gets used, 1 mile of fiveKilometerOvered events of an event hair drier are performed.
+	Locater.Rules.define('oneMileOvered', new Locater.Rules.MileRule(1));
+
+	//Whenever it gets used, 5 km of fiveKilometerOvered events of an event hair drier are performed.
+	Locater.Rules.define('fiveKilometerOvered', new Locater.Rules.KilometerRule(5));
+
+
+The test which uses an emulator 
+------------------------------------------------------------------------
+
+An emulator can be used for the test of application.  
+In an emulator, a coordinates position can be specified instead of using [Geolocation API](http://dev.w3.org/geo/api/spec-source.html "Geolocation API").  
+That is, it is possible to specify and test test data freely.
+
+### Locater.Emulator.CurrentPositionEmulator
+
+CurrentPositionEmulator enables the test of the application which uses CurrentPositionAdaptor.  
+The actual example of use specifies an emulator as a change of an adapter as follows.  
+
+	(function(){
+		//Alias
+		var Application = Locater.Application,
+			Emulator = Locater.Emulator,
+			Handler = Locater.Handler;
+
+		//Handlers
+		var myHanlder = new Handler.SimpleHandler({
+			currentWatched: function(context){
+				alert(context.getLatitude()); //Alert 37
+				alert(context.getLongitude()); //Alert -122
+			}
+		});
+
+		window.addEvent('domready', function(){
+			var emulator = new Emulator.CurrentPositionEmulator({
+				potistion: {
+					coords: {
+						latitude: 37,
+						longitude: -122
+					}
+				}
+			});
+			var app = new Application(emulator);
+			app.addHandler(myHanlder);
+			app.run();
+
+		});
+	}());
+
+
+### Locater.Emulator.WatchPositionEmulator
+
+WatchPositionEmulator enables the test of the application which uses WatchPositionAdaptor.  
+The actual example of use specifies an emulator as a change of an adapter as follows.  
+The interval processed as the **interval option** can be specified.  
+
+	(function(){
+		//Alias
+		var Application = Locater.Application,
+			Emulator = Locater.Emulator,
+			Handler = Locater.Handler;
+
+		//Handlers
+		var myHanlder = new Handler.SimpleHandler({
+			currentWatched: function(context){
+				alert(context.getLatitude()); //Alert 37
+				alert(context.getLongitude()); //Alert -122
+			},
+			positionChanged: function(context){
+				alert(context.getLatitude()); //Alert 36, 35 ....
+				alert(context.getLongitude()); //Alert -123, 124 ....
+			}
+		});
+
+		window.addEvent('domready', function(){
+
+			var emulator = new Emulator.WatchPositionEmulator({
+				interval: 2000,
+				positions: [
+					{ coords: { latitude: 37, longitude: -122 } },
+					{ coords: { latitude: 36, longitude: -123 } },
+					{ coords: { latitude: 35, longitude: -124 } }
+				]
+			});
+			var app = new Application(emulator);
+			app.addHandler(myHanlder);
+			app.run();
+
+		});
+	}());
+
+
 Required libraries
 ------------------------------------------------------------------------
 
