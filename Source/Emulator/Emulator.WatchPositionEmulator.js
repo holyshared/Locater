@@ -16,14 +16,14 @@ requires:
   - Locater/Locater
   - Locater/Locater.Emulator
 
-provides: [Locater.Emulator.WatchPositionAdapter]
+provides: [Locater.Emulator.WatchPositionEmulator]
 
 ...
 */
 
 (function(Emulator){
 
-Emulator.WatchPositionAdapter = new Class({
+Emulator.WatchPositionEmulator = new Class({
 
 	Implements: [Emulator, Options],
 

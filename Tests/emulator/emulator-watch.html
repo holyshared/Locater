@@ -11,12 +11,12 @@
 		<script type="text/javascript" src="../js/mootools.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
 		<script type="text/javascript" src="../../Source/Emulator/Emulator.js"></script>
-		<script type="text/javascript" src="../../Source/Emulator/Emulator.WatchPositionAdapter.js"></script>
+		<script type="text/javascript" src="../../Source/Emulator/Emulator.WatchPositionEmulator.js"></script>
 		<script type="text/javascript" src="../js/testlib.js"></script>
 		<script type="text/javascript">
 			(function(){
 				//Alias
-				var WatchPositionAdapter = Locater.Emulator.WatchPositionAdapter;
+				var WatchPositionEmulator = Locater.Emulator.WatchPositionEmulator;
 
 				window.addEvent('domready', function(){
 
@@ -28,7 +28,7 @@
 
 					var emulator1Current = 0;
 
-					var emulator1 = new WatchPositionAdapter({
+					var emulator1 = new WatchPositionEmulator({
 						positions: emulator1Positions,
 						interval: 3000,
 						watchHandler: function(watch){
@@ -54,7 +54,7 @@
 
 					var emulator2Current = 0;
 
-					var emulator2 = new WatchPositionAdapter({
+					var emulator2 = new WatchPositionEmulator({
 						watchHandler: function(watch){
 							var currentCoords = emulator2Positions[emulator2Current];
 
@@ -79,7 +79,7 @@
 	</head>
 	<body>
 		<header>
-			<h1>Locater.Emulator.WatchPositionAdapter</h1>
+			<h1>Locater.Emulator.WatchPositionEmulator</h1>
 		</header>
 	</body>
 </html>
