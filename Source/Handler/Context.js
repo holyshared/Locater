@@ -48,8 +48,8 @@ Handler.Context = function(props){
 	var params = {};
 	var keys = Object.keys(defaultContext);
 	var context = Object.subset(props, keys);
-	Object.each(context, function(value, key){
-		params[key] = value || defaultContext[key];
+	Object.each(defaultContext, function(value, key){
+		params[key] = context[key] || value;
 	});
 	for (var key in params){
 		var getter = __toGetterMethodName(key);
@@ -64,11 +64,6 @@ Handler.Context.implement({
 		var tokens = [];
 		for (var key in defaultContext){
 			var getter = __toGetterMethodName(key);
-
-			if (!this[getter]) {
-				continue;
-			}
-
 			var value = this[getter]();
 			if (Type.isObject(value)) {
 				if (Type.isFunction(value.toString)) {

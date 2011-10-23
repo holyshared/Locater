@@ -42,7 +42,7 @@ Locater.Application = new Class({
 	_dispacher: null,
 
 	initialize: function(adapter, options){
-		if (!Adapter.isAdapter(adapter)) {
+		if (!(Type.isFunction(adapter.start) && Type.isFunction(adapter.stop))) {
 			throw new Error('It is not an adaptor.');
 		}
 		this.setOptions(options);

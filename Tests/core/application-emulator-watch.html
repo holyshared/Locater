@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>Locater.Application - WatchPosition</title>
+		<title>Locater.Application - WatchPositionEmulator</title>
 		<meta name="description" content="" />
 		<meta name="author" content="operator" />
 		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
@@ -13,8 +13,8 @@
 		<script type="text/javascript" src="../../Source/Core/Rules.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Dispacher.js"></script>
-		<script type="text/javascript" src="../../Source/Adapter/Adapter.js"></script>
-		<script type="text/javascript" src="../../Source/Adapter/Adapter.WatchPositionAdapter.js"></script>
+		<script type="text/javascript" src="../../Source/Emulator/Emulator.js"></script>
+		<script type="text/javascript" src="../../Source/Emulator/Emulator.WatchPositionEmulator.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/DebugHandler.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Context.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Application.js"></script>
@@ -23,7 +23,7 @@
 			(function(){
 				//Alias
 				var Application = Locater.Application;
-				var Adapter = Locater.Adapter;
+				var Emulator = Locater.Emulator;
 				var Handler = Locater.Handler;
 				var SimpleHandler = Locater.Handler.SimpleHandler;
 
@@ -42,6 +42,10 @@
 				var thirdHanlder = new SimpleHandler({
 					currentWatched: function(context){
 						assertTrue((secondHanlder.context == context), 'thirdHanlder: The context is not corresponding.');
+					},
+					positionChanged: function(context){
+						assertTrue((context.getLatitude() !== null), 'latitude is empty');
+						assertTrue((context.getLongitude() !== null), 'longitude is empty');
 					}
 				});
 
@@ -78,8 +82,15 @@
 
 				window.addEvent('domready', function(){
 
-					var adapter = new Adapter.WatchPositionAdapter();
-					var app = new Application(adapter, {});
+					var emulator = new Emulator.WatchPositionEmulator({
+						interval: 2000,
+						positions: [
+							{ coords: { latitude: 37, longitude: -122 } },
+							{ coords: { latitude: 36, longitude: -123 } },
+							{ coords: { latitude: 35, longitude: -124 } }
+						]
+					});
+					var app = new Application(emulator, {});
 					app.addHandler(firstHanlder);
 					app.addHandlers([secondHanlder, thirdHanlder]);
 					app.addHandler(new Handler.DebugHandler({ events: ['currentWatched'] }));
@@ -93,7 +104,7 @@
 	</head>
 	<body>
 		<header>
-			<h1>Locater.Application - WacthPosition</h1>
+			<h1>Locater.Application - WatchPositionEmulator</h1>
 		</header>
 		<ul id="message"></ul>
 	</body>

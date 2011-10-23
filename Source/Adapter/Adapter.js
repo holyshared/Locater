@@ -55,11 +55,11 @@ var Adapter = Locater.Adapter = {
 	create: function(name, options){
 		if (!this[name]) throw new Error('It tries to make an invalid adaptor.');
 		return new this[name](options);
-	},
+	} //,
 
-	isAdapter: function(adapter){
-		return (Type.isFunction(adapter.start) && Type.isFunction(adapter.stop));
-	}
+//	isAdapter: function(adapter){
+//		return (Type.isFunction(adapter.start) && Type.isFunction(adapter.stop));
+//	}
 
 };
 
