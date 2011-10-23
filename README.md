@@ -319,15 +319,18 @@ http://mootools.net/core/3db61bb25aa2a339b7aee42f4d7bad03
 Building Locater
 ------------------------------------------------------------------------
 
-Please select the component if necessary.
-**locater.js** of the minimum configuration and **locater-full.js** including all components are in the **Build directory** in default.
-
-### Necessary minimum component composition
-packager build Locater/Locater.Application +use-only Locater
-
 ### All components
-packager build Locater/Locater.Application Locater/Locater.Handler.DebugHandler Locater/Locater.Handler.CurrentPositionHandler +use-only Locater
+packager build Locater/* +use-only Locater > locater-full.js
 
+### Application which acquires a coordinates position only once
+
+packager build Locater/Locater.Application Locater/Locater.Adapter.CurrentPositionAdapter +use-only Locater > locater-current-position.js
+packager build Locater/Locater.Application Locater/Locater.Emulator.CurrentPositionEmulator +use-only Locater > locater-current-position-dev.js
+
+### Application which acquires a coordinates position periodically
+
+packager build Locater/Locater.Application Locater/Locater.Adapter.WatchPositionAdapter +use-only Locater > locater-watch-position.js
+packager build Locater/Locater.Application Locater/Locater.Emulator.WatchPositionEmulator +use-only Locater > locater-watch-position-dev.js 
 
 
 Screenshots

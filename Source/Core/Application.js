@@ -17,7 +17,6 @@ requires:
   - Locater/Locater.Rules
   - Locater/Locater.Handler
   - Locater/Locater.Dispacher
-  - Locater/Locater.Adapter
   - Locater/Locater.Handler.SimpleHandler
   - Locater/Locater.Handler.Context
 
@@ -26,7 +25,7 @@ provides: [Locater.Application]
 ...
 */
 
-(function(Locater, Adapter, Handler){
+(function(Locater, Handler){
 
 Locater.Application = new Class({
 
@@ -123,4 +122,4 @@ Locater.Application = new Class({
 
 });
 
-}(Locater, Locater.Adapter, Locater.Handler));
+}(Locater, Locater.Handler));
