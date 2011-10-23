@@ -30,35 +30,44 @@ Emulator.CurrentPositionEmulator = new Class({
 	options: {
 		watchHandler: null,
 		errorHandler: null,
-		value: null
+		position: null
 	},
+
+	_position: null,
 
 	initialize: function(options){
 		this.setOptions(options);
-		var values = Object.subset(this.options, ['value']);
+		var values = Object.subset(this.options, ['position']);
 		Object.each(values, function(value, key){
+			if (value == null || value == undefined) {
+				return;
+			}
 			this['set' + key.capitalize()](value);
 			delete this.options[key];
 		}, this);
 	},
 
-	setValue: function(value){
-		this._value = value;
+	setPosition: function(position){
+		if (!(Type.isObject(position) || position instanceof Error)){
+			throw new TypeError('Please specify an Error object as position from an object.');
+		}
+		this._position = position;
+		return this;
 	},
 
-	getValue: function(){
-		return this._value;
+	getPosition: function(){
+		return this._position;
 	},
 
 	start: function(){
 		var opts = this.options;
-		var value = this.getValue();
-		if (!value){
+		var position = this.getPosition();
+		if (!position){
 			throw new TypeError('Please specify coordinates information for the verification or the error object.'); 
-		} else if (value instanceof Error){
-			opts.errorHandler(value);
-		} else if (Type.isObject(value)) {
-			opts.watchHandler(value);
+		} else if (position instanceof Error){
+			opts.errorHandler(position);
+		} else if (Type.isObject(position)) {
+			opts.watchHandler(position);
 		}
 		this._setWatchID(new Date().toString());
 	},

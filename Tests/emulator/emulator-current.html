@@ -20,23 +20,24 @@
 
 				window.addEvent('domready', function(){
 
-					var value = { coords: { latitude: 37, longitude: -122 } };
+					var position = { coords: { latitude: 37, longitude: -122 } };
+
 					var emulator = new CurrentPositionEmulator({
+						position: position,
 						watchHandler: function(watch){
-							assertTrue(watch.coords.latitude == value.coords.latitude, 'aaaaa');
-							assertTrue(watch.coords.longitude == value.coords.longitude, 'aaaaa');
+							assertTrue(watch.coords.latitude == position.coords.latitude, 'invalid latitude');
+							assertTrue(watch.coords.longitude == position.coords.longitude, 'invalid longitude');
 						},
 						errorHandler: function(error){
-							assertTrue(error.TIMEOUT == 3, 'aaaaa');
-						},
-						value: value
+							assertTrue(error.TIMEOUT == 3, 'invalid error');
+						}
 					});
 					emulator.start();
 
 					var error = new Error('TIMEOUT Error');
 					error.TIMEOUT = 3; //TIMEOUT
 
-					emulator.setValue(error);
+					emulator.setPosition(error);
 					emulator.start();
 
 				});
