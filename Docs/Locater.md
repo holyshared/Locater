@@ -24,7 +24,7 @@ Locater.Container
 * addResource - 
 * addResources - 
 
-Locater.Dispacher
+Locater.Dispatcher
 ------------------------------------------------
 
 ### Method

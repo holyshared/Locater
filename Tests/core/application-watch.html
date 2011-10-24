@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="../../Source/Core/Core.js"></script>
 		<script type="text/javascript" src="../../Source/Core/Rules.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/Handler.js"></script>
-		<script type="text/javascript" src="../../Source/Core/Dispacher.js"></script>
+		<script type="text/javascript" src="../../Source/Core/Dispatcher.js"></script>
 		<script type="text/javascript" src="../../Source/Adapter/Adapter.js"></script>
 		<script type="text/javascript" src="../../Source/Adapter/Adapter.WatchPositionAdapter.js"></script>
 		<script type="text/javascript" src="../../Source/Handler/DebugHandler.js"></script>
@@ -29,6 +29,7 @@
 
 				var firstHanlder = new SimpleHandler({
 					currentWatched: function(context){
+alert('aaa');
 						this.context = context;
 						console.log(context);
 					}
@@ -52,8 +53,9 @@
 					},
 
 					error: function(error){
+						var message = error.message || 'message empty';
 						var row = document.createElement('li');
-						var text = document.createTextNode(error.message);
+						var text = document.createTextNode(message);
 						row.appendChild(text);
 						switch(error.code){
 							//PERMISSION_DENIED

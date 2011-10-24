@@ -16,7 +16,7 @@ sources:
   - "Source/Rule/Rule.RadiusRule.js"
   - "Source/Rule/Rule.MileRule.js"
   - "Source/Rule/Rule.KilometerRule.js"
-  - "Source/Core/Dispacher.js"
+  - "Source/Core/Dispatcher.js"
   - "Source/Core/Application.js"
   - "Source/Adapter/Adapter.js"
   - "Source/Adapter/Adapter.CurrentPositionAdapter.js"
@@ -35,7 +35,7 @@ category: Realtime
 
 tags: [framework, geo, html5, application]
 
-current: 1.1
+current: 1.1.0.1
 
 #docs: http://holyshared.github.com/Locater/docs
 

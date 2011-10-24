@@ -1,6 +1,6 @@
 /*
 ---
-name: Locater.Dispacher
+name: Locater.Dispatcher
 
 description: The execution of the event handler of the application can be controlled.
 
@@ -16,14 +16,14 @@ requires:
   - Locater/Locater
   - Locater/Locater.Handler
 
-provides: [Locater.Dispacher]
+provides: [Locater.Dispatcher]
 
 ...
 */
 
 (function(Locater, Handler){
 
-Locater.Dispacher = new Class({
+Locater.Dispatcher = new Class({
 
 	_handlers: [],
 

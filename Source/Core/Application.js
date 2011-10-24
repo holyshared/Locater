@@ -16,7 +16,7 @@ requires:
   - Locater/Locater
   - Locater/Locater.Rules
   - Locater/Locater.Handler
-  - Locater/Locater.Dispacher
+  - Locater/Locater.Dispatcher
   - Locater/Locater.Handler.SimpleHandler
   - Locater/Locater.Handler.Context
 
@@ -50,7 +50,7 @@ Locater.Application = new Class({
 			'watchHandler': this.onWatchSuccess.bind(this),
 			'errorHandler': this.onError.bind(this)
 		});
-		this._dispacher = new Locater.Dispacher();
+		this._dispacher = new Locater.Dispatcher();
 	},
 
 	addHandler: function(handler){
