@@ -2,7 +2,7 @@
 ---
 name: Locater.Adapter.WatchPositionAdapter
 
-description:
+description: The adapter for applications which uses the present position information periodically
 
 license: MIT-style
 

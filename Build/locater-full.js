@@ -159,7 +159,7 @@ for (key in defaultRules) {
 ---
 name: Locater.Rules.RadiusRule
 
-description: 
+description: The rule definition library using a radius
 
 license: MIT-style
 
@@ -254,7 +254,7 @@ Rules.RadiusRule = RadiusRule;
 ---
 name: Locater.Rules.MileRule
 
-description: 
+description: The rule definition library using a mile 
 
 license: MIT-style
 
@@ -286,7 +286,7 @@ Rules.MileRule = MileRule;
 ---
 name: Locater.Rules.KilometerRule
 
-description: 
+description: The rule definition library using kilometer 
 
 license: MIT-style
 
@@ -463,73 +463,6 @@ Locater.Dispatcher = new Class({
 
 /*
 ---
-name: Locater.Adapter
-
-description: 
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Core/Object
-  - Core/Function
-  - Core/Class
-  - Core/Options
-  - Locater/Locater
-
-provides: [Locater.Adapter, Locater.Geolocation]
-
-...
-*/
-
-(function(Locater){
-
-var Geolocation = Locater.Geolocation = new Class({
-
-	options: {
-		enableHighAccuracy: true,
-		timeout: 10000,
-		maximumAge: 0
-	},
-
-	_getWatchID: function(){
-		return this._watchID;
-	}.protect(),
-
-	_setWatchID: function(watchID){
-		this._watchID = watchID;
-	}.protect(),
-
-	_getGeolocation: function(){
-		return navigator.geolocation;
-	}.protect(),
-
-	isWatching: function(){
-		return (this._getWatchID() != null);
-	}
-
-});
-
-
-var Adapter = Locater.Adapter = {
-
-	create: function(name, options){
-		if (!this[name]) throw new Error('It tries to make an invalid adaptor.');
-		return new this[name](options);
-	} //,
-
-//	isAdapter: function(adapter){
-//		return (Type.isFunction(adapter.start) && Type.isFunction(adapter.stop));
-//	}
-
-};
-
-}(Locater));
-
-/*
----
 name: Locater.Handler.Context
 
 description: Context of event handler.
@@ -630,7 +563,6 @@ requires:
   - Locater/Locater.Rules
   - Locater/Locater.Handler
   - Locater/Locater.Dispatcher
-  - Locater/Locater.Adapter
   - Locater/Locater.Handler.SimpleHandler
   - Locater/Locater.Handler.Context
 
@@ -639,7 +571,7 @@ provides: [Locater.Application]
 ...
 */
 
-(function(Locater, Adapter, Handler){
+(function(Locater, Handler){
 
 Locater.Application = new Class({
 
@@ -736,13 +668,76 @@ Locater.Application = new Class({
 
 });
 
-}(Locater, Locater.Adapter, Locater.Handler));
+}(Locater, Locater.Handler));
+
+/*
+---
+name: Locater.Adapter
+
+description: The core of the adapter for applications
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Core/Object
+  - Core/Function
+  - Core/Class
+  - Core/Options
+  - Locater/Locater
+
+provides: [Locater.Adapter, Locater.Geolocation]
+
+...
+*/
+
+(function(Locater){
+
+var Geolocation = Locater.Geolocation = new Class({
+
+	options: {
+		enableHighAccuracy: true,
+		timeout: 10000,
+		maximumAge: 0
+	},
+
+	_getWatchID: function(){
+		return this._watchID;
+	}.protect(),
+
+	_setWatchID: function(watchID){
+		this._watchID = watchID;
+	}.protect(),
+
+	_getGeolocation: function(){
+		return navigator.geolocation;
+	}.protect(),
+
+	isWatching: function(){
+		return (this._getWatchID() != null);
+	}
+
+});
+
+
+var Adapter = Locater.Adapter = {
+
+	create: function(name, options){
+		if (!this[name]) throw new Error('It tries to make an invalid adaptor.');
+		return new this[name](options);
+	}
+
+};
+
+}(Locater));
 
 /*
 ---
 name: Locater.Adapter.CurrentPositionAdapter
 
-description:
+description: The adapter using the present position information for applications 
 
 license: MIT-style
 
@@ -800,7 +795,7 @@ Adapter.CurrentPositionAdapter = new Class({
 ---
 name: Locater.Adapter.WatchPositionAdapter
 
-description:
+description: The adapter for applications which uses the present position information periodically
 
 license: MIT-style
 

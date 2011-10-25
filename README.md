@@ -324,15 +324,10 @@ packager build Locater/* +use-only Locater > locater-full.js
 
 ### Application which acquires a coordinates position only once
 
-packager build Locater/Locater.Application Locater/Locater.Adapter.CurrentPositionAdapter +use-only Locater > locater-current-position.js
+packager build Locater/Locater.Application Locater/Locater.Adapter.CurrentPositionAdapter +use-only Locater > locater-current-position.js  
 packager build Locater/Locater.Application Locater/Locater.Emulator.CurrentPositionEmulator +use-only Locater > locater-current-position-dev.js
 
 ### Application which acquires a coordinates position periodically
 
-packager build Locater/Locater.Application Locater/Locater.Adapter.WatchPositionAdapter +use-only Locater > locater-watch-position.js
+packager build Locater/Locater.Application Locater/Locater.Adapter.WatchPositionAdapter +use-only Locater > locater-watch-position.js  
 packager build Locater/Locater.Application Locater/Locater.Emulator.WatchPositionEmulator +use-only Locater > locater-watch-position-dev.js 
-
-
-Screenshots
-------------------------------------------------------------------------
-

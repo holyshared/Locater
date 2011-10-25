@@ -2,7 +2,7 @@
 ---
 name: Locater.Adapter.CurrentPositionAdapter
 
-description:
+description: The adapter using the present position information for applications 
 
 license: MIT-style
 

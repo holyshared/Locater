@@ -2,7 +2,7 @@
 ---
 name: Locater.Rules.RadiusRule
 
-description: 
+description: The rule definition library using a radius
 
 license: MIT-style
 

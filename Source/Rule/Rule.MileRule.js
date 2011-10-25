@@ -2,7 +2,7 @@
 ---
 name: Locater.Rules.MileRule
 
-description: 
+description: The rule definition library using a mile 
 
 license: MIT-style
 

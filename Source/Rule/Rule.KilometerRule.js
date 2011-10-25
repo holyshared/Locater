@@ -2,7 +2,7 @@
 ---
 name: Locater.Rules.KilometerRule
 
-description: 
+description: The rule definition library using kilometer 
 
 license: MIT-style
 
